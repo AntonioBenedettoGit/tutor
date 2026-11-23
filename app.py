@@ -57,11 +57,14 @@ def main():
         # --- WEBHOOK (Render Web Service) ---
         port = int(os.environ.get("PORT", 10000))
         app = build_app(token)
+        # NOTA: PTB usa webhook_url COSÌ COM'È (non ci aggiunge il path),
+        # quindi deve contenere /<token> altrimenti Telegram posta sulla radice
+        # e il server locale (che ascolta su /<token>) risponde 404 -> bot muto.
         app.run_webhook(
             listen="0.0.0.0",
             port=port,
             url_path=token,
-            webhook_url=render_url.rstrip("/"),
+            webhook_url=f"{render_url.rstrip('/')}/{token}",
             drop_pending_updates=True,
         )
     else:

@@ -10,7 +10,7 @@
    "fixes": 68,
    "exercises": 269,
    "exercises_mcq": 39,
-   "verbs": 146,
+   "verbs": 145,
    "glossary": 91
   }
  },
@@ -8156,7 +8156,7 @@
   },
   {
    "bad": "What time the film starts?",
-   "good": "What time does the film start? Error — Place and time",
+   "good": "What time does the film start?",
    "ch": 3
   },
   {
@@ -8236,7 +8236,7 @@
   },
   {
    "bad": "Does she likes it?",
-   "good": "Does she like it? Mistake 5 — Forgetting be in the continuous",
+   "good": "Does she like it?",
    "ch": 8
   },
   {
@@ -8519,7 +8519,7 @@
    "instr": "Identify the part of speech of the bold word.",
    "q": "We sat under the tree.",
    "options": null,
-   "answer": "Preposition — under shows the relationship (position) between we and the tree. B",
+   "answer": "Preposition — under shows the relationship (position) between we and the tree.",
    "answer_idx": null
   },
   {
@@ -8537,7 +8537,7 @@
    "instr": "Word, phrase, or clause? Label each group.",
    "q": "the children were playing",
    "options": null,
-   "answer": "Clause — it contains the subject the children and the verb were playing. C",
+   "answer": "Clause — it contains the subject the children and the verb were playing.",
    "answer_idx": null
   },
   {
@@ -8546,7 +8546,7 @@
    "instr": "Find the subject, verb, and object.",
    "q": "My brother fixed the computer.",
    "options": null,
-   "answer": "Subject: My brother · Verb: fixed · Object: the computer. D",
+   "answer": "Subject: My brother · Verb: fixed · Object: the computer.",
    "answer_idx": null
   },
   {
@@ -8846,7 +8846,7 @@
    "instr": "Countable or uncountable? Mark each noun C or U.",
    "q": "idea",
    "options": null,
-   "answer": "C B",
+   "answer": "C",
    "answer_idx": null
   },
   {
@@ -8882,7 +8882,7 @@
    "instr": "Correct the mistake in each sentence.",
    "q": "The news are very surprising.",
    "options": null,
-   "answer": "The news is very surprising. C",
+   "answer": "The news is very surprising.",
    "answer_idx": null
   },
   {
@@ -8936,7 +8936,7 @@
    "instr": "Write the plural.",
    "q": "sheep",
    "options": null,
-   "answer": "sheep D",
+   "answer": "sheep",
    "answer_idx": null
   },
   {
@@ -9425,7 +9425,7 @@
    "instr": "Write the correct past simple form (mind the spelling).",
    "q": "travel (BrE) → ___",
    "options": null,
-   "answer": "travelled (BrE) / traveled (AmE) B",
+   "answer": "travelled (BrE) / traveled (AmE)",
    "answer_idx": null
   },
   {
@@ -9452,7 +9452,7 @@
    "instr": "Mark each -ed pronunciation as /t/, /d/, or /ɪd/.",
    "q": "worked → ___",
    "options": null,
-   "answer": "/t/ C",
+   "answer": "/t/",
    "answer_idx": null
   },
   {
@@ -9488,7 +9488,7 @@
    "instr": "Correct the mistake in each sentence.",
    "q": "I am used to smoke when I was a teenager.",
    "options": null,
-   "answer": "✓ I used to smoke when I was a teenager. (past habit, not be used to) D",
+   "answer": "✓ I used to smoke when I was a teenager. (past habit, not be used to)",
    "answer_idx": null
   },
   {
@@ -9506,7 +9506,7 @@
    "instr": "Choose past simple or past continuous.",
    "q": "While she (cook) __, he (set) ____ the table.",
    "options": null,
-   "answer": "While she was cooking, he was setting the table. (two simultaneous actions in progress) E",
+   "answer": "While she was cooking, he was setting the table. (two simultaneous actions in progress)",
    "answer_idx": null
   },
   {
@@ -11039,10 +11039,6 @@
   }
  ],
  "verbs": {
-  "form": [
-   "simple",
-   "ciple"
-  ],
   "cut": [
    "cut",
    "cut"

@@ -49,6 +49,19 @@ def search(kb, query):
     if not q:
         return ("none", None), "empty"
 
+    # casi speciali: un solo token (anche corto) che è un verbo, un termine di
+    # glossario, o un argomento breve noto
+    single = q.split()
+    if len(single) == 1:
+        w = single[0]
+        if w in kb["verbs"]:
+            return ("verbs", w), "verbi-corto"
+        if w == "if":
+            return ("chapter", 15), "sinonimi"
+        for g in kb["glossary"]:
+            if w == g["term"].lower():
+                return ("glossary", None), "glossario-corto"
+
     # 1) sinonimo più lungo contenuto nella domanda
     for key, chs in kb["_syn_sorted"]:
         if key in q:
@@ -93,6 +106,10 @@ def search(kb, query):
         best = max(scores.items(), key=lambda kv: kv[1])
         if best[1] >= 1.5:
             return ("chapter", best[0]), "testo"
+    # fallback: la query è contenuta nel titolo di un capitolo
+    for num, c in kb["_chapters"].items():
+        if q in c["title"].lower():
+            return ("chapter", num), "titolo"
     return ("none", None), "nessuna"
 
 

@@ -20,6 +20,7 @@ import json
 import logging
 import os
 import random
+import re
 import sys
 from pathlib import Path
 
@@ -68,8 +69,17 @@ def lang_of(update_or_chat):
     return st(chat_id).get("lang") or "it"
 
 
+def clean_for_display(text):
+    """Pulisce i glitch di formattazione ereditati dal PDF/parsing:
+    separatori di tabella '| | | |' e spazi doppi."""
+    text = re.sub(r"\s*\|+\s*", " ", text)
+    text = re.sub(r"[ \t]{2,}", " ", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
 async def send(update, ctx, text, keyboard=None):
-    await update.effective_chat.send_message(text[:4096],
+    await update.effective_chat.send_message(clean_for_display(text)[:4096],
                                              reply_markup=keyboard)
 
 

@@ -17,12 +17,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bot  # noqa: E402
+from tutor.logging_config import configure_logging  # noqa: E402
 from telegram import Update  # noqa: E402
 from telegram.ext import Application  # noqa: E402
 
 
 def build_app(token):
-    app = Application.builder().token(token).build()
+    app = Application.builder().token(token).concurrent_updates(False).build()
     app.add_handler(bot.CommandHandler("start", bot.cmd_start))
     app.add_handler(bot.CommandHandler("help", bot.cmd_help))
     app.add_handler(bot.CommandHandler("menu", bot.cmd_menu))
@@ -43,8 +44,7 @@ def main():
     if not token:
         print("Token mancante. Imposta la env var BOT_TOKEN su Render (o export BOT_TOKEN).")
         sys.exit(1)
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+    configure_logging(token)
 
     c = bot.KB["meta"]["counts"]
     bot.log.info("KB: %s capitoli, %s esempi, %s esercizi, %s verbi, %s glossario",

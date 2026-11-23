@@ -1,0 +1,920 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-23",
+  "review_type": "assistant_editorial_review",
+  "human_certified": false,
+  "deployment": "local_only_no_push_no_deploy",
+  "files_sha256": {
+    "data/kb.json": "cb832b59c5929b474592cc4b4492660916b972713b49dcf4f3c297f528eabeeb",
+    "data/book_profile.json": "d3c388de9ef27560c369d88f2b7ad41c2d1bf4c51181f7fa733f859c475ef0b5",
+    "data/content_overrides.json": "62b841eff0bf79746e185f561aa7d89f8cab9b1b33af62889461d406a1f21302",
+    "data/reviewed_quiz.json": "ab0e9b27f6103157c208f5591c3d33debfc97f59516a931ef71c603d36e72a60"
+  },
+  "counts": {
+    "reviewed_questions": 160,
+    "tf": 150,
+    "mcq": 10,
+    "contextual_reconstructions": 8,
+    "editorial_rewrites": 2,
+    "questions_by_chapter": {
+      "1": 6,
+      "2": 6,
+      "3": 6,
+      "4": 6,
+      "5": 6,
+      "6": 6,
+      "7": 6,
+      "8": 6,
+      "9": 6,
+      "10": 6,
+      "11": 8,
+      "12": 6,
+      "13": 6,
+      "14": 6,
+      "15": 7,
+      "16": 9,
+      "17": 6,
+      "18": 6,
+      "19": 6,
+      "20": 6,
+      "21": 6,
+      "22": 7,
+      "23": 6,
+      "24": 6,
+      "25": 9
+    },
+    "raw_content_retained": {
+      "examples": 1595,
+      "fixes": 68,
+      "exercises": 270
+    }
+  },
+  "policy": {
+    "raw_content_scored": false,
+    "implicit_approval": false,
+    "cross_chapter_fallback": false,
+    "runtime_requires_pdf": false
+  },
+  "validation_of_unchanged_raw_kb": {
+    "status": "passed",
+    "counts": {
+      "chapters": 25,
+      "examples_ok": 1353,
+      "examples_bad": 242,
+      "fixes": 68,
+      "exercises": 270,
+      "exercises_mcq": 37,
+      "verbs": 145,
+      "glossary": 93
+    },
+    "exercises_by_chapter": {
+      "1": 8,
+      "2": 8,
+      "3": 14,
+      "4": 24,
+      "5": 10,
+      "6": 11,
+      "7": 8,
+      "8": 10,
+      "9": 15,
+      "10": 10,
+      "11": 10,
+      "12": 10,
+      "13": 10,
+      "14": 10,
+      "15": 10,
+      "16": 10,
+      "17": 10,
+      "18": 10,
+      "19": 12,
+      "20": 8,
+      "21": 10,
+      "22": 12,
+      "23": 10,
+      "24": 10,
+      "25": 10
+    },
+    "quiz_eligible": {
+      "examples": 0,
+      "fixes": 0,
+      "mcq": 0
+    },
+    "reviewed_quiz_count": 160,
+    "limitations": [
+      "Raw examples/fixes/exercises are consultation-only; scored quizzes use the separate editorial register.",
+      "Assistant review is not human certification of the full book.",
+      "Compound exercises kept together, never converted to a single MCQ."
+    ]
+  },
+  "legacy_mcq_disposition": [
+    {
+      "source_id": "ch01-D-1",
+      "ch": 1,
+      "q": "The cat _____ on the windowsill.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch03-A-1",
+      "ch": 3,
+      "q": "When the music stopped.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch03-A-2",
+      "ch": 3,
+      "q": "The waiter brought the bill.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch03-A-3",
+      "ch": 3,
+      "q": "Sitting quietly in the corner.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch03-A-4",
+      "ch": 3,
+      "q": "Everyone applauded.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch03-B-5",
+      "ch": 3,
+      "q": "The lake froze.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch03-B-6",
+      "ch": 3,
+      "q": "She lent me her umbrella.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch03-B-7",
+      "ch": 3,
+      "q": "The cake tastes wonderful.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch03-B-8",
+      "ch": 3,
+      "q": "They called the baby Sofia.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch04-D-17",
+      "ch": 4,
+      "q": "Mathematics _____ difficult for me.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch04-D-18",
+      "ch": 4,
+      "q": "The police _____ looking for the driver.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch04-D-20",
+      "ch": 4,
+      "q": "Everyone _____ finished the test.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch06-A-1",
+      "ch": 6,
+      "q": "_____ information is very useful.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch06-A-2",
+      "ch": 6,
+      "q": "The bird built _____ nest in our tree.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch06-A-3",
+      "ch": 6,
+      "q": "I’m thirsty. Could I have _____ water?",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": "Some e any possono entrambi essere grammaticali in richieste, con sfumature diverse."
+    },
+    {
+      "source_id": "ch06-A-4",
+      "ch": 6,
+      "q": "We don’t have _____ time before the train leaves.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch07-A-4",
+      "ch": 7,
+      "q": "Can you keep this between you and _____?",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch08-B-1",
+      "ch": 8,
+      "q": "I _____ this film is boring.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch08-B-2",
+      "ch": 8,
+      "q": "Be quiet — she _____ to concentrate.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch13-main-2",
+      "ch": 13,
+      "q": "When the alarm rang, the staff _____ evacuate the building safely.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch13-main-3",
+      "ch": 13,
+      "q": "You _____ tell her — it’s meant to be a surprise!",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch13-main-4",
+      "ch": 13,
+      "q": "It’s a holiday tomorrow, so we _____ get up early.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch13-main-5",
+      "ch": 13,
+      "q": "His car isn’t in the drive. He _____ have gone out.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch13-main-6",
+      "ch": 13,
+      "q": "I’m exhausted. I _____ have stayed up so late last night.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch13-main-8",
+      "ch": 13,
+      "q": "You _____ brought a gift — but thank you, it was kind of you. (The gift was brought.)",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": "Needn’t have e didn’t need to non rendono univoca la risposta solo perché il regalo è stato portato."
+    },
+    {
+      "source_id": "ch13-main-10",
+      "ch": 13,
+      "q": "Winters in the mountains _____ be extremely cold — it happens every year.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": "La scelta can/may dipende anche dalla lettura pragmatica di possibilità generale."
+    },
+    {
+      "source_id": "ch18-C-1",
+      "ch": 18,
+      "q": "I need to find _____ when the shop opens.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch18-C-2",
+      "ch": 18,
+      "q": "They don’t get _____ with their landlord.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch19-A-1",
+      "ch": 19,
+      "q": "The film was really _____.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch19-A-2",
+      "ch": 19,
+      "q": "She plays the piano _____.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch19-A-3",
+      "ch": 19,
+      "q": "They live in a _____ cottage.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch19-A-4",
+      "ch": 19,
+      "q": "I’m _____ exhausted after the marathon.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": "Very exhausted non va trattato come errore grammaticale assoluto; la preferenza absolutely è didattico-stilistica."
+    },
+    {
+      "source_id": "ch19-A-5",
+      "ch": 19,
+      "q": "He _____ ever eats meat.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch22-B-7",
+      "ch": 22,
+      "q": "It was _____ a wonderful concert that nobody wanted to leave.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch22-B-8",
+      "ch": 22,
+      "q": "Neither the players nor the coach _____ happy with the result.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": "L’accordo con neither…nor varia per varietà, prossimità e registro."
+    },
+    {
+      "source_id": "ch23-main-1",
+      "ch": 23,
+      "q": "Fill the gap: The woman _____ won the race is my neighbour.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    },
+    {
+      "source_id": "ch23-main-2",
+      "ch": 23,
+      "q": "Fill the gap: This is the museum _____ the painting is kept.",
+      "status": "consultation_only_pending_editorial_review",
+      "known_risk": null
+    }
+  ],
+  "mechanically_excluded_examples": [
+    {
+      "ch": 1,
+      "t": "“Where you going?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 1,
+      "t": "“Where are you going?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 2,
+      "t": "I met Anna on Friday.",
+      "ok": true,
+      "reasons": [
+        "conflicting_labels"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 2,
+      "t": "“Wow! What a view.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 2,
+      "t": "“Ouch! That hurt.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 2,
+      "t": "“Oh, I didn’t see you there.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 2,
+      "t": "“Hey, wait for me!",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 2,
+      "t": "“Well, let me think.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 2,
+      "t": "I met anna on friday.",
+      "ok": false,
+      "reasons": [
+        "conflicting_labels"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 4,
+      "t": "We met on a Monday in December.",
+      "ok": true,
+      "reasons": [
+        "conflicting_labels"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 4,
+      "t": "The police have arrived, never ~~The police is~~.",
+      "ok": true,
+      "reasons": [
+        "unresolved_markup"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 4,
+      "t": "We met on a monday in december.",
+      "ok": false,
+      "reasons": [
+        "conflicting_labels"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 4,
+      "t": "I’d like ~~a water~~ / ~~two waters~~.",
+      "ok": false,
+      "reasons": [
+        "unresolved_markup"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 7,
+      "t": "Sara told Lina, “You passed.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 10,
+      "t": "We’ve been friends ~~since twenty years~~.",
+      "ok": false,
+      "reasons": [
+        "unresolved_markup"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 11,
+      "t": "“The phone’s ringing.",
+      "ok": true,
+      "reasons": [
+        "conflicting_labels",
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 11,
+      "t": "“The phone’s ringing.",
+      "ok": true,
+      "reasons": [
+        "conflicting_labels",
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 11,
+      "t": "“It’s cold in here.",
+      "ok": true,
+      "reasons": [
+        "conflicting_labels",
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 11,
+      "t": "“The phone’s ringing.",
+      "ok": false,
+      "reasons": [
+        "conflicting_labels",
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 11,
+      "t": "“It’s cold in here.",
+      "ok": false,
+      "reasons": [
+        "conflicting_labels",
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "She said, “I am tired.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "Tom asked, “Where is the station?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“We are studying grammar.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“She has left the office.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“You can borrow my car.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“I will help you tomorrow.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“I had already eaten.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“You should rest.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“I saw her yesterday.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“I’ll do it tomorrow.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“Sign this form here.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“They left two hours ago.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“Are you ready?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“Do you like coffee?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“Where do you live?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“What time does the film start?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“Why is she crying?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“Please wait here.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“Don’t touch the screen.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“I’ll definitely pay you back.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“No, I won’t do it.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“Let’s order pizza.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“You should see a dentist.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 16,
+      "t": "“Sorry I forgot your birthday.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 19,
+      "t": "They played ~~yesterday at home well~~.",
+      "ok": false,
+      "reasons": [
+        "unresolved_markup"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 19,
+      "t": "She sings ~~good~~.",
+      "ok": false,
+      "reasons": [
+        "unresolved_markup"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 19,
+      "t": "I’m ~~very exhausted~~.",
+      "ok": false,
+      "reasons": [
+        "unresolved_markup"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 19,
+      "t": "It’s ~~very freezing~~.",
+      "ok": false,
+      "reasons": [
+        "unresolved_markup"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 20,
+      "t": "“Shall I invite more people?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 24,
+      "t": "She doesn’t works**.",
+      "ok": false,
+      "reasons": [
+        "unresolved_markup"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 24,
+      "t": "They didn’t called**.",
+      "ok": false,
+      "reasons": [
+        "unresolved_markup"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 25,
+      "t": "Thank you so much!",
+      "ok": true,
+      "reasons": [
+        "conflicting_labels"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 25,
+      "t": "He called it “brilliant.",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 25,
+      "t": "She asked, “Are you ready?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 25,
+      "t": "I love summer.",
+      "ok": true,
+      "reasons": [
+        "conflicting_labels"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 25,
+      "t": "James asked, “Where are you going?",
+      "ok": true,
+      "reasons": [
+        "unbalanced_quotes"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 25,
+      "t": "Thank you so much!",
+      "ok": false,
+      "reasons": [
+        "conflicting_labels"
+      ],
+      "raw_status": "retained_not_scored"
+    },
+    {
+      "ch": 25,
+      "t": "I love Summer.",
+      "ok": false,
+      "reasons": [
+        "conflicting_labels"
+      ],
+      "raw_status": "retained_not_scored"
+    }
+  ],
+  "limitations": [
+    "Revisione assistita, non certificazione umana indipendente.",
+    "Non tutti gli esempi e gli esercizi del libro sono stati revisionati grammaticalmente.",
+    "Le citazioni sono verificate sul PDF nei test di integrazione, non a ogni avvio del bot.",
+    "Gli altri dialoghi o esempi dubbi restano consultabili senza punteggio."
+  ],
+  "offline_tests": {
+    "python_3_11_with_pdf": {
+      "run": 108,
+      "passed": 108
+    },
+    "python_3_13_with_pdf": {
+      "run": 108,
+      "passed": 108
+    },
+    "runtime_without_pdf_backend": {
+      "run": 108,
+      "passed": 106,
+      "skipped": 2
+    }
+  }
+}

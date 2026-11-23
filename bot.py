@@ -16,7 +16,10 @@ Avvio:
 
 Comandi: /menu /quiz /esercizi /spiega /capitoli /verbi /glossario /lang
 """
-import json
+import asyncio
+import copy
+from html import escape
+import secrets
 import logging
 import os
 import random
@@ -25,10 +28,13 @@ import sys
 from pathlib import Path
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.error import TelegramError
 from telegram.ext import (Application, CallbackQueryHandler, CommandHandler,
                           ContextTypes, MessageHandler, filters)
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from tutor.content import target_span
+from tutor.logging_config import configure_logging
 from tutor import kb as kbmod                      # noqa: E402
 from tutor.texts import lang_keyboard, menu_keyboard, tr  # noqa: E402
 
@@ -78,9 +84,13 @@ def clean_for_display(text):
     return text.strip()
 
 
-async def send(update, ctx, text, keyboard=None):
-    await update.effective_chat.send_message(clean_for_display(text)[:4096],
-                                             reply_markup=keyboard)
+async def send(update, ctx, text, keyboard=None, parse_mode=None):
+    text = clean_for_display(text)
+    # Non tagliare HTML a meta tag/entita: gli esercizi attuali sono sotto soglia.
+    if parse_mode and len(text) > 4096:
+        raise ValueError("Messaggio formattato troppo lungo")
+    return await update.effective_chat.send_message(
+        text[:4096], reply_markup=keyboard, parse_mode=parse_mode)
 
 
 def chapter_label(kb, num, lang):
@@ -88,41 +98,62 @@ def chapter_label(kb, num, lang):
     return f"{num}. {c['title']}"
 
 
-def pages_keyboard(lang, idx, total):
+def pages_keyboard(lang, idx, total, page_id):
     row = []
     if idx + 1 < total:
         row.append(InlineKeyboardButton(tr(lang, "btn_nextpage"),
-                                        callback_data=f"page:{idx + 1}"))
+                                        callback_data=f"page:{page_id}:{idx + 1}"))
     row.append(InlineKeyboardButton(tr(lang, "btn_menu"), callback_data="back:menu"))
     return InlineKeyboardMarkup([row]) if row else None
 
 
+def enter_mode(chat_id, mode):
+    """Ogni cambio di attivita invalida tutte le sessioni precedenti."""
+    s = st(chat_id)
+    for key in ("quiz", "ex", "pages", "glos", "page_id", "glos_id", "page_idx"):
+        s[key] = None
+    s["mode"] = mode
+    return s
+
+
+def session_data(kind, session, action):
+    return f"{kind}:{session['id']}:{session['idx']}:{action}"
+
+
+async def remove_callback_keyboard(update):
+    q = update.callback_query
+    if q is not None:
+        try:
+            await q.edit_message_reply_markup(reply_markup=None)
+        except TelegramError as exc:
+            # Un messaggio cancellato/non modificabile non deve fermare la sessione.
+            log.warning("Impossibile rimuovere una tastiera: %s", type(exc).__name__)
+
+
 # ------------------------------------------------------------------ quiz
 def build_quiz_pool(kb, chapter=None, limit=QUIZ_SIZE):
-    """Mescola tre tipi di domanda: vero/falso, quale è corretta, scelta multipla.
-    Garantisce fino a 3 domande a scelta multipla per quiz quando esistono."""
-    mcq = [e for e in kb["exercises"]
-           if e["options"] and e["answer_idx"] is not None
-           and (chapter is None or e["ch"] == chapter)]
-    tf = [{"type": "tf", "t": e["t"], "ok": e["ok"], "ch": e["ch"]}
-          for e in kb["examples"] if chapter is None or e["ch"] == chapter]
-    fix = [{"type": "fix", "bad": f["bad"], "good": f["good"], "ch": f["ch"]}
-           for f in kb["fixes"] if chapter is None or f["ch"] == chapter]
+    """Usa soltanto il registro editoriale; nessun fallback ad altri capitoli."""
+    eligible = [q for q in kb.get('_reviewed_quiz', [])
+                if q.get('quiz_eligible') is True
+                and q.get('review_status') == 'assistant_checked'
+                and (chapter is None or q['ch'] == chapter)]
+    mcq = [q for q in eligible if q['type'] == 'mcq']
+    rest = [q for q in eligible if q['type'] != 'mcq']
     random.shuffle(mcq)
-    pool = [{"type": "mcq", **e} for e in mcq[:3]]
-    rest = tf + fix
+    pool = mcq[:min(3, max(0, limit))]
+    rest += mcq[len(pool):]
     random.shuffle(rest)
     pool.extend(rest[:max(limit - len(pool), 0)])
-    if chapter is not None and len(pool) < 4:
-        return build_quiz_pool(kb, None, limit)
     random.shuffle(pool)
-    return pool[:limit]
+    return pool[:max(0, limit)]
 
 
 def quiz_question_text(lang, q, i, n):
+    context = q.get("context", {}).get(lang, "")
+    prefix = f"{context}\n\n" if context else ""
     if q["type"] == "tf":
         head = tr(lang, "quiz_tf", i=i, n=n)
-        return f"{head}\n\n«{q['t']}»"
+        return f"{head}\n\n{prefix}«{q['t']}»"
     if q["type"] == "fix":
         head = tr(lang, "quiz_which", i=i, n=n)
         return (f"{head}\n\nA) {q['opts'][0]}\nB) {q['opts'][1]}")
@@ -132,33 +163,33 @@ def quiz_question_text(lang, q, i, n):
         "choose the correct form",) else ""
     letters = ["A", "B", "C", "D", "E", "F"]
     opts = "\n".join(f"{letters[j]}) {o}" for j, o in enumerate(q["options"]))
-    return f"{head}{extra}\n\n{q['q']}\n\n{opts}"
+    return f"{head}{extra}\n\n{prefix}{q['q']}\n\n{opts}"
 
 
-def quiz_keyboard(lang, q):
+def quiz_keyboard(lang, q, session):
+    cb = lambda action: session_data("quiz", session, action)
     if q["type"] == "tf":
         return InlineKeyboardMarkup([[
-            InlineKeyboardButton(tr(lang, "btn_correct"), callback_data="quiz:tf:1"),
-            InlineKeyboardButton(tr(lang, "btn_wrong"), callback_data="quiz:tf:0"),
-        ], [InlineKeyboardButton(tr(lang, "btn_stop_quiz"), callback_data="quiz:stop")]])
+            InlineKeyboardButton(tr(lang, "btn_correct"), callback_data=cb("tf:1")),
+            InlineKeyboardButton(tr(lang, "btn_wrong"), callback_data=cb("tf:0")),
+        ], [InlineKeyboardButton(tr(lang, "btn_stop_quiz"), callback_data=cb("stop"))]])
     options = q.get("options") or q.get("opts") or []
-    letters = ["A", "B", "C", "D", "E", "F"]
-    btns = [[InlineKeyboardButton(letters[i], callback_data=f"quiz:ans:{i}")]
+    letters = "ABCDEF"
+    btns = [[InlineKeyboardButton(letters[i], callback_data=cb(f"ans:{i}"))]
             for i in range(min(len(options), len(letters)))]
-    btns.append([InlineKeyboardButton(tr(lang, "btn_stop_quiz"),
-                                      callback_data="quiz:stop")])
+    btns.append([InlineKeyboardButton(tr(lang, "btn_stop_quiz"), callback_data=cb("stop"))])
     return InlineKeyboardMarkup(btns)
 
 
 async def start_quiz(update, ctx, chat_id, chapter=None, pre_pool=None):
     s = st(chat_id)
     lang = s["lang"] or "it"
-    pool = pre_pool if pre_pool is not None else build_quiz_pool(KB, chapter)
+    pool = copy.deepcopy(pre_pool if pre_pool is not None else build_quiz_pool(KB, chapter))
     if not pool:
         await send(update, ctx, tr(lang, "exp_notfound"))
         return
-    s["mode"] = "quiz"
-    s["quiz"] = {"pool": pool, "idx": 0, "score": 0, "answered": False}
+    s = enter_mode(chat_id, "quiz")
+    s["quiz"] = {"id": secrets.token_hex(4), "pool": pool, "idx": 0, "score": 0, "answered": False}
     n = len(pool)
     await send(update, ctx, tr(lang, "quiz_start", n=n),
                menu_keyboard(lang))
@@ -188,7 +219,7 @@ async def send_next_question(update, ctx, chat_id):
         q["answer_idx"] = opts.index(q["good"])
     await send(update, ctx,
                quiz_question_text(lang, q, qz["idx"] + 1, len(qz["pool"])),
-               quiz_keyboard(lang, q))
+               quiz_keyboard(lang, q, qz))
 
 
 async def quiz_feedback(update, ctx, chat_id, given=None):
@@ -196,10 +227,7 @@ async def quiz_feedback(update, ctx, chat_id, given=None):
     s = st(chat_id)
     lang = s["lang"] or "it"
     qz = s["quiz"]
-    if qz is None or qz.get("answered"):
-        q2 = update.callback_query
-        if q2:
-            await q2.answer()
+    if s["mode"] != "quiz" or qz is None or qz.get("answered"):
         await send(update, ctx, tr(lang, "already"))
         return
     q = qz["pool"][qz["idx"]]
@@ -222,26 +250,105 @@ async def quiz_feedback(update, ctx, chat_id, given=None):
             body = tr(lang, "quiz_fix", good=q["good"], bad=q["bad"], ch=q["ch"])
         else:
             body = tr(lang, "quiz_book_answer",
-                      a=f"{q['options'][gi]} — {q['answer']}")
+                      a=f"{q['options'][gi]} — {q.get('answer', '')}")
         text = (f"{tr(lang, 'quiz_right') if good else tr(lang, 'quiz_wrong')} "
                 f"{tr(lang, 'score', c=qz['score'], t=len(qz['pool']))}\n\n{body}\n\n{src}")
+    if q.get('review_status') == 'assistant_checked':
+        answer = (tr(lang, 'btn_correct') if q['ok'] else tr(lang, 'btn_wrong')) if q['type'] == 'tf' else q['options'][q['answer_idx']]
+        text = (f"{tr(lang, 'quiz_right') if good else tr(lang, 'quiz_wrong')} "
+                f"{tr(lang, 'score', c=qz['score'], t=len(qz['pool']))}\n\n"
+                f"{tr(lang, 'reviewed_answer', a=answer)}")
+        if q.get('correction'):
+            text += "\n" + tr(lang, 'reviewed_correction', a=q['correction'])
+        text += "\n\n" + q['explanation'][lang]
+        pages = sorted({p for cit in q['source']['citations'] for p in cit['pages']})
+        text += "\n\n" + tr(lang, 'reviewed_source', p=', '.join(map(str, pages)))
     text += "\n\n" + tr(lang, "exp_source", n=q["ch"],
                         t=KB["_chapters"][q["ch"]]["title"])
     kb_btn = InlineKeyboardMarkup([[
-        InlineKeyboardButton(tr(lang, "btn_next"), callback_data="quiz:next"),
-        InlineKeyboardButton(tr(lang, "btn_stop_quiz"), callback_data="quiz:stop"),
+        InlineKeyboardButton(tr(lang, "btn_next"), callback_data=session_data("quiz", qz, "next")),
+        InlineKeyboardButton(tr(lang, "btn_stop_quiz"), callback_data=session_data("quiz", qz, "stop")),
     ]])
     await send(update, ctx, text, kb_btn)
 
 
-async def query_answer_guard(update):
+async def handle_session_callback(update, ctx):
+    """Callback legati a sessione e posizione. I vecchi formati sono rifiutati."""
     q = update.callback_query
+    s = st(update.effective_chat.id)
+    lang = s['lang'] or 'it'
+    parts = (q.data or '').split(':')
+    kind = parts[0]
+    valid = False
+    action = ''
+    active = None
+    if kind in ('quiz', 'ex') and len(parts) in (4, 5):
+        active = s.get(kind)
+        valid = bool(s['mode'] == kind and active and
+                     parts[1] == active['id'] and parts[2] == str(active['idx']))
+        action = ':'.join(parts[3:])
+        if valid and kind == 'quiz':
+            item = active['pool'][active['idx']]
+            if action == 'next':
+                valid = active['answered']
+            elif action == 'stop':
+                pass
+            elif action in ('tf:0', 'tf:1'):
+                valid = not active['answered'] and item['type'] == 'tf'
+            elif action.startswith('ans:'):
+                value = action[4:]
+                options = item.get('options') or item.get('opts') or []
+                valid = (not active['answered'] and item['type'] != 'tf'
+                         and value in {str(i) for i in range(len(options))})
+            else:
+                valid = False
+        elif valid:
+            valid = (action == 'skip' or
+                     action == 'show' and not active.get('shown') or
+                     action == 'next' and active.get('shown'))
+    elif kind == 'page' and len(parts) == 3:
+        valid = bool(s['mode'] in ('chap', 'exp') and s.get('pages') and
+                     parts[1] == s.get('page_id') and
+                     parts[2] == str(s.get('page_idx', 0) + 1) and
+                     int(parts[2]) < len(s['pages']))
+    elif kind == 'gl' and len(parts) == 3:
+        valid = bool(s['mode'] == 'glos' and s.get('glos') and
+                     parts[1] == s.get('glos_id') and
+                     parts[2] in {str(i) for i in s['glos']})
+    if not valid:
+        await q.answer(tr(lang, 'expired'))
+        return
     await q.answer()
+    await remove_callback_keyboard(update)
+    chat_id = update.effective_chat.id
+    if kind == 'quiz':
+        if action == 'stop':
+            await cmd_menu(update, ctx)
+        elif action == 'next':
+            active['idx'] += 1
+            active['answered'] = False
+            await send_next_question(update, ctx, chat_id)
+        else:
+            given = action == 'tf:1' if action.startswith('tf:') else int(action[4:])
+            await quiz_feedback(update, ctx, chat_id, given)
+    elif kind == 'ex':
+        if action == 'show':
+            await ex_show_answer(update, ctx, chat_id)
+        else:
+            active['idx'] += 1
+            active['shown'] = False
+            await send_exercise(update, ctx, chat_id)
+    elif kind == 'page':
+        await send_page(update, ctx, chat_id, int(parts[2]))
+    else:
+        g = KB['glossary'][int(parts[2])]
+        enter_mode(chat_id, 'glos')
+        await send(update, ctx, f"{g['term']} — {g['def']}", menu_keyboard(lang))
 
 
 # ------------------------------------------------------------- esercizi
 async def start_exercises(update, ctx, chat_id):
-    s = st(chat_id)
+    s = enter_mode(chat_id, "ex")
     lang = s["lang"] or "it"
     s["mode"] = "ex"
     rows = []
@@ -258,13 +365,13 @@ async def start_exercises(update, ctx, chat_id):
 
 
 async def ex_chapter(update, ctx, chat_id, num):
-    s = st(chat_id)
+    s = enter_mode(chat_id, "ex")
     lang = s["lang"] or "it"
     items = [e for e in KB["exercises"] if e["ch"] == num]
     if not items:
         await send(update, ctx, tr(lang, "exp_notfound"))
         return
-    s["ex"] = {"ch": num, "items": items, "idx": 0}
+    s["ex"] = {"id": secrets.token_hex(4), "ch": num, "items": items, "idx": 0, "shown": False}
     await send_exercise(update, ctx, chat_id)
 
 
@@ -273,22 +380,31 @@ async def send_exercise(update, ctx, chat_id):
     lang = s["lang"] or "it"
     ex = s["ex"]
     if ex["idx"] >= len(ex["items"]):
-        await send(update, ctx, tr(lang, "ex_done", n=ex["ch"]),
-                   menu_keyboard(lang))
-        s["ex"] = None
-        s["mode"] = None
+        enter_mode(chat_id, None)
+        await send(update, ctx, tr(lang, "ex_done", n=ex["ch"]), menu_keyboard(lang))
         return
     e = ex["items"][ex["idx"]]
     title = KB["_chapters"][ex["ch"]]["title"]
-    instr = (e["group"] + ". " if e["group"] else "") + (e["instr"] or "")
+    instr = escape((e["group"] + ". " if e["group"] else "") + (e["instr"] or ""))
+    question = escape(e['q'])
+    if e.get('target'):
+        a, b = target_span(e['q'], e['target'])
+        target = '<b>' + escape(e['q'][a:b]) + '</b>'
+        question = escape(e['q'][:a]) + target + escape(e['q'][b:])
+        # Consegna autonoma: non dipende soltanto dalla resa grafica del grassetto.
+        key = 'ex_target_pronoun' if 'underlined' in e['instr'] else 'ex_target_pos'
+        instr = tr(lang, key, target=target)
     text = tr(lang, "ex_q", i=ex["idx"] + 1, n=len(ex["items"]), ch=ex["ch"],
-              title=title, instr=instr, q=e["q"])
+              title=escape(title), instr=instr, q=question)
+    note = e.get('editorial_note', {}).get(lang)
+    text += "\n\n" + escape(note or tr(lang, 'consultation_only'))
+    cb = lambda action: session_data('ex', ex, action)
     kbd = InlineKeyboardMarkup([[
-        InlineKeyboardButton(tr(lang, "btn_show"), callback_data="ex:show"),
-        InlineKeyboardButton(tr(lang, "btn_skip"), callback_data="ex:skip"),
+        InlineKeyboardButton(tr(lang, "btn_show"), callback_data=cb("show")),
+        InlineKeyboardButton(tr(lang, "btn_skip"), callback_data=cb("skip")),
         InlineKeyboardButton(tr(lang, "btn_menu"), callback_data="back:menu"),
     ]])
-    await send(update, ctx, text, kbd)
+    await send(update, ctx, text, kbd, parse_mode='HTML')
 
 
 async def ex_show_answer(update, ctx, chat_id, typed=None):
@@ -298,17 +414,20 @@ async def ex_show_answer(update, ctx, chat_id, typed=None):
     if not ex or ex["idx"] >= len(ex["items"]):
         return
     e = ex["items"][ex["idx"]]
-    key = "ex_typed" if typed else "ex_answer"
+    if ex.get("shown"):
+        return
+    ex["shown"] = True
+    key = "ex_edited_answer" if e.get('editorial_note') else ("ex_typed" if typed else "ex_answer")
     await send(update, ctx, tr(lang, key, a=e["answer"]),
                InlineKeyboardMarkup([[
-                   InlineKeyboardButton(tr(lang, "btn_next"), callback_data="ex:next"),
+                   InlineKeyboardButton(tr(lang, "btn_next_ex"), callback_data=session_data("ex", ex, "next")),
                    InlineKeyboardButton(tr(lang, "btn_menu"), callback_data="back:menu"),
                ]]))
 
 
 # ------------------------------------------------------- spiegazioni ecc.
 async def explain(update, ctx, chat_id, query):
-    s = st(chat_id)
+    s = enter_mode(chat_id, "exp")
     lang = s["lang"] or "it"
     (kind, num), how = kbmod.search(KB, query)
     if kind == "verbs":
@@ -327,46 +446,51 @@ async def explain(update, ctx, chat_id, query):
     c = KB["_chapters"][num]
     pages = kbmod.explain_summary(KB, num)
     s["pages"] = pages
+    s["page_id"] = secrets.token_hex(4)
+    s["page_idx"] = 0
     s["mode"] = "exp"
     head = tr(lang, "exp_source", n=num, t=c["title"])
-    text = f"{head}\n\n{pages[0]}"
-    kbd = InlineKeyboardMarkup([[
+    text = f"{head}\n{tr(lang, 'consultation_source')}\n\n{pages[0]}"
+    rows = [[
         InlineKeyboardButton(tr(lang, "btn_full"), callback_data=f"chap:{num}"),
         InlineKeyboardButton(tr(lang, "btn_quiz_ch"), callback_data=f"exquiz:{num}"),
-    ], [InlineKeyboardButton(tr(lang, "btn_menu"), callback_data="back:menu")]])
+    ], [InlineKeyboardButton(tr(lang, "btn_menu"), callback_data="back:menu")]]
     if len(pages) > 1:
-        kbd.inline_keyboard.insert(1, [
-            InlineKeyboardButton(tr(lang, "btn_nextpage"), callback_data="page:1")])
-    await send(update, ctx, text[:4096], kbd)
+        rows.insert(1, [InlineKeyboardButton(
+            tr(lang, "btn_nextpage"), callback_data=f"page:{s['page_id']}:1")])
+    await send(update, ctx, text[:4096], InlineKeyboardMarkup(rows))
 
 
 async def send_chapter(update, ctx, chat_id, num):
-    s = st(chat_id)
+    s = enter_mode(chat_id, "chap")
     lang = s["lang"] or "it"
     pages = kbmod.chapter_pages(KB, num)
     s["pages"] = pages
+    s["page_id"] = secrets.token_hex(4)
+    s["page_idx"] = 0
     head = tr(lang, "exp_source", n=num, t=KB["_chapters"][num]["title"])
-    text = f"{head}\n\n{pages[0]}"
-    await send(update, ctx, text[:4096], pages_keyboard(lang, 0, len(pages)))
+    text = f"{head}\n{tr(lang, 'consultation_source')}\n\n{pages[0]}"
+    await send(update, ctx, text[:4096], pages_keyboard(lang, 0, len(pages), s["page_id"]))
 
 
 async def send_page(update, ctx, chat_id, idx):
     s = st(chat_id)
     lang = s["lang"] or "it"
     pages = s.get("pages") or []
-    if not pages or idx >= len(pages):
+    if not pages or not 0 <= idx < len(pages):
         await send(update, ctx, tr(lang, "exp_notfound"))
         return
+    s["page_idx"] = idx
     if idx == 0:
-        await send(update, ctx, pages[0][:4096], pages_keyboard(lang, 0, len(pages)))
+        await send(update, ctx, pages[0][:4096], pages_keyboard(lang, 0, len(pages), s["page_id"]))
     else:
         await send(update, ctx,
                    f"[{tr(lang, 'page_of', i=idx + 1, n=len(pages))}]\n\n{pages[idx]}"[:4096],
-                   pages_keyboard(lang, idx, len(pages)))
+                   pages_keyboard(lang, idx, len(pages), s["page_id"]))
 
 
 async def verbs_lookup(update, ctx, chat_id, word):
-    s = st(chat_id)
+    s = enter_mode(chat_id, "verbs")
     lang = s["lang"] or "it"
     hit = kbmod.verb_lookup(KB, word)
     if hit:
@@ -378,13 +502,13 @@ async def verbs_lookup(update, ctx, chat_id, word):
 
 
 async def start_glossary(update, ctx, chat_id):
-    s = st(chat_id)
+    s = enter_mode(chat_id, "glos")
     s["mode"] = "glos"
     await send(update, ctx, tr(s["lang"] or "it", "glos_ask"))
 
 
 async def start_glossary_query(update, ctx, chat_id, query):
-    s = st(chat_id)
+    s = enter_mode(chat_id, "glos")
     lang = s["lang"] or "it"
     hits = kbmod.glossary_search(KB, query)
     if not hits:
@@ -395,7 +519,8 @@ async def start_glossary_query(update, ctx, chat_id, query):
         await send(update, ctx, f"{g['term']} — {g['def']}", menu_keyboard(lang))
         return
     s["glos"] = hits
-    rows = [[InlineKeyboardButton(g["term"][:60], callback_data=f"gl:{i}")]
+    s["glos_id"] = secrets.token_hex(4)
+    rows = [[InlineKeyboardButton(g["term"][:60], callback_data=f"gl:{s['glos_id']}:{i}")]
             for i, g in zip(hits, [KB["glossary"][i] for i in hits])][:12]
     await send(update, ctx, tr(lang, "glos_pick"), InlineKeyboardMarkup(rows))
 
@@ -411,6 +536,7 @@ async def ensure_lang(update, ctx) -> bool:
 
 
 async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    enter_mode(update.effective_chat.id, None)
     await update.effective_chat.send_message(tr("it", "lang_choose"),
                                              reply_markup=lang_keyboard())
     await update.effective_chat.send_message(tr("en", "lang_choose"),
@@ -418,21 +544,15 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    chat_id = update.effective_chat.id
-    lang = st(chat_id).get("lang") or "it"
-    s = st(chat_id)
-    s["mode"] = None
-    await send(update, ctx, tr(lang, "help"), menu_keyboard(lang))
+    s = enter_mode(update.effective_chat.id, None)
+    lang = s['lang'] or 'it'
+    await send(update, ctx, tr(lang, 'help'), menu_keyboard(lang))
 
 
 async def cmd_menu(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    chat_id = update.effective_chat.id
-    lang = st(chat_id).get("lang") or "it"
-    s = st(chat_id)
-    s["mode"] = None
-    s["quiz"] = None
-    s["ex"] = None
-    await send(update, ctx, tr(lang, "menu"), menu_keyboard(lang))
+    s = enter_mode(update.effective_chat.id, None)
+    lang = s['lang'] or 'it'
+    await send(update, ctx, tr(lang, 'menu'), menu_keyboard(lang))
 
 
 async def cmd_quiz(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -455,7 +575,7 @@ async def cmd_spiega(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     lang = s["lang"] or "it"
     q = " ".join(ctx.args) if ctx.args else ""
     if not q:
-        s["mode"] = "exp"
+        enter_mode(chat_id, "exp")
         await send(update, ctx, tr(lang, "exp_ask"))
         return
     await explain(update, ctx, chat_id, q)
@@ -471,7 +591,7 @@ async def cmd_verbi(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not await ensure_lang(update, ctx):
         return
     chat_id = update.effective_chat.id
-    st(chat_id)["mode"] = "verbs"
+    enter_mode(chat_id, "verbs")
     await send(update, ctx, tr(st(chat_id)["lang"], "verbs_ask"))
 
 
@@ -487,11 +607,12 @@ async def cmd_glossario(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_lang(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    enter_mode(update.effective_chat.id, None)
     await send(update, ctx, tr("it", "lang_choose"), lang_keyboard())
 
 
 async def chapters_menu(update, ctx, chat_id):
-    s = st(chat_id)
+    s = enter_mode(chat_id, "chap")
     lang = s["lang"] or "it"
     s["mode"] = "chap"
     nums = sorted(KB["_chapters"].keys())
@@ -507,92 +628,67 @@ async def chapters_menu(update, ctx, chat_id):
 
 
 async def on_callback(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    q = update.callback_query
-    if q is None:
+    if update.callback_query is None:
         return
+    # Protegge anche da due callback concorrenti; il launcher usa update sequenziali.
+    s = st(update.effective_chat.id)
+    lock = s.setdefault('_callback_lock', asyncio.Lock())
+    async with lock:
+        await dispatch_callback(update, ctx)
+
+
+async def dispatch_callback(update, ctx):
+    q = update.callback_query
     chat_id = update.effective_chat.id
     s = st(chat_id)
-    data = q.data or ""
+    data = q.data or ''
+    if (data.startswith(('quiz:', 'page:', 'gl:')) or
+            data.startswith('ex:') and not data.startswith('ex:chap:')):
+        await handle_session_callback(update, ctx)
+        return
     await q.answer()
-
-    if data.startswith("lang:"):
-        s["lang"] = data.split(":", 1)[1]
-        lang = s["lang"]
-        await send(update, ctx, tr(lang, "welcome"))
-        await send(update, ctx, tr(lang, "menu"), menu_keyboard(lang))
+    if data.startswith('lang:'):
+        language = data.split(':', 1)[1]
+        if language not in ('it', 'en'):
+            return
+        s = enter_mode(chat_id, None)
+        s['lang'] = language
+        await send(update, ctx, tr(language, 'welcome'))
+        await send(update, ctx, tr(language, 'menu'), menu_keyboard(language))
         return
-
-    if s.get("lang") is None:  # prima della scelta lingua ignora il resto
-        await send(update, ctx, tr("it", "lang_choose"), lang_keyboard())
+    if s.get('lang') is None:
+        await send(update, ctx, tr('it', 'lang_choose'), lang_keyboard())
         return
-    lang = s["lang"]
-
-    if data == "back:menu":
-        s["mode"] = None
-        s["quiz"] = None
-        s["ex"] = None
-        await send(update, ctx, tr(lang, "menu"), menu_keyboard(lang))
-    elif data == "menu:quiz":
-        await start_quiz(update, ctx, chat_id)
-    elif data == "menu:ex":
-        await start_exercises(update, ctx, chat_id)
-    elif data == "menu:exp":
-        s["mode"] = "exp"
-        await send(update, ctx, tr(lang, "exp_ask"))
-    elif data == "menu:chap":
-        await chapters_menu(update, ctx, chat_id)
-    elif data == "menu:verbs":
-        s["mode"] = "verbs"
-        await send(update, ctx, tr(lang, "verbs_ask"))
-    elif data == "menu:glos":
-        await start_glossary(update, ctx, chat_id)
-    elif data == "menu:help":
-        await send(update, ctx, tr(lang, "help"), menu_keyboard(lang))
-    elif data == "quiz:next":
-        if s.get("quiz"):
-            s["quiz"]["answered"] = False
-            s["quiz"]["idx"] += 1
-            await send_next_question(update, ctx, chat_id)
-    elif data == "quiz:stop":
-        s["mode"] = None
-        s["quiz"] = None
-        await send(update, ctx, tr(lang, "menu"), menu_keyboard(lang))
-    elif data.startswith("quiz:tf:"):
-        if s.get("quiz"):
-            await quiz_feedback(update, ctx, chat_id,
-                                given=data.endswith("1"))
-    elif data.startswith("quiz:ans:"):
-        if s.get("quiz"):
-            await quiz_feedback(update, ctx, chat_id,
-                                given=int(data.split(":", 2)[2]))
-    elif data.startswith("exquiz:"):
-        num = int(data.split(":", 1)[1])
-        pool = build_quiz_pool(KB, num)
-        if len(pool) < 4:
-            await send(update, ctx, tr(lang, "quiz_few", n=len(pool)))
-        await start_quiz(update, ctx, chat_id, pre_pool=pool)
-    elif data.startswith("ex:chap:"):
-        await ex_chapter(update, ctx, chat_id, int(data.split(":", 2)[2]))
-    elif data == "ex:show":
-        await ex_show_answer(update, ctx, chat_id)
-    elif data == "ex:next":
-        if s.get("ex"):
-            s["ex"]["idx"] += 1
-            await send_exercise(update, ctx, chat_id)
-    elif data == "ex:skip":
-        if s.get("ex"):
-            s["ex"]["idx"] += 1
-            await send_exercise(update, ctx, chat_id)
-    elif data.startswith("chap:"):
-        await send_chapter(update, ctx, chat_id, int(data.split(":", 1)[1]))
-    elif data.startswith("page:"):
-        await send_page(update, ctx, chat_id, int(data.split(":", 1)[1]))
-    elif data.startswith("gl:"):
-        idx = int(data.split(":", 1)[1])
-        g = KB["glossary"][idx]
-        await send(update, ctx, f"{g['term']} — {g['def']}", menu_keyboard(lang))
-        s["glos"] = None
-        s["mode"] = None
+    lang = s['lang']
+    handlers = {
+        'back:menu': cmd_menu, 'menu:quiz': cmd_quiz, 'menu:ex': cmd_ex,
+        'menu:exp': cmd_spiega, 'menu:chap': cmd_capitoli,
+        'menu:verbs': cmd_verbi, 'menu:glos': cmd_glossario, 'menu:help': cmd_help,
+    }
+    if data in ('menu:exp', 'menu:glos'):
+        if data == 'menu:exp':
+            enter_mode(chat_id, 'exp')
+            await send(update, ctx, tr(lang, 'exp_ask'))
+        else:
+            await start_glossary(update, ctx, chat_id)
+    elif data in handlers:
+        await handlers[data](update, ctx)
+    elif data.startswith(('exquiz:', 'ex:chap:', 'chap:')):
+        try:
+            num = int(data.rsplit(':', 1)[1])
+        except ValueError:
+            return
+        if num not in KB['_chapters']:
+            return
+        if data.startswith('exquiz:'):
+            pool = build_quiz_pool(KB, num)
+            if len(pool) < QUIZ_SIZE:
+                await send(update, ctx, tr(lang, 'quiz_few', n=len(pool)))
+            await start_quiz(update, ctx, chat_id, pre_pool=pool)
+        elif data.startswith('ex:chap:'):
+            await ex_chapter(update, ctx, chat_id, num)
+        else:
+            await send_chapter(update, ctx, chat_id, num)
 
 
 async def on_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -640,9 +736,8 @@ def main():
               "  cp .env.example .env   # e incolla il token in BOT_TOKEN=\n"
               "oppure: export BOT_TOKEN=123456:ABC...")
         sys.exit(1)
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-    app = Application.builder().token(token).build()
+    configure_logging(token)
+    app = Application.builder().token(token).concurrent_updates(False).build()
 
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(CommandHandler("help", cmd_help))

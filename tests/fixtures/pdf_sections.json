@@ -1,0 +1,819 @@
+{
+ "1": {
+  "practice": [
+   {
+    "text": "A. Identify the part of speech of the bold word.",
+    "page": 21
+   },
+   {
+    "text": "1. She gave a wonderful speech.",
+    "page": 21
+   },
+   {
+    "text": "2. They race every weekend.",
+    "page": 21
+   },
+   {
+    "text": "3. He spoke very quietly.",
+    "page": 21
+   },
+   {
+    "text": "4. We sat under the tree.",
+    "page": 21
+   },
+   {
+    "text": "B. Word, phrase, or clause? Label each group.",
+    "page": 21
+   },
+   {
+    "text": "1. the old wooden gate",
+    "page": 21
+   },
+   {
+    "text": "2. the children were playing",
+    "page": 21
+   },
+   {
+    "text": "C. Find the subject, verb, and object.",
+    "page": 21
+   },
+   {
+    "text": "1. My brother fixed the computer.",
+    "page": 21
+   },
+   {
+    "text": "D. Choose the correct form (agreement).",
+    "page": 21
+   },
+   {
+    "text": "1. The cat (sit / sits) on the windowsill.",
+    "page": 21
+   }
+  ],
+  "answers": [
+   {
+    "text": "A. 1. Noun — speech names a thing (the talk she gave). 2. Verb —",
+    "page": 21
+   },
+   {
+    "text": "race is the action they do. 3. Adverb — quietly describes how he",
+    "page": 21
+   },
+   {
+    "text": "spoke (the verb). 4. Preposition — under shows the relationship",
+    "page": 21
+   },
+   {
+    "text": "(position) between we and the tree.",
+    "page": 21
+   },
+   {
+    "text": "B. 5. Phrase — there is no subject–verb pair (no action word with a",
+    "page": 22
+   },
+   {
+    "text": "doer). 6. Clause — it contains the subject the children and the verb",
+    "page": 22
+   },
+   {
+    "text": "were playing.",
+    "page": 22
+   },
+   {
+    "text": "C. 7. Subject: My brother · Verb: fixed · Object: the computer.",
+    "page": 22
+   },
+   {
+    "text": "D. 8. ✓ The cat sits on the windowsill. The subject the cat is singu‐",
+    "page": 22
+   },
+   {
+    "text": "lar, so the verb takes the -s ending.",
+    "page": 22
+   }
+  ]
+ },
+ "3": {
+  "practice": [
+   {
+    "text": "A. Complete or fragment? Write C for a complete sentence or F",
+    "page": 44
+   },
+   {
+    "text": "for a fragment. 1. When the music stopped. 2. The waiter brought",
+    "page": 44
+   },
+   {
+    "text": "the bill. 3. Sitting quietly in the corner. 4. Everyone applauded.",
+    "page": 44
+   },
+   {
+    "text": "B. Identify the pattern (SV, SVO, SVC, SVOO, or SVOC). 5. The",
+    "page": 44
+   },
+   {
+    "text": "lake froze. 6. She lent me her umbrella. 7. The cake tastes wonder‐",
+    "page": 44
+   },
+   {
+    "text": "ful. 8. They called the baby Sofia.",
+    "page": 44
+   },
+   {
+    "text": "C. Fix the word order. Rewrite each sentence correctly. 9. He",
+    "page": 44
+   },
+   {
+    "text": "speaks fluently French. 10. We bought a red beautiful car. 11. Where",
+    "page": 44
+   },
+   {
+    "text": "you did put the keys? 12. I usually am at home in the evening.",
+    "page": 44
+   },
+   {
+    "text": "D. Combine the clauses using the word in brackets. 13. It was",
+    "page": 44
+   },
+   {
+    "text": "cold. We went swimming. (although) 14. She studied hard. She",
+    "page": 44
+   },
+   {
+    "text": "passed the exam. (so)",
+    "page": 44
+   }
+  ],
+  "answers": [
+   {
+    "text": "1. F — dependent clause, no main clause. (e.g., When the music",
+    "page": 45
+   },
+   {
+    "text": "stopped, we left.)",
+    "page": 45
+   },
+   {
+    "text": "2. C — SVO, complete.",
+    "page": 45
+   },
+   {
+    "text": "3. F — no subject, no main verb. (e.g., A cat was sitting quietly in",
+    "page": 45
+   },
+   {
+    "text": "the corner.)",
+    "page": 45
+   },
+   {
+    "text": "4. C — SV, complete.",
+    "page": 45
+   },
+   {
+    "text": "5. SV — The lake (S) froze (V).",
+    "page": 45
+   },
+   {
+    "text": "6. SVOO — She (S) lent (V) me (IO) her umbrella (DO).",
+    "page": 45
+   },
+   {
+    "text": "7. SVC — The cake (S) tastes (V) wonderful (C).",
+    "page": 45
+   },
+   {
+    "text": "8. SVOC — They (S) called (V) the baby (O) Sofia (C).",
+    "page": 45
+   },
+   {
+    "text": "9. ✓ He speaks French fluently. (Do not split verb and object.)",
+    "page": 45
+   },
+   {
+    "text": "10. ✓ We bought a beautiful red car. (Opinion before colour.)",
+    "page": 45
+   },
+   {
+    "text": "11. ✓ Where did you put the keys? (Auxiliary before subject.)",
+    "page": 45
+   },
+   {
+    "text": "12. ✓ I am usually at home in the evening. (Frequency adverb after",
+    "page": 45
+   },
+   {
+    "text": "be.)",
+    "page": 45
+   },
+   {
+    "text": "13. ✓ Although it was cold, we went swimming. (Comma after the",
+    "page": 45
+   },
+   {
+    "text": "front dependent clause.)",
+    "page": 45
+   },
+   {
+    "text": "14. ✓ She studied hard, so she passed the exam. (Comma before so.)",
+    "page": 45
+   }
+  ]
+ },
+ "4": {
+  "practice": [
+   {
+    "text": "A. Countable or uncountable? Mark each noun C or U. 1. advice",
+    "page": 58
+   },
+   {
+    "text": "2. apple 3. water 4. suggestion 5. furniture 6. idea",
+    "page": 58
+   },
+   {
+    "text": "B. Correct the mistake in each sentence. 7. She gave me two",
+    "page": 58
+   },
+   {
+    "text": "good advices. 8. I need to buy a new furnitures for my room. 9.",
+    "page": 58
+   },
+   {
+    "text": "How much books did you read last month? 10. The news are very",
+    "page": 58
+   },
+   {
+    "text": "surprising.",
+    "page": 58
+   },
+   {
+    "text": "C. Write the plural. 11. box 12. baby 13. knife 14. child 15. analysis",
+    "page": 58
+   },
+   {
+    "text": "16. sheep",
+    "page": 58
+   },
+   {
+    "text": "D. Choose the correct verb. 17. Mathematics (is / are) difficult",
+    "page": 58
+   },
+   {
+    "text": "for me. 18. The police (is / are) looking for the driver. 19. (BrE) The",
+    "page": 58
+   },
+   {
+    "text": "team (is / are) celebrating their win. 20. Everyone (has / have) fin‐",
+    "page": 58
+   },
+   {
+    "text": "ished the test.",
+    "page": 58
+   },
+   {
+    "text": "E. Add a suitable partitive (a piece of, a glass of, a loaf of, etc.).",
+    "page": 59
+   },
+   {
+    "text": "21. Could I have __ water? 22. Let me give you _ advice. 23.",
+    "page": 59
+   },
+   {
+    "text": "We bought ___ bread at the bakery.",
+    "page": 59
+   },
+   {
+    "text": "F. Capitalize correctly. Rewrite: we visited paris last december",
+    "page": 59
+   },
+   {
+    "text": "and learned some french.",
+    "page": 59
+   }
+  ],
+  "answers": [
+   {
+    "text": "A. 1. U — 2. C — 3. U — 4. C — 5. U — 6. C",
+    "page": 59
+   },
+   {
+    "text": "B. 7. She gave me two pieces of advice. (or some good advice) 8. I",
+    "page": 59
+   },
+   {
+    "text": "need to buy some new furniture for my room. 9. How many books",
+    "page": 59
+   },
+   {
+    "text": "did you read last month? 10. The news is very surprising.",
+    "page": 59
+   },
+   {
+    "text": "C. 11. boxes — 12. babies — 13. knives — 14. children — 15. analyses",
+    "page": 59
+   },
+   {
+    "text": "— 16. sheep",
+    "page": 59
+   },
+   {
+    "text": "D. 17. is — 18. are — 19. are (BrE; is is also acceptable) — 20. has",
+    "page": 59
+   },
+   {
+    "text": "E. (answers may vary slightly) 21. a glass of water — 22. a piece of",
+    "page": 59
+   },
+   {
+    "text": "advice — 23. a loaf of bread",
+    "page": 59
+   },
+   {
+    "text": "F. We visited Paris last December and learned some French.",
+    "page": 59
+   }
+  ]
+ },
+ "20": {
+  "practice": [
+   {
+    "text": "1. Write the comparative and superlative of each word. a) easy b) ex‐",
+    "page": 251
+   },
+   {
+    "text": "pensive c) good d) thin e) far",
+    "page": 251
+   },
+   {
+    "text": "2. Choose the correct form. a) Mount Fuji is (high / higher /",
+    "page": 251
+   },
+   {
+    "text": "highest) than that hill. b) This is the (more / most) exciting book I’ve",
+    "page": 251
+   },
+   {
+    "text": "read this year. c) Today is (hot / hotter / hottest) than yesterday.",
+    "page": 251
+   },
+   {
+    "text": "3. Correct the mistake in each sentence. a) My phone is more cheap‐",
+    "page": 251
+   },
+   {
+    "text": "er than yours. b) He is very taller than his father. c) She sings better",
+    "page": 251
+   },
+   {
+    "text": "then me.",
+    "page": 251
+   },
+   {
+    "text": "4. Complete with as … as, not as … as, or than. a) A bicycle isn’t ___",
+    "page": 251
+   },
+   {
+    "text": "fast ___ a car. b) This café is busier ___ the one next door. c) Your",
+    "page": 251
+   },
+   {
+    "text": "bag is exactly ___ heavy ___ mine — we packed the same amount.",
+    "page": 251
+   },
+   {
+    "text": "5. Fill the gap with much, a bit, or slightly (more than one answer",
+    "page": 251
+   },
+   {
+    "text": "may fit). a) Don’t worry, it’s only ___ colder than yesterday. b)",
+    "page": 251
+   },
+   {
+    "text": "Their new house is ___ bigger than the old one — almost double the",
+    "page": 252
+   },
+   {
+    "text": "size!",
+    "page": 252
+   },
+   {
+    "text": "6. Complete the the + comparative sentences. a) The more you",
+    "page": 252
+   },
+   {
+    "text": "sleep, the ___ (good) you feel. b) The ___ (soon) we start, the ___",
+    "page": 252
+   },
+   {
+    "text": "(soon) we finish.",
+    "page": 252
+   },
+   {
+    "text": "7. Choose fewer or less. a) I made (fewer / less) mistakes this time.",
+    "page": 252
+   },
+   {
+    "text": "b) We have (fewer / less) money than last month.",
+    "page": 252
+   },
+   {
+    "text": "8. Rewrite using a superlative + present perfect. Example: I have",
+    "page": 252
+   },
+   {
+    "text": "never seen such a beautiful sunset. → It’s the most beautiful sunset",
+    "page": 252
+   },
+   {
+    "text": "I’ve ever seen. a) I have never read such a boring book. b) We have",
+    "page": 252
+   },
+   {
+    "text": "never had such a good holiday.",
+    "page": 252
+   }
+  ],
+  "answers": [
+   {
+    "text": "1. a) easier / the easiest b) more expensive / the most expensive c)",
+    "page": 252
+   },
+   {
+    "text": "better / the best d) thinner / the thinnest e) farther (further) / the",
+    "page": 252
+   },
+   {
+    "text": "farthest (furthest)",
+    "page": 252
+   },
+   {
+    "text": "2. a) higher b) most c) hotter",
+    "page": 252
+   },
+   {
+    "text": "3. a) My phone is cheaper than yours. (remove more) b) He is much",
+    "page": 252
+   },
+   {
+    "text": "taller than his father. (very → much) c) She sings better than me.",
+    "page": 252
+   },
+   {
+    "text": "(then → than)",
+    "page": 252
+   },
+   {
+    "text": "4. a) not as … as — A bicycle isn’t as fast as a car. b) than — busier",
+    "page": 252
+   },
+   {
+    "text": "than the one next door. c) as … as — exactly as heavy as mine.",
+    "page": 252
+   },
+   {
+    "text": "5. a) a bit or slightly b) much",
+    "page": 252
+   },
+   {
+    "text": "6. a) better b) sooner … sooner",
+    "page": 252
+   },
+   {
+    "text": "7. a) fewer b) less",
+    "page": 252
+   },
+   {
+    "text": "8. a) It’s the most boring book I’ve ever read. b) It’s the best holiday",
+    "page": 252
+   },
+   {
+    "text": "we’ve ever had.",
+    "page": 252
+   }
+  ]
+ },
+ "22": {
+  "practice": [
+   {
+    "text": "A. Add a comma where one is needed (or write “no",
+    "page": 278
+   },
+   {
+    "text": "comma”). 1. The road was icy so we drove slowly. 2. She opened",
+    "page": 278
+   },
+   {
+    "text": "the laptop and started to type. 3. Although the test was hard",
+    "page": 278
+   },
+   {
+    "text": "everyone passed. 4. We can eat now or we can wait for Tom.",
+    "page": 278
+   },
+   {
+    "text": "B. Choose the correct word. 5. (Despite / Although) the heavy",
+    "page": 278
+   },
+   {
+    "text": "traffic, we arrived on time. 6. The flight was delayed (because /",
+    "page": 278
+   },
+   {
+    "text": "because of) the storm. 7. It was (so / such) a wonderful concert that",
+    "page": 278
+   },
+   {
+    "text": "nobody wanted to leave. 8. Neither the players nor the coach (was /",
+    "page": 278
+   },
+   {
+    "text": "were) happy with the result.",
+    "page": 278
+   },
+   {
+    "text": "C. Fix the comma splice or run-on. 9. The shop was closed, we",
+    "page": 278
+   },
+   {
+    "text": "went home. 10. He trained for months therefore he won easily.",
+    "page": 278
+   },
+   {
+    "text": "D. Combine each pair using the word in brackets. 11. It was",
+    "page": 278
+   },
+   {
+    "text": "raining. We played outside. (although) 12. She was nervous. She",
+    "page": 278
+   },
+   {
+    "text": "gave a great speech. (despite)",
+    "page": 278
+   }
+  ],
+  "answers": [
+   {
+    "text": "1. The road was icy, so we drove slowly. (two clauses + FANBOYS)",
+    "page": 279
+   },
+   {
+    "text": "2. No comma. (one subject she, two verbs)",
+    "page": 279
+   },
+   {
+    "text": "3. Although the test was hard, everyone passed. (subordinate",
+    "page": 279
+   },
+   {
+    "text": "clause first)",
+    "page": 279
+   },
+   {
+    "text": "4. We can eat now, or we can wait for Tom. (two clauses + FAN‐",
+    "page": 279
+   },
+   {
+    "text": "BOYS)",
+    "page": 279
+   },
+   {
+    "text": "5. Although — followed by a clause (the heavy traffic alone would",
+    "page": 279
+   },
+   {
+    "text": "need despite; here the sentence has a noun phrase, so Despite is",
+    "page": 279
+   },
+   {
+    "text": "also acceptable: Despite the heavy traffic). Best single answer for",
+    "page": 279
+   },
+   {
+    "text": "a clause: if the original read the heavy traffic, choose Despite. →",
+    "page": 279
+   },
+   {
+    "text": "Despite the heavy traffic, we arrived on time.",
+    "page": 279
+   },
+   {
+    "text": "6. because of — followed by the noun the storm.",
+    "page": 279
+   },
+   {
+    "text": "7. such — followed by a wonderful concert (a/an + noun).",
+    "page": 279
+   },
+   {
+    "text": "8. was — the nearer subject is the coach (singular).",
+    "page": 279
+   },
+   {
+    "text": "9. The shop was closed, so we went home. (or …closed. We went",
+    "page": 279
+   },
+   {
+    "text": "home. / …closed; we went home.)",
+    "page": 279
+   },
+   {
+    "text": "10. He trained for months; therefore, he won easily. (or …months.",
+    "page": 279
+   },
+   {
+    "text": "Therefore, he won easily.)",
+    "page": 279
+   },
+   {
+    "text": "11. Although it was raining, we played outside.",
+    "page": 279
+   },
+   {
+    "text": "12. Despite being nervous, she gave a great speech. (or Despite her",
+    "page": 279
+   },
+   {
+    "text": "nervousness, she gave a great speech.)",
+    "page": 279
+   }
+  ]
+ },
+ "verbs": [
+  {
+   "text": "Comprehensive Reference Table (alphabetical)",
+   "page": 322,
+   "y": 398.76708984375,
+   "bottom": 415.45452880859375,
+   "size": 13.99951171875,
+   "heading": true,
+   "cells": [
+    [
+     51.84,
+     "Comprehensive Reference Table (alphabetical)"
+    ]
+   ]
+  },
+  {
+   "text": "Base form Past simple Past participle Notes / meaning",
+   "page": 324,
+   "y": 67.13728332519531,
+   "bottom": 77.50733184814453,
+   "size": 8.69970703125,
+   "heading": true,
+   "cells": [
+    [
+     58.59,
+     "Base form"
+    ],
+    [
+     114.31,
+     "Past simple"
+    ],
+    [
+     194.01,
+     "Past participle"
+    ],
+    [
+     273.72,
+     "Notes / meaning"
+    ]
+   ]
+  },
+  {
+   "text": "dream dreamt / dreamt / BrE -t, AmE -ed",
+   "page": 324,
+   "y": 87.97808074951172,
+   "bottom": 98.15673828125,
+   "size": 8.69970703125,
+   "heading": false,
+   "cells": [
+    [
+     58.59,
+     "dream"
+    ],
+    [
+     114.31,
+     "dreamt /"
+    ],
+    [
+     194.01,
+     "dreamt /"
+    ],
+    [
+     273.72,
+     "BrE "
+    ],
+    [
+     290.31,
+     "-t"
+    ],
+    [
+     296.44,
+     ", AmE "
+    ],
+    [
+     322.07,
+     "-ed"
+    ]
+   ]
+  },
+  {
+   "text": "dreamed dreamed",
+   "page": 324,
+   "y": 99.74497985839844,
+   "bottom": 109.88013458251953,
+   "size": 8.69970703125,
+   "heading": false,
+   "cells": [
+    [
+     114.31,
+     "dreamed"
+    ],
+    [
+     194.01,
+     "dreamed"
+    ]
+   ]
+  },
+  {
+   "text": "quit quit / quitted quit / quitted AmE quit",
+   "page": 326,
+   "y": 87.97808074951172,
+   "bottom": 98.15673828125,
+   "size": 8.69970703125,
+   "heading": false,
+   "cells": [
+    [
+     58.59,
+     "quit"
+    ],
+    [
+     114.31,
+     "quit / quitted"
+    ],
+    [
+     194.01,
+     "quit / quitted"
+    ],
+    [
+     273.72,
+     "AmE "
+    ],
+    [
+     294.51,
+     "quit"
+    ]
+   ]
+  },
+  {
+   "text": "under‐ understood understood",
+   "page": 328,
+   "y": 207.969970703125,
+   "bottom": 218.10513305664062,
+   "size": 8.69970703125,
+   "heading": false,
+   "cells": [
+    [
+     58.59,
+     "under‐"
+    ],
+    [
+     114.31,
+     "understood"
+    ],
+    [
+     194.01,
+     "understood"
+    ]
+   ]
+  },
+  {
+   "text": "stand",
+   "page": 328,
+   "y": 219.71498107910156,
+   "bottom": 229.8501434326172,
+   "size": 8.69970703125,
+   "heading": false,
+   "cells": [
+    [
+     58.59,
+     "stand"
+    ]
+   ]
+  },
+  {
+   "text": "A note on tricky pairs",
+   "page": 328,
+   "y": 414.792724609375,
+   "bottom": 431.48016357421875,
+   "size": 13.99951171875,
+   "heading": true,
+   "cells": [
+    [
+     51.84,
+     "A note on tricky pairs"
+    ]
+   ]
+  }
+ ],
+ "source_pdf_sha256": "3687262299d7b534ccbfb25859a2df89ab494111ed82889d8c6cda642fa02f4e"
+}

@@ -8,15 +8,19 @@ import json
 import re
 from pathlib import Path
 
+from tutor.content import DEFAULT_CORRECTIONS, prepare_content
+from tutor.editorial import DEFAULT_REVIEW
+
 DEFAULT_KB = Path(__file__).resolve().parent.parent / "data" / "kb.json"
 
 TOKEN_RE = re.compile(r"[a-zà-ÿ']{3,}")
 
 
-def load_kb(path=None):
+def load_kb(path=None, corrections_path=DEFAULT_CORRECTIONS, review_path=DEFAULT_REVIEW):
     p = Path(path) if path else DEFAULT_KB
     with open(p, encoding="utf-8") as f:
         kb = json.load(f)
+    prepare_content(kb, corrections_path, review_path)
     kb["_chapters"] = {c["num"]: c for c in kb["chapters"]}
     kb["_by_title_words"] = {}
     kb["_word_index"] = {}   # parola -> {capitolo: peso}
@@ -54,8 +58,9 @@ def search(kb, query):
     single = q.split()
     if len(single) == 1:
         w = single[0]
-        if w in kb["verbs"]:
-            return ("verbs", w), "verbi-corto"
+        hit = verb_lookup(kb, w)
+        if hit:
+            return ("verbs", hit[0]), "verbi-corto"
         if w == "if":
             return ("chapter", 15), "sinonimi"
         for g in kb["glossary"]:
@@ -129,13 +134,14 @@ def verb_lookup(kb, word):
 
 
 def glossary_search(kb, query, limit=12):
+    """Normalizzazione simmetrica e precedenza alla voce esatta."""
     q = _norm(query)
-    hits = []
-    for i, g in enumerate(kb["glossary"]):
-        t = g["term"].lower()
-        if q and (q in t or t in q):
-            hits.append(i)
-    return hits
+    if not q or limit <= 0:
+        return []
+    terms = [(i, _norm(g['term'])) for i,g in enumerate(kb['glossary'])]
+    exact = [i for i,t in terms if q == t]
+    hits = exact or [i for i,t in terms if q in t or t in q]
+    return hits[:limit]
 
 
 def chapter_pages(kb, num, size=3600):
@@ -160,9 +166,11 @@ def explain_summary(kb, num, size=3600):
                                                    "Answers", "Quick Review")):
             keep.append(b)
             intro_len += len(b)
-    # qualche esempio ✓/✗ del capitolo
-    ex_ok = [e["t"] for e in kb["examples"] if e["ch"] == num and e["ok"]][:4]
-    ex_bad = [e["t"] for e in kb["examples"] if e["ch"] == num and not e["ok"]][:2]
+    # Solo esempi TF revisionati nelle liste riepilogative.
+    reviewed = [e for e in kb.get("_reviewed_quiz", [])
+                if e["ch"] == num and e["type"] == "tf"]
+    ex_ok = [e["t"] for e in reviewed if e["ok"]][:4]
+    ex_bad = [e["t"] for e in reviewed if not e["ok"]][:2]
     if ex_ok:
         keep.append("Examples from this chapter:\n" +
                     "\n".join("✓ " + e for e in ex_ok))

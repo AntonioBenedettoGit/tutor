@@ -1,0 +1,4804 @@
+{
+  "schema_version": 1,
+  "review": {
+    "method": "assistant_editorial_review",
+    "date": "2026-11-23",
+    "human_certified": false
+  },
+  "source_pdf_sha256": "3687262299d7b534ccbfb25859a2df89ab494111ed82889d8c6cda642fa02f4e",
+  "questions": [
+    {
+      "id": "rev-ch01-tf-01",
+      "ch": 1,
+      "type": "tf",
+      "t": "The dog chased the cat.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 1,
+        "citations": [
+          {
+            "pages": [
+              10
+            ],
+            "quote": "The dog chased the cat."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 1,
+        "t": "The dog chased the cat.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Nell’ordine neutro inglese il soggetto precede il verbo e l’oggetto lo segue. Scambiare soggetto e oggetto cambia il significato, non necessariamente la correttezza.",
+        "en": "In neutral English word order the subject precedes the verb and the object follows it. Swapping subject and object changes meaning, not necessarily grammaticality."
+      }
+    },
+    {
+      "id": "rev-ch01-tf-02",
+      "ch": 1,
+      "type": "tf",
+      "t": "Maria reads books.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 1,
+        "citations": [
+          {
+            "pages": [
+              12
+            ],
+            "quote": "Maria reads books."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 1,
+        "t": "Maria reads books.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Nell’ordine neutro inglese il soggetto precede il verbo e l’oggetto lo segue. Scambiare soggetto e oggetto cambia il significato, non necessariamente la correttezza.",
+        "en": "In neutral English word order the subject precedes the verb and the object follows it. Swapping subject and object changes meaning, not necessarily grammaticality."
+      }
+    },
+    {
+      "id": "rev-ch01-tf-03",
+      "ch": 1,
+      "type": "tf",
+      "t": "She walks to work every day.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 1,
+        "citations": [
+          {
+            "pages": [
+              13
+            ],
+            "quote": "She walks to work every day."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 1,
+        "t": "She walks to work every day.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Nel present simple la terza persona singolare richiede la forma in -s; un soggetto plurale usa invece la forma base.",
+        "en": "In the present simple, a third-person singular subject takes the -s form; a plural subject takes the base form."
+      }
+    },
+    {
+      "id": "rev-ch01-tf-04",
+      "ch": 1,
+      "type": "tf",
+      "t": "Books reads Maria.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 1,
+        "citations": [
+          {
+            "pages": [
+              12
+            ],
+            "quote": "Books reads Maria."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 1,
+        "t": "Books reads Maria.",
+        "ok": false
+      },
+      "correction": "Maria reads books.",
+      "explanation": {
+        "it": "Nell’ordine neutro inglese il soggetto precede il verbo e l’oggetto lo segue. Scambiare soggetto e oggetto cambia il significato, non necessariamente la correttezza.",
+        "en": "In neutral English word order the subject precedes the verb and the object follows it. Swapping subject and object changes meaning, not necessarily grammaticality."
+      }
+    },
+    {
+      "id": "rev-ch01-tf-05",
+      "ch": 1,
+      "type": "tf",
+      "t": "The dogs barks.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 1,
+        "citations": [
+          {
+            "pages": [
+              16
+            ],
+            "quote": "The dogs barks."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 1,
+        "t": "The dogs barks.",
+        "ok": false
+      },
+      "correction": "The dogs bark.",
+      "explanation": {
+        "it": "Nel present simple la terza persona singolare richiede la forma in -s; un soggetto plurale usa invece la forma base.",
+        "en": "In the present simple, a third-person singular subject takes the -s form; a plural subject takes the base form."
+      }
+    },
+    {
+      "id": "rev-ch01-tf-06",
+      "ch": 1,
+      "type": "tf",
+      "t": "He don’t know.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 1,
+        "citations": [
+          {
+            "pages": [
+              16
+            ],
+            "quote": "He don’t know."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 1,
+        "t": "He don’t know.",
+        "ok": false
+      },
+      "correction": "He doesn’t know.",
+      "explanation": {
+        "it": "Dopo don’t o doesn’t il verbo principale resta alla forma base. He/she/it richiedono doesn’t nel present simple.",
+        "en": "After don’t or doesn’t, the main verb stays in its base form. He/she/it take doesn’t in the present simple."
+      }
+    },
+    {
+      "id": "rev-ch02-tf-01",
+      "ch": 2,
+      "type": "tf",
+      "t": "We visited a city in Italy.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 2,
+        "citations": [
+          {
+            "pages": [
+              25
+            ],
+            "quote": "We visited a city in Italy."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 2,
+        "t": "We visited a city in Italy.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Un nome comune numerabile singolare, come city o book, normalmente richiede un determinante; a introduce qui un referente non specifico.",
+        "en": "A singular countable common noun such as city or book normally needs a determiner; a introduces a nonspecific referent here."
+      }
+    },
+    {
+      "id": "rev-ch02-tf-02",
+      "ch": 2,
+      "type": "tf",
+      "t": "We visited Rome.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 2,
+        "citations": [
+          {
+            "pages": [
+              25
+            ],
+            "quote": "We visited Rome."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 2,
+        "t": "We visited Rome.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "I nomi propri come Rome e Paris iniziano con la maiuscola. In questi esempi i nomi delle città non richiedono un articolo.",
+        "en": "Proper names such as Rome and Paris start with capitals. These city names do not require an article in these examples."
+      }
+    },
+    {
+      "id": "rev-ch02-tf-03",
+      "ch": 2,
+      "type": "tf",
+      "t": "He gave me a book.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 2,
+        "citations": [
+          {
+            "pages": [
+              25
+            ],
+            "quote": "He gave me a book."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 2,
+        "t": "He gave me a book.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Me e us sono forme oggetto. Un verbo come give può essere seguito dal destinatario e poi dalla cosa data.",
+        "en": "Me and us are object forms. A verb such as give can be followed by the recipient and then the thing given."
+      }
+    },
+    {
+      "id": "rev-ch02-tf-04",
+      "ch": 2,
+      "type": "tf",
+      "t": "The cat licked it’s paw.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 2,
+        "citations": [
+          {
+            "pages": [
+              26
+            ],
+            "quote": "The cat licked it’s paw."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 2,
+        "t": "The cat licked it’s paw.",
+        "ok": false
+      },
+      "correction": "The cat licked its paw.",
+      "explanation": {
+        "it": "Its senza apostrofo esprime possesso. It’s è una contrazione di it is o it has e qui non può determinare paw o tail.",
+        "en": "Its without an apostrophe expresses possession. It’s contracts it is or it has and cannot determine paw or tail here."
+      }
+    },
+    {
+      "id": "rev-ch02-tf-05",
+      "ch": 2,
+      "type": "tf",
+      "t": "The children in the garden.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 2,
+        "citations": [
+          {
+            "pages": [
+              26
+            ],
+            "quote": "The children in the garden."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 2,
+        "t": "The children in the garden.",
+        "ok": false
+      },
+      "correction": "The children are in the garden.",
+      "explanation": {
+        "it": "Come normale frase autonoma dello scritto, questo gruppo richiede un verbo principale; un semplice sintagma nominale non basta. Frammenti possono essere appropriati in altri contesti.",
+        "en": "As an ordinary standalone written sentence, this group needs a main verb; a noun phrase alone is not enough. Fragments may be appropriate in other contexts."
+      }
+    },
+    {
+      "id": "rev-ch02-tf-06",
+      "ch": 2,
+      "type": "tf",
+      "t": "She sings beautiful.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 2,
+        "citations": [
+          {
+            "pages": [
+              28
+            ],
+            "quote": "She sings beautiful."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 2,
+        "t": "She sings beautiful.",
+        "ok": false
+      },
+      "correction": "She sings beautifully.",
+      "explanation": {
+        "it": "Per descrivere il modo in cui si canta si usa qui l’avverbio beautifully, non l’aggettivo beautiful.",
+        "en": "To describe how someone sings, use the adverb beautifully here, not the adjective beautiful."
+      }
+    },
+    {
+      "id": "rev-ch03-tf-01",
+      "ch": 3,
+      "type": "tf",
+      "t": "The train arrived.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 3,
+        "citations": [
+          {
+            "pages": [
+              35
+            ],
+            "quote": "The train arrived."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 3,
+        "t": "The train arrived.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Nell’ordine neutro inglese il soggetto precede il verbo e l’oggetto lo segue. Scambiare soggetto e oggetto cambia il significato, non necessariamente la correttezza.",
+        "en": "In neutral English word order the subject precedes the verb and the object follows it. Swapping subject and object changes meaning, not necessarily grammaticality."
+      }
+    },
+    {
+      "id": "rev-ch03-tf-02",
+      "ch": 3,
+      "type": "tf",
+      "t": "The dog bit the man.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 3,
+        "citations": [
+          {
+            "pages": [
+              37
+            ],
+            "quote": "The dog bit the man."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 3,
+        "t": "The dog bit the man.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Nell’ordine neutro inglese il soggetto precede il verbo e l’oggetto lo segue. Scambiare soggetto e oggetto cambia il significato, non necessariamente la correttezza.",
+        "en": "In neutral English word order the subject precedes the verb and the object follows it. Swapping subject and object changes meaning, not necessarily grammaticality."
+      }
+    },
+    {
+      "id": "rev-ch03-tf-03",
+      "ch": 3,
+      "type": "tf",
+      "t": "The man bit the dog.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 3,
+        "citations": [
+          {
+            "pages": [
+              37
+            ],
+            "quote": "The man bit the dog."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 3,
+        "t": "The man bit the dog.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Nell’ordine neutro inglese il soggetto precede il verbo e l’oggetto lo segue. Scambiare soggetto e oggetto cambia il significato, non necessariamente la correttezza.",
+        "en": "In neutral English word order the subject precedes the verb and the object follows it. Swapping subject and object changes meaning, not necessarily grammaticality."
+      }
+    },
+    {
+      "id": "rev-ch03-tf-04",
+      "ch": 3,
+      "type": "tf",
+      "t": "The lights flickered.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 3,
+        "citations": [
+          {
+            "pages": [
+              37
+            ],
+            "quote": "The lights flickered."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 3,
+        "t": "The lights flickered.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Nell’ordine neutro inglese il soggetto precede il verbo e l’oggetto lo segue. Scambiare soggetto e oggetto cambia il significato, non necessariamente la correttezza.",
+        "en": "In neutral English word order the subject precedes the verb and the object follows it. Swapping subject and object changes meaning, not necessarily grammaticality."
+      }
+    },
+    {
+      "id": "rev-ch03-tf-05",
+      "ch": 3,
+      "type": "tf",
+      "t": "Where you are going?",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 3,
+        "citations": [
+          {
+            "pages": [
+              43
+            ],
+            "quote": "Where you are going?"
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 3,
+        "t": "Where you are going?",
+        "ok": false
+      },
+      "correction": "Where are you going?",
+      "explanation": {
+        "it": "Una domanda diretta neutra con be richiede l’inversione: where + are + you, non where + you + are.",
+        "en": "A neutral direct question with be needs inversion: where + are + you, not where + you + are."
+      }
+    },
+    {
+      "id": "rev-ch03-tf-06",
+      "ch": 3,
+      "type": "tf",
+      "t": "What time the film starts?",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 3,
+        "citations": [
+          {
+            "pages": [
+              43
+            ],
+            "quote": "What time the film starts?"
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 3,
+        "t": "What time the film starts?",
+        "ok": false
+      },
+      "correction": "What time does the film start?",
+      "explanation": {
+        "it": "Una domanda diretta al present simple con un verbo lessicale usa do/does, seguito dal soggetto e dal verbo alla forma base.",
+        "en": "A direct present-simple question with a lexical verb uses do/does, followed by the subject and the base form of the main verb."
+      }
+    },
+    {
+      "id": "rev-ch04-tf-01",
+      "ch": 4,
+      "type": "tf",
+      "t": "My favourite city is Paris.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 4,
+        "citations": [
+          {
+            "pages": [
+              47
+            ],
+            "quote": "My favourite city is Paris."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 4,
+        "t": "My favourite city is Paris.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "I nomi propri come Rome e Paris iniziano con la maiuscola. In questi esempi i nomi delle città non richiedono un articolo.",
+        "en": "Proper names such as Rome and Paris start with capitals. These city names do not require an article in these examples."
+      }
+    },
+    {
+      "id": "rev-ch04-tf-02",
+      "ch": 4,
+      "type": "tf",
+      "t": "We met on a Monday in December.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 4,
+        "citations": [
+          {
+            "pages": [
+              47
+            ],
+            "quote": "We met on a Monday in December."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 4,
+        "t": "We met on a Monday in December.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Nello scritto standard inglese i nomi dei giorni della settimana e dei mesi, come Monday e December, richiedono la maiuscola.",
+        "en": "In standard written English, names of weekdays and months, such as Monday and December, take capitals."
+      },
+      "context": {
+        "it": "Valuta anche le maiuscole dei giorni e dei mesi nello scritto standard.",
+        "en": "Also assess the capitalisation of weekdays and months in standard writing."
+      }
+    },
+    {
+      "id": "rev-ch04-tf-03",
+      "ch": 4,
+      "type": "tf",
+      "t": "She showed great courage during a difficult year.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 4,
+        "citations": [
+          {
+            "pages": [
+              48
+            ],
+            "quote": "She showed great courage during a difficult year."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 4,
+        "t": "She showed great courage during a difficult year.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Courage è un nome astratto non numerabile in questo uso: great courage è un sintagma nominale corretto senza a.",
+        "en": "Courage is an uncountable abstract noun in this use: great courage is a correct noun phrase without a."
+      }
+    },
+    {
+      "id": "rev-ch04-tf-04",
+      "ch": 4,
+      "type": "tf",
+      "t": "I’d like some water, please.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 4,
+        "citations": [
+          {
+            "pages": [
+              50
+            ],
+            "quote": "I’d like some water, please."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 4,
+        "t": "I’d like some water, please.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Water e rice sono usati qui come nomi non numerabili. Some può indicarne una quantità senza contarli come singoli oggetti.",
+        "en": "Water and rice are used here as uncountable nouns. Some can refer to a quantity without counting them as individual objects."
+      }
+    },
+    {
+      "id": "rev-ch04-tf-05",
+      "ch": 4,
+      "type": "tf",
+      "t": "Rice is grown in many countries.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 4,
+        "citations": [
+          {
+            "pages": [
+              50
+            ],
+            "quote": "Rice is grown in many countries."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 4,
+        "t": "Rice is grown in many countries.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Water e rice sono usati qui come nomi non numerabili. Some può indicarne una quantità senza contarli come singoli oggetti.",
+        "en": "Water and rice are used here as uncountable nouns. Some can refer to a quantity without counting them as individual objects."
+      }
+    },
+    {
+      "id": "rev-ch04-tf-06",
+      "ch": 4,
+      "type": "tf",
+      "t": "We met on a monday in december.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 4,
+        "citations": [
+          {
+            "pages": [
+              47
+            ],
+            "quote": "We met on a monday in december."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 4,
+        "t": "We met on a monday in december.",
+        "ok": false
+      },
+      "correction": "We met on a Monday in December.",
+      "explanation": {
+        "it": "Nello scritto standard inglese i nomi dei giorni della settimana e dei mesi, come Monday e December, richiedono la maiuscola.",
+        "en": "In standard written English, names of weekdays and months, such as Monday and December, take capitals."
+      },
+      "context": {
+        "it": "Valuta anche le maiuscole dei giorni e dei mesi nello scritto standard.",
+        "en": "Also assess the capitalisation of weekdays and months in standard writing."
+      }
+    },
+    {
+      "id": "rev-ch05-tf-01",
+      "ch": 5,
+      "type": "tf",
+      "t": "She studies at a university.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 5,
+        "citations": [
+          {
+            "pages": [
+              62
+            ],
+            "quote": "She studies at a university."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 5,
+        "t": "She studies at a university.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "La scelta fra a e an dipende dal suono iniziale: university comincia con /j/ e hour ha h muta.",
+        "en": "The choice between a and an depends on the initial sound: university begins with /j/, while hour has a silent h."
+      }
+    },
+    {
+      "id": "rev-ch05-tf-02",
+      "ch": 5,
+      "type": "tf",
+      "t": "I’ll be back in an hour.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 5,
+        "citations": [
+          {
+            "pages": [
+              62
+            ],
+            "quote": "I’ll be back in an hour."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 5,
+        "t": "I’ll be back in an hour.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "La scelta fra a e an dipende dal suono iniziale: university comincia con /j/ e hour ha h muta.",
+        "en": "The choice between a and an depends on the initial sound: university begins with /j/, while hour has a silent h."
+      }
+    },
+    {
+      "id": "rev-ch05-tf-03",
+      "ch": 5,
+      "type": "tf",
+      "t": "He’s an honest politician.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 5,
+        "citations": [
+          {
+            "pages": [
+              62
+            ],
+            "quote": "He’s an honest politician."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 5,
+        "t": "He’s an honest politician.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Honest ha h muta; MP si pronuncia iniziando con il suono vocalico /em/. Entrambi richiedono an in questi esempi.",
+        "en": "Honest has a silent h; MP starts with the vowel sound /em/. Both take an in these examples."
+      }
+    },
+    {
+      "id": "rev-ch05-tf-04",
+      "ch": 5,
+      "type": "tf",
+      "t": "My uncle is an MP.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 5,
+        "citations": [
+          {
+            "pages": [
+              62
+            ],
+            "quote": "My uncle is an MP."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 5,
+        "t": "My uncle is an MP.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Honest ha h muta; MP si pronuncia iniziando con il suono vocalico /em/. Entrambi richiedono an in questi esempi.",
+        "en": "Honest has a silent h; MP starts with the vowel sound /em/. Both take an in these examples."
+      }
+    },
+    {
+      "id": "rev-ch05-tf-05",
+      "ch": 5,
+      "type": "tf",
+      "t": "What a beautiful weather!",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 5,
+        "citations": [
+          {
+            "pages": [
+              63
+            ],
+            "quote": "What a beautiful weather!"
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 5,
+        "t": "What a beautiful weather!",
+        "ok": false
+      },
+      "correction": "What beautiful weather!",
+      "explanation": {
+        "it": "Weather è non numerabile in questo uso. Si dice What beautiful weather!, senza a.",
+        "en": "Weather is uncountable in this use. Say What beautiful weather!, without a."
+      }
+    },
+    {
+      "id": "rev-ch05-tf-06",
+      "ch": 5,
+      "type": "tf",
+      "t": "She is teacher.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 5,
+        "citations": [
+          {
+            "pages": [
+              68
+            ],
+            "quote": "She is teacher."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 5,
+        "t": "She is teacher.",
+        "ok": false
+      },
+      "correction": "She is a teacher.",
+      "explanation": {
+        "it": "Per indicare una professione con un nome singolare numerabile, nella normale frase She is a teacher serve l’articolo a.",
+        "en": "When stating a profession with a singular countable noun, the ordinary sentence She is a teacher needs the article a."
+      }
+    },
+    {
+      "id": "rev-ch06-tf-01",
+      "ch": 6,
+      "type": "tf",
+      "t": "This chair (next to me) is comfortable.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 6,
+        "citations": [
+          {
+            "pages": [
+              73
+            ],
+            "quote": "This chair (next to me) is comfortable."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 6,
+        "t": "This chair (next to me) is comfortable.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "This e that si usano qui con il singolare; these e those con il plurale. Le indicazioni fra parentesi chiariscono la distanza.",
+        "en": "This and that are used here with singular nouns; these and those with plural nouns. The parenthetical information clarifies distance."
+      }
+    },
+    {
+      "id": "rev-ch06-tf-02",
+      "ch": 6,
+      "type": "tf",
+      "t": "These shoes (on my feet) fit well.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 6,
+        "citations": [
+          {
+            "pages": [
+              73
+            ],
+            "quote": "These shoes (on my feet) fit well."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 6,
+        "t": "These shoes (on my feet) fit well.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "This e that si usano qui con il singolare; these e those con il plurale. Le indicazioni fra parentesi chiariscono la distanza.",
+        "en": "This and that are used here with singular nouns; these and those with plural nouns. The parenthetical information clarifies distance."
+      }
+    },
+    {
+      "id": "rev-ch06-tf-03",
+      "ch": 6,
+      "type": "tf",
+      "t": "Those mountains (far away) are beautiful.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 6,
+        "citations": [
+          {
+            "pages": [
+              73
+            ],
+            "quote": "Those mountains (far away) are beautiful."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 6,
+        "t": "Those mountains (far away) are beautiful.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "This e that si usano qui con il singolare; these e those con il plurale. Le indicazioni fra parentesi chiariscono la distanza.",
+        "en": "This and that are used here with singular nouns; these and those with plural nouns. The parenthetical information clarifies distance."
+      }
+    },
+    {
+      "id": "rev-ch06-tf-04",
+      "ch": 6,
+      "type": "tf",
+      "t": "I bought car.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 6,
+        "citations": [
+          {
+            "pages": [
+              73
+            ],
+            "quote": "I bought car."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 6,
+        "t": "I bought car.",
+        "ok": false
+      },
+      "correction": "I bought a car.",
+      "explanation": {
+        "it": "Car è un nome comune numerabile singolare: nella normale frase I bought a car serve un determinante.",
+        "en": "Car is a singular countable common noun: the ordinary sentence I bought a car needs a determiner."
+      }
+    },
+    {
+      "id": "rev-ch06-tf-05",
+      "ch": 6,
+      "type": "tf",
+      "t": "This book is my.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 6,
+        "citations": [
+          {
+            "pages": [
+              75
+            ],
+            "quote": "This book is my."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 6,
+        "t": "This book is my.",
+        "ok": false
+      },
+      "correction": "This book is mine.",
+      "explanation": {
+        "it": "My precede un nome; mine lo sostituisce e non precede book o coat. A fine frase si può dire This book is mine.",
+        "en": "My comes before a noun; mine replaces the noun and does not precede book or coat. At the end of a clause, say This book is mine."
+      }
+    },
+    {
+      "id": "rev-ch06-tf-06",
+      "ch": 6,
+      "type": "tf",
+      "t": "This is mine book.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 6,
+        "citations": [
+          {
+            "pages": [
+              75
+            ],
+            "quote": "This is mine book."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 6,
+        "t": "This is mine book.",
+        "ok": false
+      },
+      "correction": "This is my book.",
+      "explanation": {
+        "it": "My precede un nome; mine lo sostituisce e non precede book o coat. A fine frase si può dire This book is mine.",
+        "en": "My comes before a noun; mine replaces the noun and does not precede book or coat. At the end of a clause, say This book is mine."
+      }
+    },
+    {
+      "id": "rev-ch07-tf-01",
+      "ch": 7,
+      "type": "tf",
+      "t": "We are ready.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 7,
+        "citations": [
+          {
+            "pages": [
+              86
+            ],
+            "quote": "We are ready."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 7,
+        "t": "We are ready.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "She/he/they sono forme soggetto; me/him/them sono forme oggetto. Per Her called I la forma standard è She called me.",
+        "en": "She/he/they are subject forms; me/him/them are object forms. The standard version of Her called I is She called me."
+      }
+    },
+    {
+      "id": "rev-ch07-tf-02",
+      "ch": 7,
+      "type": "tf",
+      "t": "The teacher praised us.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 7,
+        "citations": [
+          {
+            "pages": [
+              86
+            ],
+            "quote": "The teacher praised us."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 7,
+        "t": "The teacher praised us.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Me e us sono forme oggetto. Un verbo come give può essere seguito dal destinatario e poi dalla cosa data.",
+        "en": "Me and us are object forms. A verb such as give can be followed by the recipient and then the thing given."
+      }
+    },
+    {
+      "id": "rev-ch07-tf-03",
+      "ch": 7,
+      "type": "tf",
+      "t": "The small house is ours.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 7,
+        "citations": [
+          {
+            "pages": [
+              86
+            ],
+            "quote": "The small house is ours."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 7,
+        "t": "The small house is ours.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "My precede un nome; mine lo sostituisce e non precede book o coat. A fine frase si può dire This book is mine.",
+        "en": "My comes before a noun; mine replaces the noun and does not precede book or coat. At the end of a clause, say This book is mine."
+      }
+    },
+    {
+      "id": "rev-ch07-tf-04",
+      "ch": 7,
+      "type": "tf",
+      "t": "Her called I.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 7,
+        "citations": [
+          {
+            "pages": [
+              86
+            ],
+            "quote": "Her called I."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 7,
+        "t": "Her called I.",
+        "ok": false
+      },
+      "correction": "She called me.",
+      "explanation": {
+        "it": "She/he/they sono forme soggetto; me/him/them sono forme oggetto. Per Her called I la forma standard è She called me.",
+        "en": "She/he/they are subject forms; me/him/them are object forms. The standard version of Her called I is She called me."
+      }
+    },
+    {
+      "id": "rev-ch07-tf-05",
+      "ch": 7,
+      "type": "tf",
+      "t": "That coat is mine coat.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 7,
+        "citations": [
+          {
+            "pages": [
+              87
+            ],
+            "quote": "That coat is mine coat."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 7,
+        "t": "That coat is mine coat.",
+        "ok": false
+      },
+      "correction": "That coat is mine.",
+      "explanation": {
+        "it": "My precede un nome; mine lo sostituisce e non precede book o coat. A fine frase si può dire This book is mine.",
+        "en": "My comes before a noun; mine replaces the noun and does not precede book or coat. At the end of a clause, say This book is mine."
+      }
+    },
+    {
+      "id": "rev-ch07-tf-06",
+      "ch": 7,
+      "type": "tf",
+      "t": "The dog wagged it’s tail.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 7,
+        "citations": [
+          {
+            "pages": [
+              88
+            ],
+            "quote": "The dog wagged it’s tail."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 7,
+        "t": "The dog wagged it’s tail.",
+        "ok": false
+      },
+      "correction": "The dog wagged its tail.",
+      "explanation": {
+        "it": "Its senza apostrofo esprime possesso. It’s è una contrazione di it is o it has e qui non può determinare paw o tail.",
+        "en": "Its without an apostrophe expresses possession. It’s contracts it is or it has and cannot determine paw or tail here."
+      }
+    },
+    {
+      "id": "rev-ch08-tf-01",
+      "ch": 8,
+      "type": "tf",
+      "t": "She works in a bank.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 8,
+        "citations": [
+          {
+            "pages": [
+              97
+            ],
+            "quote": "She works in a bank."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 8,
+        "t": "She works in a bank.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il present simple è adatto a questi fatti o abitudini. La terza persona singolare usa la propria forma, come studies o works.",
+        "en": "The present simple suits these facts or habits. The third-person singular takes its appropriate form, such as studies or works."
+      }
+    },
+    {
+      "id": "rev-ch08-tf-02",
+      "ch": 8,
+      "type": "tf",
+      "t": "She doesn’t work on Sundays.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 8,
+        "citations": [
+          {
+            "pages": [
+              97
+            ],
+            "quote": "She doesn’t work on Sundays."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 8,
+        "t": "She doesn’t work on Sundays.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo don’t o doesn’t il verbo principale resta alla forma base. He/she/it richiedono doesn’t nel present simple.",
+        "en": "After don’t or doesn’t, the main verb stays in its base form. He/she/it take doesn’t in the present simple."
+      }
+    },
+    {
+      "id": "rev-ch08-tf-03",
+      "ch": 8,
+      "type": "tf",
+      "t": "He studies medicine.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 8,
+        "citations": [
+          {
+            "pages": [
+              98
+            ],
+            "quote": "He studies medicine."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 8,
+        "t": "He studies medicine.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il present simple è adatto a questi fatti o abitudini. La terza persona singolare usa la propria forma, come studies o works.",
+        "en": "The present simple suits these facts or habits. The third-person singular takes its appropriate form, such as studies or works."
+      }
+    },
+    {
+      "id": "rev-ch08-tf-04",
+      "ch": 8,
+      "type": "tf",
+      "t": "She work in a bank.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 8,
+        "citations": [
+          {
+            "pages": [
+              97
+            ],
+            "quote": "She work in a bank."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 8,
+        "t": "She work in a bank.",
+        "ok": false
+      },
+      "correction": "She works in a bank.",
+      "explanation": {
+        "it": "Nel present simple la terza persona singolare richiede la forma in -s; un soggetto plurale usa invece la forma base.",
+        "en": "In the present simple, a third-person singular subject takes the -s form; a plural subject takes the base form."
+      }
+    },
+    {
+      "id": "rev-ch08-tf-05",
+      "ch": 8,
+      "type": "tf",
+      "t": "She doesn’t works on Sundays.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 8,
+        "citations": [
+          {
+            "pages": [
+              97
+            ],
+            "quote": "She doesn’t works on Sundays."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 8,
+        "t": "She doesn’t works on Sundays.",
+        "ok": false
+      },
+      "correction": "She doesn’t work on Sundays.",
+      "explanation": {
+        "it": "Dopo don’t o doesn’t il verbo principale resta alla forma base. He/she/it richiedono doesn’t nel present simple.",
+        "en": "After don’t or doesn’t, the main verb stays in its base form. He/she/it take doesn’t in the present simple."
+      }
+    },
+    {
+      "id": "rev-ch08-tf-06",
+      "ch": 8,
+      "type": "tf",
+      "t": "I working now.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 8,
+        "citations": [
+          {
+            "pages": [
+              100
+            ],
+            "quote": "I working now."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 8,
+        "t": "I working now.",
+        "ok": false
+      },
+      "correction": "I am working now.",
+      "explanation": {
+        "it": "Il present continuous richiede be + forma in -ing: I am working, non I working.",
+        "en": "The present continuous needs be + the -ing form: I am working, not I working."
+      }
+    },
+    {
+      "id": "rev-ch09-tf-01",
+      "ch": 9,
+      "type": "tf",
+      "t": "Did you go to the party?",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 9,
+        "citations": [
+          {
+            "pages": [
+              112
+            ],
+            "quote": "Did you go to the party?"
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 9,
+        "t": "Did you go to the party?",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo did o didn’t il verbo principale è alla forma base: go, come o buy, non went, came o bought.",
+        "en": "After did or didn’t, the main verb takes its base form: go, come or buy, not went, came or bought."
+      }
+    },
+    {
+      "id": "rev-ch09-tf-02",
+      "ch": 9,
+      "type": "tf",
+      "t": "She didn’t come.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 9,
+        "citations": [
+          {
+            "pages": [
+              112
+            ],
+            "quote": "She didn’t come."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 9,
+        "t": "She didn’t come.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo did o didn’t il verbo principale è alla forma base: go, come o buy, non went, came o bought.",
+        "en": "After did or didn’t, the main verb takes its base form: go, come or buy, not went, came or bought."
+      }
+    },
+    {
+      "id": "rev-ch09-tf-03",
+      "ch": 9,
+      "type": "tf",
+      "t": "I didn’t see him yesterday.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 9,
+        "citations": [
+          {
+            "pages": [
+              112
+            ],
+            "quote": "I didn’t see him yesterday."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 9,
+        "t": "I didn’t see him yesterday.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo did o didn’t il verbo principale è alla forma base: go, come o buy, non went, came o bought.",
+        "en": "After did or didn’t, the main verb takes its base form: go, come or buy, not went, came or bought."
+      }
+    },
+    {
+      "id": "rev-ch09-tf-04",
+      "ch": 9,
+      "type": "tf",
+      "t": "Did you went to the party?",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 9,
+        "citations": [
+          {
+            "pages": [
+              112
+            ],
+            "quote": "Did you went to the party?"
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 9,
+        "t": "Did you went to the party?",
+        "ok": false
+      },
+      "correction": "Did you go to the party?",
+      "explanation": {
+        "it": "Dopo did o didn’t il verbo principale è alla forma base: go, come o buy, non went, came o bought.",
+        "en": "After did or didn’t, the main verb takes its base form: go, come or buy, not went, came or bought."
+      }
+    },
+    {
+      "id": "rev-ch09-tf-05",
+      "ch": 9,
+      "type": "tf",
+      "t": "She didn’t came.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 9,
+        "citations": [
+          {
+            "pages": [
+              112
+            ],
+            "quote": "She didn’t came."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 9,
+        "t": "She didn’t came.",
+        "ok": false
+      },
+      "correction": "She didn’t come.",
+      "explanation": {
+        "it": "Dopo did o didn’t il verbo principale è alla forma base: go, come o buy, non went, came o bought.",
+        "en": "After did or didn’t, the main verb takes its base form: go, come or buy, not went, came or bought."
+      }
+    },
+    {
+      "id": "rev-ch09-tf-06",
+      "ch": 9,
+      "type": "tf",
+      "t": "Where did you bought that jacket?",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 9,
+        "citations": [
+          {
+            "pages": [
+              112
+            ],
+            "quote": "Where did you bought that jacket?"
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 9,
+        "t": "Where did you bought that jacket?",
+        "ok": false
+      },
+      "correction": "Where did you buy that jacket?",
+      "explanation": {
+        "it": "Dopo did o didn’t il verbo principale è alla forma base: go, come o buy, non went, came o bought.",
+        "en": "After did or didn’t, the main verb takes its base form: go, come or buy, not went, came or bought."
+      }
+    },
+    {
+      "id": "rev-ch10-tf-01",
+      "ch": 10,
+      "type": "tf",
+      "t": "I have visited Japan twice.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 10,
+        "citations": [
+          {
+            "pages": [
+              123
+            ],
+            "quote": "I have visited Japan twice."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 10,
+        "t": "I have visited Japan twice.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il present perfect usa have/has + participio e può presentare esperienze o fatti collegati al presente senza indicare un momento passato concluso.",
+        "en": "The present perfect uses have/has + a past participle and can describe experiences or events connected to the present without naming a finished past time."
+      }
+    },
+    {
+      "id": "rev-ch10-tf-02",
+      "ch": 10,
+      "type": "tf",
+      "t": "She has never flown in a plane.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 10,
+        "citations": [
+          {
+            "pages": [
+              123
+            ],
+            "quote": "She has never flown in a plane."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 10,
+        "t": "She has never flown in a plane.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il present perfect usa have/has + participio e può presentare esperienze o fatti collegati al presente senza indicare un momento passato concluso.",
+        "en": "The present perfect uses have/has + a past participle and can describe experiences or events connected to the present without naming a finished past time."
+      }
+    },
+    {
+      "id": "rev-ch10-tf-03",
+      "ch": 10,
+      "type": "tf",
+      "t": "We have had a lot of rain this month.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 10,
+        "citations": [
+          {
+            "pages": [
+              124
+            ],
+            "quote": "We have had a lot of rain this month."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 10,
+        "t": "We have had a lot of rain this month.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il present perfect usa have/has + participio e può presentare esperienze o fatti collegati al presente senza indicare un momento passato concluso.",
+        "en": "The present perfect uses have/has + a past participle and can describe experiences or events connected to the present without naming a finished past time."
+      }
+    },
+    {
+      "id": "rev-ch10-tf-04",
+      "ch": 10,
+      "type": "tf",
+      "t": "She has called me twice this week.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 10,
+        "citations": [
+          {
+            "pages": [
+              124
+            ],
+            "quote": "She has called me twice this week."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 10,
+        "t": "She has called me twice this week.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il present perfect usa have/has + participio e può presentare esperienze o fatti collegati al presente senza indicare un momento passato concluso.",
+        "en": "The present perfect uses have/has + a past participle and can describe experiences or events connected to the present without naming a finished past time."
+      }
+    },
+    {
+      "id": "rev-ch10-tf-05",
+      "ch": 10,
+      "type": "tf",
+      "t": "I have seen him yesterday.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 10,
+        "citations": [
+          {
+            "pages": [
+              125
+            ],
+            "quote": "I have seen him yesterday."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 10,
+        "t": "I have seen him yesterday.",
+        "ok": false
+      },
+      "correction": "I saw him yesterday.",
+      "explanation": {
+        "it": "Nel significato richiesto, yesterday indica un momento passato concluso: si usa il past simple, non il present perfect.",
+        "en": "In the intended meaning, yesterday names a finished past time: use the past simple, not the present perfect."
+      }
+    },
+    {
+      "id": "rev-ch10-tf-06",
+      "ch": 10,
+      "type": "tf",
+      "t": "I have been knowing her for years.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 10,
+        "citations": [
+          {
+            "pages": [
+              127
+            ],
+            "quote": "I have been knowing her for years."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 10,
+        "t": "I have been knowing her for years.",
+        "ok": false
+      },
+      "correction": "I have known her for years.",
+      "explanation": {
+        "it": "Know nel significato di sapere/conoscere è qui stativo e normalmente non usa il continuous: I know oppure I have known.",
+        "en": "Know, meaning know a fact or person here, is stative and normally does not take the continuous: I know or I have known."
+      }
+    },
+    {
+      "id": "rev-ch11-tf-01",
+      "ch": 11,
+      "type": "tf",
+      "t": "I’ll call you tonight.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 11,
+        "citations": [
+          {
+            "pages": [
+              133
+            ],
+            "quote": "I’ll call you tonight."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 11,
+        "t": "I’ll call you tonight.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Will è seguito dalla forma base. Le contrazioni standard includono I’ll e won’t; willn’t non è una contrazione standard.",
+        "en": "Will is followed by the base form. Standard contractions include I’ll and won’t; willn’t is not a standard contraction."
+      }
+    },
+    {
+      "id": "rev-ch11-tf-02",
+      "ch": 11,
+      "type": "tf",
+      "t": "She won’t be late.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 11,
+        "citations": [
+          {
+            "pages": [
+              133
+            ],
+            "quote": "She won’t be late."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 11,
+        "t": "She won’t be late.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Will è seguito dalla forma base. Le contrazioni standard includono I’ll e won’t; willn’t non è una contrazione standard.",
+        "en": "Will is followed by the base form. Standard contractions include I’ll and won’t; willn’t is not a standard contraction."
+      }
+    },
+    {
+      "id": "rev-ch11-tf-03",
+      "ch": 11,
+      "type": "tf",
+      "t": "I promise I’ll pay you back on Friday.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 11,
+        "citations": [
+          {
+            "pages": [
+              133
+            ],
+            "quote": "I promise I’ll pay you back on Friday."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 11,
+        "t": "I promise I’ll pay you back on Friday.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Will è seguito dalla forma base. Le contrazioni standard includono I’ll e won’t; willn’t non è una contrazione standard.",
+        "en": "Will is followed by the base form. Standard contractions include I’ll and won’t; willn’t is not a standard contraction."
+      }
+    },
+    {
+      "id": "rev-ch11-tf-04",
+      "ch": 11,
+      "type": "tf",
+      "t": "I willn’t be late.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 11,
+        "citations": [
+          {
+            "pages": [
+              133
+            ],
+            "quote": "I willn’t be late."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 11,
+        "t": "I willn’t be late.",
+        "ok": false
+      },
+      "correction": "I won’t be late.",
+      "explanation": {
+        "it": "Will è seguito dalla forma base. Le contrazioni standard includono I’ll e won’t; willn’t non è una contrazione standard.",
+        "en": "Will is followed by the base form. Standard contractions include I’ll and won’t; willn’t is not a standard contraction."
+      }
+    },
+    {
+      "id": "rev-ch11-tf-05",
+      "ch": 11,
+      "type": "tf",
+      "t": "I’ll call you when I will arrive.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 11,
+        "citations": [
+          {
+            "pages": [
+              140
+            ],
+            "quote": "I’ll call you when I will arrive."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 11,
+        "t": "I’ll call you when I will arrive.",
+        "ok": false
+      },
+      "correction": "I’ll call you when I arrive.",
+      "context": {
+        "it": "When introduce qui una subordinata temporale riferita al futuro.",
+        "en": "When introduces a future time clause here."
+      },
+      "explanation": {
+        "it": "Nelle temporali riferite al futuro introdotte qui da when o as soon as si usa il presente: when I arrive, as soon as the rain stops.",
+        "en": "In these future time clauses introduced by when or as soon as, use a present form: when I arrive, as soon as the rain stops."
+      }
+    },
+    {
+      "id": "rev-ch11-tf-06",
+      "ch": 11,
+      "type": "tf",
+      "t": "As soon as the rain will stop, we’ll go out.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 11,
+        "citations": [
+          {
+            "pages": [
+              140
+            ],
+            "quote": "As soon as the rain will stop, we’ll go out."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 11,
+        "t": "As soon as the rain will stop, we’ll go out.",
+        "ok": false
+      },
+      "correction": "As soon as the rain stops, we’ll go out.",
+      "explanation": {
+        "it": "Nelle temporali riferite al futuro introdotte qui da when o as soon as si usa il presente: when I arrive, as soon as the rain stops.",
+        "en": "In these future time clauses introduced by when or as soon as, use a present form: when I arrive, as soon as the rain stops."
+      }
+    },
+    {
+      "id": "rev-ch12-tf-01",
+      "ch": 12,
+      "type": "tf",
+      "t": "I work in marketing.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 12,
+        "citations": [
+          {
+            "pages": [
+              149
+            ],
+            "quote": "I work in marketing."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 12,
+        "t": "I work in marketing.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il present simple è adatto a questi fatti o abitudini. La terza persona singolare usa la propria forma, come studies o works.",
+        "en": "The present simple suits these facts or habits. The third-person singular takes its appropriate form, such as studies or works."
+      }
+    },
+    {
+      "id": "rev-ch12-tf-02",
+      "ch": 12,
+      "type": "tf",
+      "t": "I am working from home this week.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 12,
+        "citations": [
+          {
+            "pages": [
+              149
+            ],
+            "quote": "I am working from home this week."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 12,
+        "t": "I am working from home this week.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il present continuous può descrivere una situazione temporanea attuale: working from home this week.",
+        "en": "The present continuous can describe a current temporary situation: working from home this week."
+      }
+    },
+    {
+      "id": "rev-ch12-tf-03",
+      "ch": 12,
+      "type": "tf",
+      "t": "Water boils at 100 °C.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 12,
+        "citations": [
+          {
+            "pages": [
+              149
+            ],
+            "quote": "Water boils at 100 °C."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 12,
+        "t": "Water boils at 100 °C.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il present simple può esprimere un fatto generale; il present continuous può descrivere ciò che è in corso adesso. Entrambe le costruzioni sono corrette nei rispettivi usi.",
+        "en": "The present simple can express a general fact; the present continuous can describe what is happening now. Both constructions are correct in their respective uses."
+      }
+    },
+    {
+      "id": "rev-ch12-tf-04",
+      "ch": 12,
+      "type": "tf",
+      "t": "The kettle is boiling.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 12,
+        "citations": [
+          {
+            "pages": [
+              149
+            ],
+            "quote": "The kettle is boiling."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 12,
+        "t": "The kettle is boiling.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il present simple può esprimere un fatto generale; il present continuous può descrivere ciò che è in corso adesso. Entrambe le costruzioni sono corrette nei rispettivi usi.",
+        "en": "The present simple can express a general fact; the present continuous can describe what is happening now. Both constructions are correct in their respective uses."
+      }
+    },
+    {
+      "id": "rev-ch12-tf-05",
+      "ch": 12,
+      "type": "tf",
+      "t": "I know the answer.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 12,
+        "citations": [
+          {
+            "pages": [
+              149
+            ],
+            "quote": "I know the answer."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 12,
+        "t": "I know the answer.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Know nel significato di sapere/conoscere è qui stativo e normalmente non usa il continuous: I know oppure I have known.",
+        "en": "Know, meaning know a fact or person here, is stative and normally does not take the continuous: I know or I have known."
+      }
+    },
+    {
+      "id": "rev-ch12-tf-06",
+      "ch": 12,
+      "type": "tf",
+      "t": "I am knowing the answer.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 12,
+        "citations": [
+          {
+            "pages": [
+              149
+            ],
+            "quote": "I am knowing the answer."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 12,
+        "t": "I am knowing the answer.",
+        "ok": false
+      },
+      "correction": "I know the answer.",
+      "explanation": {
+        "it": "Know nel significato di sapere/conoscere è qui stativo e normalmente non usa il continuous: I know oppure I have known.",
+        "en": "Know, meaning know a fact or person here, is stative and normally does not take the continuous: I know or I have known."
+      }
+    },
+    {
+      "id": "rev-ch13-tf-01",
+      "ch": 13,
+      "type": "tf",
+      "t": "She can swim.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 13,
+        "citations": [
+          {
+            "pages": [
+              157
+            ],
+            "quote": "She can swim."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 13,
+        "t": "She can swim.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Can e must non prendono -s e sono seguiti dalla forma base senza to. Non si combinano due modali finiti come will can.",
+        "en": "Can and must do not take -s and are followed by the bare base form. Two finite modals such as will can cannot be combined."
+      }
+    },
+    {
+      "id": "rev-ch13-tf-02",
+      "ch": 13,
+      "type": "tf",
+      "t": "You ought to go.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 13,
+        "citations": [
+          {
+            "pages": [
+              157
+            ],
+            "quote": "You ought to go."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 13,
+        "t": "You ought to go.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Ought si costruisce con to + infinito, diversamente da can o must. You ought to go è corretto.",
+        "en": "Ought takes to + an infinitive, unlike can or must. You ought to go is correct."
+      }
+    },
+    {
+      "id": "rev-ch13-tf-03",
+      "ch": 13,
+      "type": "tf",
+      "t": "She will be able to come.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 13,
+        "citations": [
+          {
+            "pages": [
+              157
+            ],
+            "quote": "She will be able to come."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 13,
+        "t": "She will be able to come.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo will si usa be able to per esprimere la capacità futura: will be able to come, non will can come.",
+        "en": "After will, use be able to for future ability: will be able to come, not will can come."
+      }
+    },
+    {
+      "id": "rev-ch13-tf-04",
+      "ch": 13,
+      "type": "tf",
+      "t": "She cans swim.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 13,
+        "citations": [
+          {
+            "pages": [
+              157
+            ],
+            "quote": "She cans swim."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 13,
+        "t": "She cans swim.",
+        "ok": false
+      },
+      "correction": "She can swim.",
+      "explanation": {
+        "it": "Can e must non prendono -s e sono seguiti dalla forma base senza to. Non si combinano due modali finiti come will can.",
+        "en": "Can and must do not take -s and are followed by the bare base form. Two finite modals such as will can cannot be combined."
+      }
+    },
+    {
+      "id": "rev-ch13-tf-05",
+      "ch": 13,
+      "type": "tf",
+      "t": "You must to go.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 13,
+        "citations": [
+          {
+            "pages": [
+              157
+            ],
+            "quote": "You must to go."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 13,
+        "t": "You must to go.",
+        "ok": false
+      },
+      "correction": "You must go.",
+      "explanation": {
+        "it": "Can e must non prendono -s e sono seguiti dalla forma base senza to. Non si combinano due modali finiti come will can.",
+        "en": "Can and must do not take -s and are followed by the bare base form. Two finite modals such as will can cannot be combined."
+      }
+    },
+    {
+      "id": "rev-ch13-tf-06",
+      "ch": 13,
+      "type": "tf",
+      "t": "She will can come.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 13,
+        "citations": [
+          {
+            "pages": [
+              157
+            ],
+            "quote": "She will can come."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 13,
+        "t": "She will can come.",
+        "ok": false
+      },
+      "correction": "She will be able to come.",
+      "explanation": {
+        "it": "Dopo will si usa be able to per esprimere la capacità futura: will be able to come, non will can come.",
+        "en": "After will, use be able to for future ability: will be able to come, not will can come."
+      }
+    },
+    {
+      "id": "rev-ch14-tf-01",
+      "ch": 14,
+      "type": "tf",
+      "t": "The chef prepares the meals.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 14,
+        "citations": [
+          {
+            "pages": [
+              169
+            ],
+            "quote": "The chef prepares the meals."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 14,
+        "t": "The chef prepares the meals.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "La frase attiva ha un soggetto che compie l’azione e un verbo flesso correttamente; è valida anche nel capitolo dedicato al passivo.",
+        "en": "The active sentence has a subject performing the action and a correctly inflected verb; it is valid even in a chapter about the passive."
+      }
+    },
+    {
+      "id": "rev-ch14-tf-02",
+      "ch": 14,
+      "type": "tf",
+      "t": "A dog bit the boy.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 14,
+        "citations": [
+          {
+            "pages": [
+              169
+            ],
+            "quote": "A dog bit the boy."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 14,
+        "t": "A dog bit the boy.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "La frase attiva ha un soggetto che compie l’azione e un verbo flesso correttamente; è valida anche nel capitolo dedicato al passivo.",
+        "en": "The active sentence has a subject performing the action and a correctly inflected verb; it is valid even in a chapter about the passive."
+      }
+    },
+    {
+      "id": "rev-ch14-tf-03",
+      "ch": 14,
+      "type": "tf",
+      "t": "The results will be announced tomorrow.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 14,
+        "citations": [
+          {
+            "pages": [
+              169
+            ],
+            "quote": "The results will be announced tomorrow."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 14,
+        "t": "The results will be announced tomorrow.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Il passivo si costruisce con be nella forma adatta + participio passato; will be announced è un passivo futuro corretto.",
+        "en": "The passive uses an appropriate form of be + a past participle; will be announced is a correct future passive."
+      }
+    },
+    {
+      "id": "rev-ch14-tf-04",
+      "ch": 14,
+      "type": "tf",
+      "t": "The accident was happened.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 14,
+        "citations": [
+          {
+            "pages": [
+              174
+            ],
+            "quote": "The accident was happened."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 14,
+        "t": "The accident was happened.",
+        "ok": false
+      },
+      "correction": "The accident happened.",
+      "explanation": {
+        "it": "Happen, occur e die sono intransitivi in questi usi: non formano questo passivo con was/were.",
+        "en": "Happen, occur and die are intransitive in these uses: they do not form this passive with was/were."
+      }
+    },
+    {
+      "id": "rev-ch14-tf-05",
+      "ch": 14,
+      "type": "tf",
+      "t": "She was died last year.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 14,
+        "citations": [
+          {
+            "pages": [
+              174
+            ],
+            "quote": "She was died last year."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 14,
+        "t": "She was died last year.",
+        "ok": false
+      },
+      "correction": "She died last year.",
+      "explanation": {
+        "it": "Happen, occur e die sono intransitivi in questi usi: non formano questo passivo con was/were.",
+        "en": "Happen, occur and die are intransitive in these uses: they do not form this passive with was/were."
+      }
+    },
+    {
+      "id": "rev-ch14-tf-06",
+      "ch": 14,
+      "type": "tf",
+      "t": "A problem was occurred.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 14,
+        "citations": [
+          {
+            "pages": [
+              174
+            ],
+            "quote": "A problem was occurred."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 14,
+        "t": "A problem was occurred.",
+        "ok": false
+      },
+      "correction": "A problem occurred.",
+      "explanation": {
+        "it": "Happen, occur e die sono intransitivi in questi usi: non formano questo passivo con was/were.",
+        "en": "Happen, occur and die are intransitive in these uses: they do not form this passive with was/were."
+      }
+    },
+    {
+      "id": "rev-ch15-tf-01",
+      "ch": 15,
+      "type": "tf",
+      "t": "If you press this button, the machine stops.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 15,
+        "citations": [
+          {
+            "pages": [
+              178
+            ],
+            "quote": "If you press this button, the machine stops."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 15,
+        "t": "If you press this button, the machine stops.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Lo zero conditional può usare present simple in entrambe le proposizioni per una relazione generale. La proposizione con if può venire prima o dopo.",
+        "en": "A zero conditional can use the present simple in both clauses for a general relationship. The if-clause can come first or last."
+      }
+    },
+    {
+      "id": "rev-ch15-tf-02",
+      "ch": 15,
+      "type": "tf",
+      "t": "The machine stops if you press this button.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 15,
+        "citations": [
+          {
+            "pages": [
+              178
+            ],
+            "quote": "The machine stops if you press this button."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 15,
+        "t": "The machine stops if you press this button.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Lo zero conditional può usare present simple in entrambe le proposizioni per una relazione generale. La proposizione con if può venire prima o dopo.",
+        "en": "A zero conditional can use the present simple in both clauses for a general relationship. The if-clause can come first or last."
+      }
+    },
+    {
+      "id": "rev-ch15-tf-03",
+      "ch": 15,
+      "type": "tf",
+      "t": "Ice melts if you leave it in the sun.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 15,
+        "citations": [
+          {
+            "pages": [
+              178
+            ],
+            "quote": "Ice melts if you leave it in the sun."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 15,
+        "t": "Ice melts if you leave it in the sun.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Lo zero conditional può usare present simple in entrambe le proposizioni per una relazione generale. La proposizione con if può venire prima o dopo.",
+        "en": "A zero conditional can use the present simple in both clauses for a general relationship. The if-clause can come first or last."
+      }
+    },
+    {
+      "id": "rev-ch15-tf-04",
+      "ch": 15,
+      "type": "tf",
+      "t": "If I drink coffee late at night, I can’t sleep.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 15,
+        "citations": [
+          {
+            "pages": [
+              178
+            ],
+            "quote": "If I drink coffee late at night, I can’t sleep."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 15,
+        "t": "If I drink coffee late at night, I can’t sleep.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Lo zero conditional può usare present simple in entrambe le proposizioni per una relazione generale. La proposizione con if può venire prima o dopo.",
+        "en": "A zero conditional can use the present simple in both clauses for a general relationship. The if-clause can come first or last."
+      }
+    },
+    {
+      "id": "rev-ch15-tf-05",
+      "ch": 15,
+      "type": "tf",
+      "t": "If it will rain, I’ll stay home.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 15,
+        "citations": [
+          {
+            "pages": [
+              180
+            ],
+            "quote": "If it will rain, I’ll stay home."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 15,
+        "t": "If it will rain, I’ll stay home.",
+        "ok": false
+      },
+      "correction": "If it rains, I’ll stay home.",
+      "explanation": {
+        "it": "In questa condizione futura ordinaria la proposizione con if usa il presente; will va nella conseguenza. Non è un divieto assoluto di ogni possibile uso di will dopo if.",
+        "en": "In this ordinary future condition, the if-clause uses a present form; will goes in the result. This is not a ban on every possible use of will after if."
+      }
+    },
+    {
+      "id": "rev-ch15-tf-06",
+      "ch": 15,
+      "type": "tf",
+      "t": "If I would have time, I would call you.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 15,
+        "citations": [
+          {
+            "pages": [
+              187
+            ],
+            "quote": "If I would have time, I would call you."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 15,
+        "t": "If I would have time, I would call you.",
+        "ok": false
+      },
+      "correction": "If I had time, I would call you.",
+      "explanation": {
+        "it": "Per questa condizione ipotetica presente si usa if + past simple, con would + forma base nella conseguenza.",
+        "en": "For this hypothetical present condition, use if + past simple and would + the base form in the result."
+      }
+    },
+    {
+      "id": "rev-ch16-tf-01",
+      "ch": 16,
+      "type": "tf",
+      "t": "She said (that) she was tired.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 16,
+        "citations": [
+          {
+            "pages": [
+              191
+            ],
+            "quote": "She said (that) she was tired."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 16,
+        "t": "She said (that) she was tired.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo un reporting verb passato, il backshift può essere appropriato: She said she was tired è una costruzione corretta, non l’unica possibile in tutti i contesti.",
+        "en": "After a past reporting verb, backshift may be appropriate: She said she was tired is correct, but it is not the only possible form in every context."
+      }
+    },
+    {
+      "id": "rev-ch16-tf-02",
+      "ch": 16,
+      "type": "tf",
+      "t": "Tom asked where the station was.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 16,
+        "citations": [
+          {
+            "pages": [
+              191
+            ],
+            "quote": "Tom asked where the station was."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 16,
+        "t": "Tom asked where the station was.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Una domanda indiretta usa l’ordine da frase dichiarativa: where + soggetto + verbo, senza did o inversione.",
+        "en": "An indirect question uses statement word order: where + subject + verb, without did or subject–verb inversion."
+      }
+    },
+    {
+      "id": "rev-ch16-tf-03",
+      "ch": 16,
+      "type": "tf",
+      "t": "She says she is tired.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 16,
+        "citations": [
+          {
+            "pages": [
+              193
+            ],
+            "quote": "She says she is tired."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 16,
+        "t": "She says she is tired.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Con il reporting verb al presente, come says, non serve applicare automaticamente il backshift.",
+        "en": "With a present reporting verb such as says, do not automatically apply backshift."
+      }
+    },
+    {
+      "id": "rev-ch16-tf-04",
+      "ch": 16,
+      "type": "tf",
+      "t": "She asked where did I live.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 16,
+        "citations": [
+          {
+            "pages": [
+              196
+            ],
+            "quote": "She asked where did I live."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 16,
+        "t": "She asked where did I live.",
+        "ok": false
+      },
+      "correction": "She asked where I lived.",
+      "explanation": {
+        "it": "Una domanda indiretta usa l’ordine da frase dichiarativa: where + soggetto + verbo, senza did o inversione.",
+        "en": "An indirect question uses statement word order: where + subject + verb, without did or subject–verb inversion."
+      }
+    },
+    {
+      "id": "rev-ch16-tf-05",
+      "ch": 16,
+      "type": "tf",
+      "t": "She told she was busy.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 16,
+        "citations": [
+          {
+            "pages": [
+              198
+            ],
+            "quote": "She told she was busy."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 16,
+        "t": "She told she was busy.",
+        "ok": false
+      },
+      "correction": "She told me she was busy.",
+      "explanation": {
+        "it": "Tell in questo uso richiede un destinatario: She told me she was busy. In alternativa si può usare She said she was busy.",
+        "en": "Tell in this use needs a recipient: She told me she was busy. Alternatively, say She said she was busy."
+      }
+    },
+    {
+      "id": "rev-ch16-tf-06",
+      "ch": 16,
+      "type": "tf",
+      "t": "I don’t know where is he.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 16,
+        "citations": [
+          {
+            "pages": [
+              199
+            ],
+            "quote": "I don’t know where is he."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 16,
+        "t": "I don’t know where is he.",
+        "ok": false
+      },
+      "correction": "I don’t know where he is.",
+      "explanation": {
+        "it": "Una domanda indiretta usa l’ordine da frase dichiarativa: where + soggetto + verbo, senza did o inversione.",
+        "en": "An indirect question uses statement word order: where + subject + verb, without did or subject–verb inversion."
+      }
+    },
+    {
+      "id": "rev-ch17-tf-01",
+      "ch": 17,
+      "type": "tf",
+      "t": "Swimming is good exercise.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 17,
+        "citations": [
+          {
+            "pages": [
+              202
+            ],
+            "quote": "Swimming is good exercise."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 17,
+        "t": "Swimming is good exercise.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Una forma in -ing può funzionare da soggetto: Swimming o Learning a language formano qui un soggetto singolare.",
+        "en": "An -ing form can function as a subject: Swimming or Learning a language forms a singular subject here."
+      }
+    },
+    {
+      "id": "rev-ch17-tf-02",
+      "ch": 17,
+      "type": "tf",
+      "t": "I want to leave.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 17,
+        "citations": [
+          {
+            "pages": [
+              202
+            ],
+            "quote": "I want to leave."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 17,
+        "t": "I want to leave.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Want si costruisce qui con to + infinito: I want to leave.",
+        "en": "Want takes a to-infinitive here: I want to leave."
+      }
+    },
+    {
+      "id": "rev-ch17-tf-03",
+      "ch": 17,
+      "type": "tf",
+      "t": "Learning a language takes time.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 17,
+        "citations": [
+          {
+            "pages": [
+              203
+            ],
+            "quote": "Learning a language takes time."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 17,
+        "t": "Learning a language takes time.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Una forma in -ing può funzionare da soggetto: Swimming o Learning a language formano qui un soggetto singolare.",
+        "en": "An -ing form can function as a subject: Swimming or Learning a language forms a singular subject here."
+      }
+    },
+    {
+      "id": "rev-ch17-tf-04",
+      "ch": 17,
+      "type": "tf",
+      "t": "She is good at to cook.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 17,
+        "citations": [
+          {
+            "pages": [
+              203
+            ],
+            "quote": "She is good at to cook."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 17,
+        "t": "She is good at to cook.",
+        "ok": false
+      },
+      "correction": "She is good at cooking.",
+      "explanation": {
+        "it": "Dopo una preposizione si usa qui la forma in -ing. Anche to in look forward to è una preposizione, non il to dell’infinito.",
+        "en": "After a preposition, use an -ing form here. To in look forward to is also a preposition, not the infinitive marker."
+      }
+    },
+    {
+      "id": "rev-ch17-tf-05",
+      "ch": 17,
+      "type": "tf",
+      "t": "I look forward to meet you.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 17,
+        "citations": [
+          {
+            "pages": [
+              203
+            ],
+            "quote": "I look forward to meet you."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 17,
+        "t": "I look forward to meet you.",
+        "ok": false
+      },
+      "correction": "I look forward to meeting you.",
+      "explanation": {
+        "it": "Dopo una preposizione si usa qui la forma in -ing. Anche to in look forward to è una preposizione, non il to dell’infinito.",
+        "en": "After a preposition, use an -ing form here. To in look forward to is also a preposition, not the infinitive marker."
+      }
+    },
+    {
+      "id": "rev-ch17-tf-06",
+      "ch": 17,
+      "type": "tf",
+      "t": "I enjoy to swim.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 17,
+        "citations": [
+          {
+            "pages": [
+              204
+            ],
+            "quote": "I enjoy to swim."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 17,
+        "t": "I enjoy to swim.",
+        "ok": false
+      },
+      "correction": "I enjoy swimming.",
+      "explanation": {
+        "it": "Enjoy è seguito qui dal gerundio: I enjoy swimming, non I enjoy to swim.",
+        "en": "Enjoy is followed by a gerund here: I enjoy swimming, not I enjoy to swim."
+      }
+    },
+    {
+      "id": "rev-ch18-tf-01",
+      "ch": 18,
+      "type": "tf",
+      "t": "Please look up the word in a dictionary.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 18,
+        "citations": [
+          {
+            "pages": [
+              214
+            ],
+            "quote": "Please look up the word in a dictionary."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 18,
+        "t": "Please look up the word in a dictionary.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Look up the word significa cercare la parola in una fonte di consultazione. Questo phrasal verb è separabile.",
+        "en": "Look up the word means find the word in a reference source. This phrasal verb is separable."
+      }
+    },
+    {
+      "id": "rev-ch18-tf-02",
+      "ch": 18,
+      "type": "tf",
+      "t": "Don’t give up — you’re nearly finished!",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 18,
+        "citations": [
+          {
+            "pages": [
+              214
+            ],
+            "quote": "Don’t give up — you’re nearly finished!"
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 18,
+        "t": "Don’t give up — you’re nearly finished!",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Give up significa qui arrendersi. L’imperativo negativo don’t give up è formato correttamente.",
+        "en": "Give up means stop trying here. The negative imperative don’t give up is correctly formed."
+      }
+    },
+    {
+      "id": "rev-ch18-tf-03",
+      "ch": 18,
+      "type": "tf",
+      "t": "We had to put off the meeting until Friday.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 18,
+        "citations": [
+          {
+            "pages": [
+              214
+            ],
+            "quote": "We had to put off the meeting until Friday."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 18,
+        "t": "We had to put off the meeting until Friday.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Put off the meeting significa rinviare la riunione; put off è un phrasal verb separabile.",
+        "en": "Put off the meeting means postpone the meeting; put off is a separable phrasal verb."
+      }
+    },
+    {
+      "id": "rev-ch18-tf-04",
+      "ch": 18,
+      "type": "tf",
+      "t": "Turn off it.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 18,
+        "citations": [
+          {
+            "pages": [
+              217
+            ],
+            "quote": "Turn off it."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 18,
+        "t": "Turn off it.",
+        "ok": false
+      },
+      "correction": "Turn it off.",
+      "explanation": {
+        "it": "Con questi phrasal verb separabili, il pronome oggetto va fra verbo e particella: turn it off, throw them away.",
+        "en": "With these separable phrasal verbs, an object pronoun goes between verb and particle: turn it off, throw them away."
+      }
+    },
+    {
+      "id": "rev-ch18-tf-05",
+      "ch": 18,
+      "type": "tf",
+      "t": "Throw away them.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 18,
+        "citations": [
+          {
+            "pages": [
+              217
+            ],
+            "quote": "Throw away them."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 18,
+        "t": "Throw away them.",
+        "ok": false
+      },
+      "correction": "Throw them away.",
+      "explanation": {
+        "it": "Con questi phrasal verb separabili, il pronome oggetto va fra verbo e particella: turn it off, throw them away.",
+        "en": "With these separable phrasal verbs, an object pronoun goes between verb and particle: turn it off, throw them away."
+      }
+    },
+    {
+      "id": "rev-ch18-tf-06",
+      "ch": 18,
+      "type": "tf",
+      "t": "She looks them after.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 18,
+        "citations": [
+          {
+            "pages": [
+              217
+            ],
+            "quote": "She looks them after."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 18,
+        "t": "She looks them after.",
+        "ok": false
+      },
+      "correction": "She looks after them.",
+      "explanation": {
+        "it": "Look after è inseparabile in questo significato: il pronome segue after, come in She looks after them.",
+        "en": "Look after is inseparable in this meaning: the pronoun follows after, as in She looks after them."
+      }
+    },
+    {
+      "id": "rev-ch19-tf-01",
+      "ch": 19,
+      "type": "tf",
+      "t": "The child is happy.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 19,
+        "citations": [
+          {
+            "pages": [
+              229
+            ],
+            "quote": "The child is happy."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 19,
+        "t": "The child is happy.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo be, seem, look, taste o sound usati come linking verb, un aggettivo può descrivere il soggetto: happy, interesting, tired, delicious, great o beautiful.",
+        "en": "After be, seem, look, taste or sound used as linking verbs, an adjective can describe the subject: happy, interesting, tired, delicious, great or beautiful."
+      }
+    },
+    {
+      "id": "rev-ch19-tf-02",
+      "ch": 19,
+      "type": "tf",
+      "t": "This book seems interesting.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 19,
+        "citations": [
+          {
+            "pages": [
+              230
+            ],
+            "quote": "This book seems interesting."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 19,
+        "t": "This book seems interesting.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo be, seem, look, taste o sound usati come linking verb, un aggettivo può descrivere il soggetto: happy, interesting, tired, delicious, great o beautiful.",
+        "en": "After be, seem, look, taste or sound used as linking verbs, an adjective can describe the subject: happy, interesting, tired, delicious, great or beautiful."
+      }
+    },
+    {
+      "id": "rev-ch19-tf-03",
+      "ch": 19,
+      "type": "tf",
+      "t": "She looks tired.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 19,
+        "citations": [
+          {
+            "pages": [
+              230
+            ],
+            "quote": "She looks tired."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 19,
+        "t": "She looks tired.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo be, seem, look, taste o sound usati come linking verb, un aggettivo può descrivere il soggetto: happy, interesting, tired, delicious, great o beautiful.",
+        "en": "After be, seem, look, taste or sound used as linking verbs, an adjective can describe the subject: happy, interesting, tired, delicious, great or beautiful."
+      }
+    },
+    {
+      "id": "rev-ch19-tf-04",
+      "ch": 19,
+      "type": "tf",
+      "t": "The soup tastes delicious.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 19,
+        "citations": [
+          {
+            "pages": [
+              230
+            ],
+            "quote": "The soup tastes delicious."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 19,
+        "t": "The soup tastes delicious.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo be, seem, look, taste o sound usati come linking verb, un aggettivo può descrivere il soggetto: happy, interesting, tired, delicious, great o beautiful.",
+        "en": "After be, seem, look, taste or sound used as linking verbs, an adjective can describe the subject: happy, interesting, tired, delicious, great or beautiful."
+      }
+    },
+    {
+      "id": "rev-ch19-tf-05",
+      "ch": 19,
+      "type": "tf",
+      "t": "You look great.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 19,
+        "citations": [
+          {
+            "pages": [
+              230
+            ],
+            "quote": "You look great."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 19,
+        "t": "You look great.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo be, seem, look, taste o sound usati come linking verb, un aggettivo può descrivere il soggetto: happy, interesting, tired, delicious, great o beautiful.",
+        "en": "After be, seem, look, taste or sound used as linking verbs, an adjective can describe the subject: happy, interesting, tired, delicious, great or beautiful."
+      }
+    },
+    {
+      "id": "rev-ch19-tf-06",
+      "ch": 19,
+      "type": "tf",
+      "t": "The music sounds beautiful.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 19,
+        "citations": [
+          {
+            "pages": [
+              230
+            ],
+            "quote": "The music sounds beautiful."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 19,
+        "t": "The music sounds beautiful.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Dopo be, seem, look, taste o sound usati come linking verb, un aggettivo può descrivere il soggetto: happy, interesting, tired, delicious, great o beautiful.",
+        "en": "After be, seem, look, taste or sound used as linking verbs, an adjective can describe the subject: happy, interesting, tired, delicious, great or beautiful."
+      }
+    },
+    {
+      "id": "rev-ch20-tf-01",
+      "ch": 20,
+      "type": "tf",
+      "t": "My sister is taller than me.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 20,
+        "citations": [
+          {
+            "pages": [
+              242
+            ],
+            "quote": "My sister is taller than me."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 20,
+        "t": "My sister is taller than me.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Taller è il comparativo regolare di tall e può essere seguito da than.",
+        "en": "Taller is the regular comparative of tall and may be followed by than."
+      }
+    },
+    {
+      "id": "rev-ch20-tf-02",
+      "ch": 20,
+      "type": "tf",
+      "t": "My sister is the tallest in the family.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 20,
+        "citations": [
+          {
+            "pages": [
+              242
+            ],
+            "quote": "My sister is the tallest in the family."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 20,
+        "t": "My sister is the tallest in the family.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Con questo superlativo seguito da un nome o da un insieme di riferimento si usa the: the tallest in the family, the best singer in the band.",
+        "en": "With this superlative followed by a noun or a comparison group, use the: the tallest in the family, the best singer in the band."
+      }
+    },
+    {
+      "id": "rev-ch20-tf-03",
+      "ch": 20,
+      "type": "tf",
+      "t": "This is the best coffee I’ve had all week.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 20,
+        "citations": [
+          {
+            "pages": [
+              245
+            ],
+            "quote": "This is the best coffee I’ve had all week."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 20,
+        "t": "This is the best coffee I’ve had all week.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Best e worse sono forme irregolari: good → better → best; bad → worse → worst.",
+        "en": "Best and worse are irregular forms: good → better → best; bad → worse → worst."
+      }
+    },
+    {
+      "id": "rev-ch20-tf-04",
+      "ch": 20,
+      "type": "tf",
+      "t": "My headache is worse today than yesterday.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 20,
+        "citations": [
+          {
+            "pages": [
+              245
+            ],
+            "quote": "My headache is worse today than yesterday."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 20,
+        "t": "My headache is worse today than yesterday.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Best e worse sono forme irregolari: good → better → best; bad → worse → worst.",
+        "en": "Best and worse are irregular forms: good → better → best; bad → worse → worst."
+      }
+    },
+    {
+      "id": "rev-ch20-tf-05",
+      "ch": 20,
+      "type": "tf",
+      "t": "She is the beautifulest girl in the class.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 20,
+        "citations": [
+          {
+            "pages": [
+              244
+            ],
+            "quote": "She is the beautifulest girl in the class."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 20,
+        "t": "She is the beautifulest girl in the class.",
+        "ok": false
+      },
+      "correction": "She is the most beautiful girl in the class.",
+      "explanation": {
+        "it": "Il superlativo standard di beautiful è most beautiful, non beautifulest.",
+        "en": "The standard superlative of beautiful is most beautiful, not beautifulest."
+      }
+    },
+    {
+      "id": "rev-ch20-tf-06",
+      "ch": 20,
+      "type": "tf",
+      "t": "She is best singer in the band.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 20,
+        "citations": [
+          {
+            "pages": [
+              250
+            ],
+            "quote": "She is best singer in the band."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 20,
+        "t": "She is best singer in the band.",
+        "ok": false
+      },
+      "correction": "She is the best singer in the band.",
+      "explanation": {
+        "it": "Con questo superlativo seguito da un nome o da un insieme di riferimento si usa the: the tallest in the family, the best singer in the band.",
+        "en": "With this superlative followed by a noun or a comparison group, use the: the tallest in the family, the best singer in the band."
+      }
+    },
+    {
+      "id": "rev-ch21-tf-01",
+      "ch": 21,
+      "type": "tf",
+      "t": "The cat sat on the box.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 21,
+        "citations": [
+          {
+            "pages": [
+              253
+            ],
+            "quote": "The cat sat on the box."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 21,
+        "t": "The cat sat on the box.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "On può introdurre la superficie su cui si trova qualcosa: on the box è una costruzione corretta.",
+        "en": "On can introduce the surface supporting something: on the box is a correct construction."
+      }
+    },
+    {
+      "id": "rev-ch21-tf-02",
+      "ch": 21,
+      "type": "tf",
+      "t": "She is good at languages.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 21,
+        "citations": [
+          {
+            "pages": [
+              254
+            ],
+            "quote": "She is good at languages."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 21,
+        "t": "She is good at languages.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Good at e thank you for sono combinazioni standard; dopo for può comparire una forma in -ing.",
+        "en": "Good at and thank you for are standard combinations; for may be followed by an -ing form."
+      }
+    },
+    {
+      "id": "rev-ch21-tf-03",
+      "ch": 21,
+      "type": "tf",
+      "t": "Thank you for inviting me.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 21,
+        "citations": [
+          {
+            "pages": [
+              254
+            ],
+            "quote": "Thank you for inviting me."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 21,
+        "t": "Thank you for inviting me.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Good at e thank you for sono combinazioni standard; dopo for può comparire una forma in -ing.",
+        "en": "Good at and thank you for are standard combinations; for may be followed by an -ing form."
+      }
+    },
+    {
+      "id": "rev-ch21-tf-04",
+      "ch": 21,
+      "type": "tf",
+      "t": "He is good at to swim.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 21,
+        "citations": [
+          {
+            "pages": [
+              254
+            ],
+            "quote": "He is good at to swim."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 21,
+        "t": "He is good at to swim.",
+        "ok": false
+      },
+      "correction": "He is good at swimming.",
+      "explanation": {
+        "it": "Dopo una preposizione si usa qui la forma in -ing. Anche to in look forward to è una preposizione, non il to dell’infinito.",
+        "en": "After a preposition, use an -ing form here. To in look forward to is also a preposition, not the infinitive marker."
+      }
+    },
+    {
+      "id": "rev-ch21-tf-05",
+      "ch": 21,
+      "type": "tf",
+      "t": "I’m interested in to learn Spanish.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 21,
+        "citations": [
+          {
+            "pages": [
+              254
+            ],
+            "quote": "I’m interested in to learn Spanish."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 21,
+        "t": "I’m interested in to learn Spanish.",
+        "ok": false
+      },
+      "correction": "I’m interested in learning Spanish.",
+      "explanation": {
+        "it": "Dopo una preposizione si usa qui la forma in -ing. Anche to in look forward to è una preposizione, non il to dell’infinito.",
+        "en": "After a preposition, use an -ing form here. To in look forward to is also a preposition, not the infinitive marker."
+      }
+    },
+    {
+      "id": "rev-ch21-tf-06",
+      "ch": 21,
+      "type": "tf",
+      "t": "I look forward to hear from you.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 21,
+        "citations": [
+          {
+            "pages": [
+              254
+            ],
+            "quote": "I look forward to hear from you."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 21,
+        "t": "I look forward to hear from you.",
+        "ok": false
+      },
+      "correction": "I look forward to hearing from you.",
+      "explanation": {
+        "it": "Dopo una preposizione si usa qui la forma in -ing. Anche to in look forward to è una preposizione, non il to dell’infinito.",
+        "en": "After a preposition, use an -ing form here. To in look forward to is also a preposition, not the infinitive marker."
+      }
+    },
+    {
+      "id": "rev-ch22-tf-01",
+      "ch": 22,
+      "type": "tf",
+      "t": "I knocked on the door, but no one answered.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 22,
+        "citations": [
+          {
+            "pages": [
+              268
+            ],
+            "quote": "I knocked on the door, but no one answered."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 22,
+        "t": "I knocked on the door, but no one answered.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "But collega un contrasto; because introduce una causa. Le proposizioni dell’esempio formano una frase completa.",
+        "en": "But connects a contrast; because introduces a reason. The clauses in this example form a complete sentence."
+      }
+    },
+    {
+      "id": "rev-ch22-tf-02",
+      "ch": 22,
+      "type": "tf",
+      "t": "I knocked on the door but heard nothing.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 22,
+        "citations": [
+          {
+            "pages": [
+              268
+            ],
+            "quote": "I knocked on the door but heard nothing."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 22,
+        "t": "I knocked on the door but heard nothing.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "But collega un contrasto; because introduce una causa. Le proposizioni dell’esempio formano una frase completa.",
+        "en": "But connects a contrast; because introduces a reason. The clauses in this example form a complete sentence."
+      }
+    },
+    {
+      "id": "rev-ch22-tf-03",
+      "ch": 22,
+      "type": "tf",
+      "t": "Because it was raining, we stayed inside.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 22,
+        "citations": [
+          {
+            "pages": [
+              269
+            ],
+            "quote": "Because it was raining, we stayed inside."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 22,
+        "t": "Because it was raining, we stayed inside.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "But collega un contrasto; because introduce una causa. Le proposizioni dell’esempio formano una frase completa.",
+        "en": "But connects a contrast; because introduces a reason. The clauses in this example form a complete sentence."
+      }
+    },
+    {
+      "id": "rev-ch22-tf-04",
+      "ch": 22,
+      "type": "tf",
+      "t": "Despite it was late, we kept talking.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 22,
+        "citations": [
+          {
+            "pages": [
+              275
+            ],
+            "quote": "Despite it was late, we kept talking."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 22,
+        "t": "Despite it was late, we kept talking.",
+        "ok": false
+      },
+      "correction": "Although it was late, we kept talking.",
+      "explanation": {
+        "it": "Despite è seguito qui da un sintagma nominale o da -ing; although richiede una proposizione con soggetto e verbo.",
+        "en": "Despite is followed here by a noun phrase or an -ing form; although requires a clause with a subject and verb."
+      }
+    },
+    {
+      "id": "rev-ch22-tf-05",
+      "ch": 22,
+      "type": "tf",
+      "t": "Although the late hour, we kept talking.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 22,
+        "citations": [
+          {
+            "pages": [
+              275
+            ],
+            "quote": "Although the late hour, we kept talking."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 22,
+        "t": "Although the late hour, we kept talking.",
+        "ok": false
+      },
+      "correction": "Despite the late hour, we kept talking.",
+      "explanation": {
+        "it": "Despite è seguito qui da un sintagma nominale o da -ing; although richiede una proposizione con soggetto e verbo.",
+        "en": "Despite is followed here by a noun phrase or an -ing form; although requires a clause with a subject and verb."
+      }
+    },
+    {
+      "id": "rev-ch22-tf-06",
+      "ch": 22,
+      "type": "tf",
+      "t": "Although it was late, but we stayed.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 22,
+        "citations": [
+          {
+            "pages": [
+              277
+            ],
+            "quote": "Although it was late, but we stayed."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 22,
+        "t": "Although it was late, but we stayed.",
+        "ok": false
+      },
+      "correction": "Although it was late, we stayed.",
+      "explanation": {
+        "it": "In questa costruzione standard non si usano insieme although e but per collegare le stesse due proposizioni.",
+        "en": "In this standard construction, do not use both although and but to connect the same two clauses."
+      }
+    },
+    {
+      "id": "rev-ch23-tf-01",
+      "ch": 23,
+      "type": "tf",
+      "t": "The man who lives next door is a firefighter.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 23,
+        "citations": [
+          {
+            "pages": [
+              281
+            ],
+            "quote": "The man who lives next door is a firefighter."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 23,
+        "t": "The man who lives next door is a firefighter.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Who può riferirsi a una persona; that può introdurre una relativa defining. La relativa specifica qui il nome precedente.",
+        "en": "Who may refer to a person; that may introduce a defining relative clause. The relative clause specifies the preceding noun here."
+      }
+    },
+    {
+      "id": "rev-ch23-tf-02",
+      "ch": 23,
+      "type": "tf",
+      "t": "I returned the book that I had borrowed.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 23,
+        "citations": [
+          {
+            "pages": [
+              282
+            ],
+            "quote": "I returned the book that I had borrowed."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 23,
+        "t": "I returned the book that I had borrowed.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Who può riferirsi a una persona; that può introdurre una relativa defining. La relativa specifica qui il nome precedente.",
+        "en": "Who may refer to a person; that may introduce a defining relative clause. The relative clause specifies the preceding noun here."
+      }
+    },
+    {
+      "id": "rev-ch23-tf-03",
+      "ch": 23,
+      "type": "tf",
+      "t": "People who exercise regularly tend to sleep better.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 23,
+        "citations": [
+          {
+            "pages": [
+              282
+            ],
+            "quote": "People who exercise regularly tend to sleep better."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 23,
+        "t": "People who exercise regularly tend to sleep better.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Who può riferirsi a una persona; that può introdurre una relativa defining. La relativa specifica qui il nome precedente.",
+        "en": "Who may refer to a person; that may introduce a defining relative clause. The relative clause specifies the preceding noun here."
+      }
+    },
+    {
+      "id": "rev-ch23-tf-04",
+      "ch": 23,
+      "type": "tf",
+      "t": "My laptop, that I bought last year, broke.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 23,
+        "citations": [
+          {
+            "pages": [
+              283
+            ],
+            "quote": "My laptop, that I bought last year, broke."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 23,
+        "t": "My laptop, that I bought last year, broke.",
+        "ok": false
+      },
+      "correction": "My laptop, which I bought last year, broke.",
+      "explanation": {
+        "it": "Una relativa non-defining delimitata da virgole usa who/which, non that.",
+        "en": "A non-defining relative clause set off by commas uses who/which, not that."
+      }
+    },
+    {
+      "id": "rev-ch23-tf-05",
+      "ch": 23,
+      "type": "tf",
+      "t": "The man who’s car was stolen called the police.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 23,
+        "citations": [
+          {
+            "pages": [
+              285
+            ],
+            "quote": "The man who’s car was stolen called the police."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 23,
+        "t": "The man who’s car was stolen called the police.",
+        "ok": false
+      },
+      "correction": "The man whose car was stolen called the police.",
+      "explanation": {
+        "it": "Whose indica possesso; who’s significa who is o who has e non può determinare car in questa frase.",
+        "en": "Whose expresses possession; who’s means who is or who has and cannot determine car in this sentence."
+      }
+    },
+    {
+      "id": "rev-ch23-tf-06",
+      "ch": 23,
+      "type": "tf",
+      "t": "He arrived late, what annoyed me.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 23,
+        "citations": [
+          {
+            "pages": [
+              287
+            ],
+            "quote": "He arrived late, what annoyed me."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 23,
+        "t": "He arrived late, what annoyed me.",
+        "ok": false
+      },
+      "correction": "He arrived late, which annoyed me.",
+      "explanation": {
+        "it": "Per riferirsi all’intero fatto precedente si usa qui which, non what.",
+        "en": "To refer to the whole preceding event, use which here, not what."
+      }
+    },
+    {
+      "id": "rev-ch24-tf-01",
+      "ch": 24,
+      "type": "tf",
+      "t": "I don’t like coffee.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 24,
+        "citations": [
+          {
+            "pages": [
+              293
+            ],
+            "quote": "I don’t like coffee."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 24,
+        "t": "I don’t like coffee.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Don’t/doesn’t/didn’t sono seguiti dalla forma base del verbo principale.",
+        "en": "Don’t/doesn’t/didn’t are followed by the base form of the main verb."
+      }
+    },
+    {
+      "id": "rev-ch24-tf-02",
+      "ch": 24,
+      "type": "tf",
+      "t": "She doesn’t work here.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 24,
+        "citations": [
+          {
+            "pages": [
+              293
+            ],
+            "quote": "She doesn’t work here."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 24,
+        "t": "She doesn’t work here.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Don’t/doesn’t/didn’t sono seguiti dalla forma base del verbo principale.",
+        "en": "Don’t/doesn’t/didn’t are followed by the base form of the main verb."
+      }
+    },
+    {
+      "id": "rev-ch24-tf-03",
+      "ch": 24,
+      "type": "tf",
+      "t": "They didn’t call.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 24,
+        "citations": [
+          {
+            "pages": [
+              293
+            ],
+            "quote": "They didn’t call."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 24,
+        "t": "They didn’t call.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Don’t/doesn’t/didn’t sono seguiti dalla forma base del verbo principale.",
+        "en": "Don’t/doesn’t/didn’t are followed by the base form of the main verb."
+      }
+    },
+    {
+      "id": "rev-ch24-tf-04",
+      "ch": 24,
+      "type": "tf",
+      "t": "I don’t likes coffee.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 24,
+        "citations": [
+          {
+            "pages": [
+              293
+            ],
+            "quote": "I don’t likes coffee."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 24,
+        "t": "I don’t likes coffee.",
+        "ok": false
+      },
+      "correction": "I don’t like coffee.",
+      "explanation": {
+        "it": "Don’t/doesn’t/didn’t sono seguiti dalla forma base del verbo principale.",
+        "en": "Don’t/doesn’t/didn’t are followed by the base form of the main verb."
+      }
+    },
+    {
+      "id": "rev-ch24-tf-05",
+      "ch": 24,
+      "type": "tf",
+      "t": "He doesn’t likes it.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 24,
+        "citations": [
+          {
+            "pages": [
+              293
+            ],
+            "quote": "He doesn’t likes it."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 24,
+        "t": "He doesn’t likes it.",
+        "ok": false
+      },
+      "correction": "He doesn’t like it.",
+      "explanation": {
+        "it": "Don’t/doesn’t/didn’t sono seguiti dalla forma base del verbo principale.",
+        "en": "Don’t/doesn’t/didn’t are followed by the base form of the main verb."
+      }
+    },
+    {
+      "id": "rev-ch24-tf-06",
+      "ch": 24,
+      "type": "tf",
+      "t": "We didn’t went.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 24,
+        "citations": [
+          {
+            "pages": [
+              293
+            ],
+            "quote": "We didn’t went."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 24,
+        "t": "We didn’t went.",
+        "ok": false
+      },
+      "correction": "We didn’t go.",
+      "explanation": {
+        "it": "Dopo did o didn’t il verbo principale è alla forma base: go, come o buy, non went, came o bought.",
+        "en": "After did or didn’t, the main verb takes its base form: go, come or buy, not went, came or bought."
+      }
+    },
+    {
+      "id": "rev-ch25-tf-01",
+      "ch": 25,
+      "type": "tf",
+      "t": "She lives in Lisbon.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 25,
+        "citations": [
+          {
+            "pages": [
+              304
+            ],
+            "quote": "She lives in Lisbon."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 25,
+        "t": "She lives in Lisbon.",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Una dichiarazione ordinaria termina qui con un punto; una domanda diretta come Where do you live? richiede il punto interrogativo.",
+        "en": "An ordinary statement ends with a full stop here; a direct question such as Where do you live? takes a question mark."
+      }
+    },
+    {
+      "id": "rev-ch25-tf-02",
+      "ch": 25,
+      "type": "tf",
+      "t": "Where do you live?",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 25,
+        "citations": [
+          {
+            "pages": [
+              304
+            ],
+            "quote": "Where do you live?"
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 25,
+        "t": "Where do you live?",
+        "ok": true
+      },
+      "explanation": {
+        "it": "Una dichiarazione ordinaria termina qui con un punto; una domanda diretta come Where do you live? richiede il punto interrogativo.",
+        "en": "An ordinary statement ends with a full stop here; a direct question such as Where do you live? takes a question mark."
+      }
+    },
+    {
+      "id": "rev-ch25-tf-03",
+      "ch": 25,
+      "type": "tf",
+      "t": "I asked where she lived.",
+      "ok": true,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 25,
+        "citations": [
+          {
+            "pages": [
+              304
+            ],
+            "quote": "I asked where she lived."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 25,
+        "t": "I asked where she lived.",
+        "ok": true
+      },
+      "context": {
+        "it": "È una dichiarazione che riporta una domanda, non una domanda-eco.",
+        "en": "This is a statement reporting a question, not an echo question."
+      },
+      "explanation": {
+        "it": "Qui I asked where she lived è una dichiarazione che riporta una domanda: non si conclude con ? nel significato richiesto.",
+        "en": "Here I asked where she lived is a statement reporting a question: it does not end in ? in the intended meaning."
+      }
+    },
+    {
+      "id": "rev-ch25-tf-04",
+      "ch": 25,
+      "type": "tf",
+      "t": "I asked where she lived?",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 25,
+        "citations": [
+          {
+            "pages": [
+              304
+            ],
+            "quote": "I asked where she lived?"
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 25,
+        "t": "I asked where she lived?",
+        "ok": false
+      },
+      "correction": "I asked where she lived.",
+      "context": {
+        "it": "È una dichiarazione che riporta una domanda, non una domanda-eco.",
+        "en": "This is a statement reporting a question, not an echo question."
+      },
+      "explanation": {
+        "it": "Qui I asked where she lived è una dichiarazione che riporta una domanda: non si conclude con ? nel significato richiesto.",
+        "en": "Here I asked where she lived is a statement reporting a question: it does not end in ? in the intended meaning."
+      }
+    },
+    {
+      "id": "rev-ch25-tf-05",
+      "ch": 25,
+      "type": "tf",
+      "t": "It was late, we went home.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 25,
+        "citations": [
+          {
+            "pages": [
+              307
+            ],
+            "quote": "It was late, we went home."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 25,
+        "t": "It was late, we went home.",
+        "ok": false
+      },
+      "correction": "It was late; we went home.",
+      "context": {
+        "it": "Si richiede la punteggiatura della normale prosa formale.",
+        "en": "Use the punctuation of ordinary formal prose."
+      },
+      "explanation": {
+        "it": "Nella prosa formale richiesta, non si uniscono queste due frasi indipendenti con la sola virgola. Si può usare un punto e virgola, un punto oppure una congiunzione adatta.",
+        "en": "In the requested formal prose, do not join these independent clauses with a comma alone. Use a semicolon, a full stop, or a suitable conjunction."
+      }
+    },
+    {
+      "id": "rev-ch25-tf-06",
+      "ch": 25,
+      "type": "tf",
+      "t": "The dog wagged it’s tail.",
+      "ok": false,
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "verbatim_example",
+        "chapter": 25,
+        "citations": [
+          {
+            "pages": [
+              308
+            ],
+            "quote": "The dog wagged it’s tail."
+          }
+        ]
+      },
+      "legacy_ref": {
+        "ch": 25,
+        "t": "The dog wagged it’s tail.",
+        "ok": false
+      },
+      "correction": "The dog wagged its tail.",
+      "explanation": {
+        "it": "Its senza apostrofo esprime possesso. It’s è una contrazione di it is o it has e qui non può determinare paw o tail.",
+        "en": "Its without an apostrophe expresses possession. It’s contracts it is or it has and cannot determine paw or tail here."
+      }
+    },
+    {
+      "id": "rev-ch11-phone",
+      "ch": 11,
+      "type": "mcq",
+      "q": "“The phone’s ringing.” “OK, I’ll get it.”",
+      "options": [
+        "A decision made at the moment of speaking",
+        "A plan explicitly arranged before the conversation"
+      ],
+      "answer_idx": 0,
+      "context": {
+        "it": "La persona decide di rispondere solo quando sente il telefono. Quale funzione ha qui I’ll get it?",
+        "en": "The speaker decides to answer only on hearing the phone. What is the function of I’ll get it here?"
+      },
+      "explanation": {
+        "it": "Will esprime qui una decisione presa sul momento. La domanda riguarda la funzione nel contesto, non dichiara sgrammaticata ogni alternativa con going to.",
+        "en": "Will expresses an on-the-spot decision here. This question tests its contextual function; it does not declare every alternative with going to ungrammatical."
+      },
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "contextual_reconstruction",
+        "chapter": 11,
+        "citations": [
+          {
+            "pages": [
+              133
+            ],
+            "quote": "“The phone’s ringing.” “OK, I’ll get it.”"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rev-ch11-window",
+      "ch": 11,
+      "type": "mcq",
+      "q": "“It’s cold in here.” “OK, I’ll close the window.”",
+      "options": [
+        "A prediction based on visible evidence",
+        "A spontaneous offer to act"
+      ],
+      "answer_idx": 1,
+      "context": {
+        "it": "La risposta è un’offerta fatta sul momento, senza un piano precedente. Quale descrizione corrisponde a questo uso di will?",
+        "en": "The reply is an on-the-spot offer, with no earlier plan. Which description matches this use of will?"
+      },
+      "explanation": {
+        "it": "I’ll close the window è qui un’offerta spontanea. Il dialogo è stato ricostruito completo; going to non viene etichettato come errore grammaticale assoluto.",
+        "en": "I’ll close the window is a spontaneous offer here. The full dialogue has been restored; going to is not labelled an absolute grammatical error."
+      },
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "contextual_reconstruction",
+        "chapter": 11,
+        "citations": [
+          {
+            "pages": [
+              141
+            ],
+            "quote": "“It’s cold in here.” “OK, I’ll close the window.”"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rev-ch16-direct",
+      "ch": 16,
+      "type": "mcq",
+      "q": "She said, “I am tired.”",
+      "options": [
+        "Direct speech",
+        "An indirect question"
+      ],
+      "answer_idx": 0,
+      "context": {
+        "it": "La frase riproduce le parole pronunciate. Come si chiama questa forma?",
+        "en": "The sentence reproduces the spoken words. What is this form called?"
+      },
+      "explanation": {
+        "it": "È discorso diretto: le parole sono racchiuse fra virgolette complete. She said (that) she was tired sarebbe invece discorso indiretto.",
+        "en": "This is direct speech: the words are enclosed in complete quotation marks. She said (that) she was tired would be reported speech."
+      },
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "contextual_reconstruction",
+        "chapter": 16,
+        "citations": [
+          {
+            "pages": [
+              191
+            ],
+            "quote": "She said, “I am tired.”"
+          },
+          {
+            "pages": [
+              191
+            ],
+            "quote": "She said (that) she was tired."
+          }
+        ]
+      }
+    },
+    {
+      "id": "rev-ch16-station",
+      "ch": 16,
+      "type": "mcq",
+      "q": "Tom asked, “Where is the station?”",
+      "options": [
+        "Tom asked where was the station.",
+        "Tom asked where the station was."
+      ],
+      "answer_idx": 1,
+      "context": {
+        "it": "Riporta la domanda con asked e applica il backshift. Scegli l’ordine standard della domanda indiretta.",
+        "en": "Report the question with asked and apply backshift. Choose standard indirect-question word order."
+      },
+      "explanation": {
+        "it": "La domanda indiretta usa soggetto + verbo: where the station was. Non mantiene l’inversione della domanda diretta.",
+        "en": "The indirect question uses subject + verb: where the station was. It does not retain direct-question inversion."
+      },
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "contextual_reconstruction",
+        "chapter": 16,
+        "citations": [
+          {
+            "pages": [
+              191
+            ],
+            "quote": "Tom asked, “Where is the station?”"
+          },
+          {
+            "pages": [
+              191
+            ],
+            "quote": "Tom asked where the station was."
+          }
+        ]
+      }
+    },
+    {
+      "id": "rev-ch16-warning",
+      "ch": 16,
+      "type": "mcq",
+      "q": "“Don’t touch the screen.”",
+      "options": [
+        "The guide warned us not to touch the screen.",
+        "The guide warned us to not touching the screen."
+      ],
+      "answer_idx": 0,
+      "context": {
+        "it": "La guida rivolge l’avvertimento a noi. Riportalo usando warned us.",
+        "en": "The guide addresses the warning to us. Report it using warned us."
+      },
+      "explanation": {
+        "it": "L’avvertimento negativo si rende con warned us not to + infinito. Dopo to non si usa touching in questa struttura.",
+        "en": "The negative warning is reported as warned us not to + an infinitive. Touching does not follow to in this structure."
+      },
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "contextual_reconstruction",
+        "chapter": 16,
+        "citations": [
+          {
+            "pages": [
+              197
+            ],
+            "quote": "“Don’t touch the screen.” → The guide warned us not to touch the screen."
+          }
+        ]
+      }
+    },
+    {
+      "id": "rev-ch25-quote-question",
+      "ch": 25,
+      "type": "mcq",
+      "q": "James asked, …",
+      "options": [
+        "“Where are you going?”",
+        "“where are you going”?"
+      ],
+      "answer_idx": 0,
+      "context": {
+        "it": "Completa con la domanda diretta citata. Il punto interrogativo appartiene alle parole di James, sia in AmE sia in BrE.",
+        "en": "Complete with the quoted direct question. The question mark belongs to James’s words, in both AmE and BrE."
+      },
+      "explanation": {
+        "it": "La domanda completa inizia con la maiuscola e il punto interrogativo rimane dentro le virgolette perché appartiene alla citazione.",
+        "en": "The complete question starts with a capital and the question mark stays inside the quotation marks because it belongs to the quotation."
+      },
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "contextual_reconstruction",
+        "chapter": 25,
+        "citations": [
+          {
+            "pages": [
+              316
+            ],
+            "quote": "James asked, “Where are you going?”"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rev-ch25-quote-us",
+      "ch": 25,
+      "type": "mcq",
+      "q": "He called it …",
+      "options": [
+        "“brilliant”.",
+        "“brilliant.”"
+      ],
+      "answer_idx": 1,
+      "context": {
+        "it": "Applica la convenzione editoriale americana che colloca il punto finale dentro le virgolette.",
+        "en": "Apply the American publishing convention that places the final period inside quotation marks."
+      },
+      "explanation": {
+        "it": "Secondo la convenzione americana richiesta, il punto precede la virgoletta di chiusura. Non è una regola universale comune a tutte le varietà.",
+        "en": "Under the requested American convention, the period precedes the closing quotation mark. This is not a universal rule shared by all varieties."
+      },
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "contextual_reconstruction",
+        "chapter": 25,
+        "citations": [
+          {
+            "pages": [
+              309
+            ],
+            "quote": "He called it “brilliant.”"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rev-ch25-quote-uk",
+      "ch": 25,
+      "type": "mcq",
+      "q": "He called it … (BrE, logical punctuation)",
+      "options": [
+        "‘brilliant’.",
+        "‘brilliant.’"
+      ],
+      "answer_idx": 0,
+      "context": {
+        "it": "Applica qui la convenzione britannica logica: si cita solo la parola brilliant, senza il punto.",
+        "en": "Apply the British logical convention here: only the word brilliant, without the full stop, is quoted."
+      },
+      "explanation": {
+        "it": "Con la convenzione britannica logica specificata, il punto della frase resta fuori perché non fa parte della parola citata. Le norme redazionali possono variare.",
+        "en": "Under the specified British logical convention, the sentence’s full stop stays outside because it is not part of the quoted word. House styles can vary."
+      },
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "contextual_reconstruction",
+        "chapter": 25,
+        "citations": [
+          {
+            "pages": [
+              309
+            ],
+            "quote": "He called it ‘brilliant’."
+          }
+        ]
+      }
+    },
+    {
+      "id": "rev-ch15-edited-ch15-main-7",
+      "ch": 15,
+      "type": "mcq",
+      "q": "Choose the correct word: I’ll lend you the car (unless / as long as) you don’t drive too fast.",
+      "options": [
+        "unless",
+        "as long as"
+      ],
+      "answer_idx": 1,
+      "context": {
+        "it": "Il proprietario concede l’auto solo a condizione che chi la prende guidi prudentemente. Scegli il connettivo che esprime questa condizione.",
+        "en": "The owner agrees to lend the car only on condition that the borrower drives safely. Choose the connector that expresses this condition."
+      },
+      "explanation": {
+        "it": "As long as significa a condizione che. Nella domanda riscritta il prestito è concesso a condizione di non guidare troppo veloce; unless invertirebbe la condizione.",
+        "en": "As long as means provided that. In the rewritten question the loan is allowed on condition that you do not drive too fast; unless would reverse the condition."
+      },
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "editorial_rewrite",
+        "chapter": 15,
+        "citations": [
+          {
+            "pages": [
+              189
+            ],
+            "quote": "Choose the correct word: I won’t lend you the car (unless / as long as) you don’t drive too fast."
+          }
+        ]
+      },
+      "exercise_ref": {
+        "source_id": "ch15-main-7",
+        "source_q": "Choose the correct word: I won’t lend you the car (unless / as long as) you don’t drive too fast.",
+        "source_answer": "as long as — I won’t lend you the car as long as you don’t drive too fast. (Unless you don’t would create a double negative; the natural alternative would be unless you drive too fast.)",
+        "q": "Choose the correct word: I’ll lend you the car (unless / as long as) you don’t drive too fast.",
+        "answer": "as long as — I’ll lend you the car as long as you don’t drive too fast. The loan is conditional on safe driving. Equivalent: I won’t lend you the car unless you drive safely.",
+        "options": [
+          "unless",
+          "as long as"
+        ],
+        "answer_idx": 1
+      }
+    },
+    {
+      "id": "rev-ch22-edited-ch22-B-5",
+      "ch": 22,
+      "type": "mcq",
+      "q": "(Despite / Although) the heavy traffic, we arrived on time.",
+      "options": [
+        "Despite",
+        "Although"
+      ],
+      "answer_idx": 0,
+      "context": {
+        "it": "Usa il testo corretto editorialmente mostrato qui.",
+        "en": "Use the editorially corrected wording shown here."
+      },
+      "explanation": {
+        "it": "The heavy traffic è un sintagma nominale: richiede despite. Although introduce invece una proposizione, per esempio although the traffic was heavy.",
+        "en": "The heavy traffic is a noun phrase, so it takes despite. Although introduces a clause, for example although the traffic was heavy."
+      },
+      "review_status": "assistant_checked",
+      "source": {
+        "kind": "editorial_rewrite",
+        "chapter": 22,
+        "citations": [
+          {
+            "pages": [
+              278
+            ],
+            "quote": "(Despite / Although) the heavy traffic, we arrived on time."
+          }
+        ]
+      },
+      "exercise_ref": {
+        "source_id": "ch22-B-5",
+        "source_q": "(Despite / Although) the heavy traffic, we arrived on time.",
+        "source_answer": "Although — followed by a clause (the heavy traffic alone would need despite; here the sentence has a noun phrase, so Despite is also acceptable: Despite the heavy traffic). Best single answer for a clause: if the original read the heavy traffic, choose Despite. → Despite the heavy traffic, we arrived on time.",
+        "q": "(Despite / Although) the heavy traffic, we arrived on time.",
+        "answer": "Despite — Despite the heavy traffic, we arrived on time. Despite is followed by the noun phrase the heavy traffic; although would need a clause such as although the traffic was heavy.",
+        "options": [
+          "Despite",
+          "Although"
+        ],
+        "answer_idx": 0
+      }
+    }
+  ]
+}

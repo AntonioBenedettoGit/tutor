@@ -1,0 +1,57 @@
+{
+ "status": "passed",
+ "counts": {
+  "chapters": 25,
+  "examples_ok": 1353,
+  "examples_bad": 242,
+  "fixes": 68,
+  "exercises": 270,
+  "exercises_mcq": 37,
+  "verbs": 145,
+  "glossary": 93
+ },
+ "exercises_by_chapter": {
+  "1": 8,
+  "2": 8,
+  "3": 14,
+  "4": 24,
+  "5": 10,
+  "6": 11,
+  "7": 8,
+  "8": 10,
+  "9": 15,
+  "10": 10,
+  "11": 10,
+  "12": 10,
+  "13": 10,
+  "14": 10,
+  "15": 10,
+  "16": 10,
+  "17": 10,
+  "18": 10,
+  "19": 12,
+  "20": 8,
+  "21": 10,
+  "22": 12,
+  "23": 10,
+  "24": 10,
+  "25": 10
+ },
+ "quiz_eligible": {
+  "examples": 1537,
+  "fixes": 66,
+  "mcq": 37
+ },
+ "limitations": [
+  "Legacy examples/fixes not re-extracted or fully editorially reviewed.",
+  "Compound exercises kept together, never converted to a single MCQ."
+ ],
+ "backup": "data/backups/kb-3e86be3cc0f218f3.json",
+ "output_sha256": "cb832b59c5929b474592cc4b4492660916b972713b49dcf4f3c297f528eabeeb",
+ "source_pdf_sha256": "3687262299d7b534ccbfb25859a2df89ab494111ed82889d8c6cda642fa02f4e",
+ "baseline_sha256": "3e86be3cc0f218f39f4b5685a49b4fecb50a566058d25ce909c54d8da49e0e3f",
+ "extractor": {
+  "backend": "pymupdf",
+  "version": "2.1"
+ }
+}

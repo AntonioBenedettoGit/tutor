@@ -27,7 +27,7 @@ class StrictHTML(HTMLParser):
         self.stack = []
 
     def handle_starttag(self, tag, attrs):
-        assert tag in ('b',), tag
+        assert tag in ('b', 'i', 's', 'u', 'code', 'pre'), tag
         assert not attrs
         self.stack.append(tag)
 
@@ -96,23 +96,32 @@ class ContentTests(unittest.TestCase):
                 target_span(text, target)
 
     def test_known_mcqs_restored_as_open_exercises(self):
-        for ch, prompt in [(12, '(already / see)'), (20, '(high / higher / highest)')]:
-            e = next(e for e in bot.KB['exercises'] if e.get('id') == f'ch{ch:02d}-restore-prompt')
+        # Il parser fase 4 ripristina la consegna; gli esercizi sono di nuovo valutati.
+        for name, prompt, mode in [('ch12-main-7', '(already / see)', 'automatico'),
+                                   ('ch20-main-2', '(high / higher / highest)', 'parti')]:
+            e = bot.EXERCISES[name]
             self.assertIn(prompt, e['q'])
             self.assertIsNone(e['options'])
             self.assertIsNone(e['answer_idx'])
-            self.assertFalse(e['quiz_eligible'])
+            self.assertTrue(e['quiz_eligible'])
+            self.assertEqual(e['check_mode'], mode)
 
     def test_conflicting_labels_not_quizzed(self):
+        # Confronto sensibile alle maiuscole: «I love Summer.» ✗ / «I love summer.» ✓ restano entrambi.
         labels = {}
         for e in bot.KB['examples']:
             if e.get('quiz_eligible', True):
-                text = ' '.join(e['t'].casefold().split())
-                labels.setdefault(text, set()).add(e['ok'])
+                labels.setdefault(' '.join(e['t'].split()), set()).add(e['ok'])
         self.assertTrue(all(len(values) == 1 for values in labels.values()))
-        for e in bot.KB['examples']:
-            if e['t'] == 'Thank you so much!':
-                self.assertFalse(e['quiz_eligible'])
+        pair = {e['t']: e for e in bot.KB['examples'] if e['t'] in ('I love Summer.', 'I love summer.')}
+        self.assertEqual({e['ok'] for e in pair.values()}, {True, False})
+        self.assertTrue(all(e['quiz_eligible'] for e in pair.values()))
+
+    def test_book_fragments_kept_but_not_quizzed(self):
+        texts = {e['t']: e for e in bot.KB['examples']}
+        for t in ('…every.', '…where is the station?', '…why didn’t she call.', 'have'):
+            self.assertIn(t, texts)
+            self.assertFalse(texts[t]['quiz_eligible'])
 
     def test_incomplete_fixes_excluded(self):
         for e in bot.KB['fixes']:
@@ -130,40 +139,64 @@ class ContentTests(unittest.TestCase):
         prepare_content(raw)
         self.assertEqual(sum(bool(e.get('target')) for e in raw['exercises']), 15)
 
+    def _overrides(self, doc):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        path = Path(temp.name) / 'patches.json'
+        path.write_text(json.dumps(doc), encoding='utf-8')
+        return path
+
     def test_mismatched_correction_fails_closed(self):
         raw = json.loads((ROOT / 'data/kb.json').read_text())
-        raw['exercises'][0]['q'] = 'Una nuova domanda non verificata'
-        with self.assertRaisesRegex(ValueError, 'ch01-target-01'):
+        doc = json.loads((ROOT / 'data/content_overrides.json').read_text())
+        doc['exercises'].append({'id': 'test-mismatch', 'match': {'source_id': 'ch01-A-1', 'q': 'non esiste'},
+                                 'set': {'answer': 'x'}, 'reason': 'test'})
+        with self.assertRaisesRegex(ValueError, 'test-mismatch'):
+            prepare_content(raw, self._overrides(doc))
+        raw = json.loads((ROOT / 'data/kb.json').read_text())
+        next(e for e in raw['examples'] if e['t'] == 'have' and not e['ok'])['t'] = 'changed'
+        with self.assertRaisesRegex(ValueError, 'ex-ch06-not-have'):
             prepare_content(raw)
 
     def test_duplicate_patch_id_rejected(self):
         raw = json.loads((ROOT / 'data/kb.json').read_text())
         doc = json.loads((ROOT / 'data/content_overrides.json').read_text())
-        doc['exercises'].append(doc['exercises'][0])
-        with tempfile.TemporaryDirectory() as temp:
-            path = Path(temp) / 'patches.json'
-            path.write_text(json.dumps(doc))
-            with self.assertRaisesRegex(ValueError, 'duplicato'):
-                prepare_content(raw, path)
+        doc['examples'].append(doc['examples'][0])
+        with self.assertRaisesRegex(ValueError, 'duplicato'):
+            prepare_content(raw, self._overrides(doc))
+
+    def test_book_errors_not_corrected(self):
+        # Decisione utente: errori del libro mostrati in originale, nessuna correzione/nota.
+        doc = json.loads((ROOT / 'data/content_overrides.json').read_text())
+        self.assertEqual(doc['exercises'], [])
+        self.assertEqual(doc['fixes'], [])
+        e = bot.EXERCISES['ch15-main-7']
+        self.assertIn('I won’t lend you the car', e['q'])
+        self.assertTrue(e['answer'].startswith('as long as'))
+        self.assertTrue(bot.EXERCISES['ch22-B-5']['answer'].startswith('Although'))
+        for name in ('ch15-main-7', 'ch22-B-5', 'ch06-A-3', 'ch13-main-8', 'ch13-main-10', 'ch19-A-4', 'ch22-B-8'):
+            self.assertNotIn('editorial_note', bot.EXERCISES[name])
+            self.assertNotIn(name, bot.KB['_notes_it']['exercises'])
 
     def test_quarantine_respected_by_quiz_pool(self):
+        from tutor import book_quiz
         damaged = copy.deepcopy(bot.KB)
+        damaged.pop('_index', None)
         for section in ['exercises', 'examples', 'fixes', '_reviewed_quiz']:
             for e in damaged[section]:
                 e['quiz_eligible'] = False
         self.assertEqual(bot.build_quiz_pool(damaged), [])
         for chapter in range(1, 26):
-            for _ in range(10):
+            available = len(book_quiz.quiz_items(bot.KB, chapter))
+            self.assertGreaterEqual(available, 10)
+            for _ in range(5):
                 pool = bot.build_quiz_pool(bot.KB, chapter)
-                self.assertEqual(len(pool), min(10, sum(q['ch'] == chapter for q in bot.KB['_reviewed_quiz'])))
-                self.assertTrue(all(q['ch'] == chapter for q in pool))
-                for q in pool:
-                    if q['type'] == 'mcq':
-                        self.assertNotIn(q.get('id'), ['ch12-restore-prompt','ch20-restore-prompt'])
-                        self.assertNotIn('C H A P T E R', q['q'])
-                    if q['type'] == 'fix':
-                        self.assertNotEqual(q['good'], 'A problem')
-                        self.assertEqual(q['good'].count('('), q['good'].count(')'))
+                self.assertEqual(len(pool), 10)
+                self.assertEqual(len({(q['type'], q['ref']) for q in pool}), 10)
+                for ref in pool:
+                    item = book_quiz.resolve(bot.KB, ref)
+                    self.assertEqual(item['ch'], chapter)
+                    self.assertTrue(item['quiz_eligible'])
 
     def test_translation_keys_match(self):
         self.assertEqual(set(T['it']), set(T['en']))
@@ -182,7 +215,8 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
                                       message=SimpleNamespace(text='speech'))
         self.ctx = SimpleNamespace(args=[])
         bot.st(self.chat.id)['lang'] = 'it'
-        self.pool = [{'type': 'tf', 't': f'Test {i}.', 'ok': True, 'ch': 1} for i in range(3)]
+        oks = [e for e in bot.KB['examples'] if e['ch'] == 1 and e['ok'] and e['quiz_eligible']][:3]
+        self.pool = [{'type': 'tf', 'ref': e['id'], 'ch': 1} for e in oks]
 
     async def start(self, pool=None):
         await bot.start_quiz(self.update, self.ctx, self.chat.id, pre_pool=pool or self.pool)
@@ -259,13 +293,13 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(self.state()['quiz']['answered'])
 
     async def test_invalid_mcq_indices_rejected(self):
-        pool = [{'type':'mcq','ch':1,'q':'Choose','instr':'','options':['A','B'],
-                 'answer_idx':1,'answer':'B'}]
+        e = next(e for e in bot.KB['exercises'] if e['options'] and len(e['options']) == 2)
+        pool = [{'type': 'mcq', 'ref': e['source_id'], 'ch': e['ch']}]
         await self.start(pool)
         for value in ['-1','2','9999999999999','²','x','0:1']:
             await self.click(bot.session_data('quiz',self.state()['quiz'],'ans:'+value))
         self.assertFalse(self.state()['quiz']['answered'])
-        await self.click(bot.session_data('quiz',self.state()['quiz'],'ans:1'))
+        await self.click(bot.session_data('quiz',self.state()['quiz'],f"ans:{e['answer_idx']}"))
         self.assertEqual(self.state()['quiz']['score'], 1)
 
     async def test_keyboard_removed_after_answer(self):
@@ -318,10 +352,41 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
         before=len(self.chat.messages)
         await self.click(show)
         self.assertEqual(len(self.chat.messages),before)
+        if bot.current_exercise(ex)['check_mode']=='autovalutazione':
+            await self.click(bot.session_data('ex',ex,'next'))
+            self.assertEqual(ex['idx'],0)          # serve prima l'autovalutazione
+            await self.click(bot.session_data('ex',ex,'self:1'))
         data=bot.session_data('ex',ex,'next')
         await self.click(data)
         await self.click(data)
         self.assertEqual(ex['idx'],1)
+
+    async def test_self_assessment_scored_once(self):
+        name = next(e['source_id'] for e in bot.KB['exercises'] if e['check_mode']=='autovalutazione')
+        await bot.ex_chapter(self.update,self.ctx,self.chat.id,bot.EXERCISES[name]['ch'])
+        ex=self.state()['ex']
+        ex['idx']=ex['items'].index(name)
+        self.update.message=SimpleNamespace(text='my attempt')
+        await bot.on_text(self.update,self.ctx)
+        self.assertIn('my attempt',self.chat.messages[-1]['text'])
+        ok=bot.session_data('ex',ex,'self:1')
+        await self.click(ok)
+        await self.click(ok)
+        await self.click(bot.session_data('ex',ex,'self:0'))
+        self.assertEqual((ex['score'],ex['done']),(1,1))
+
+    async def test_typed_answers_scored_against_the_book(self):
+        e = bot.EXERCISES['ch21-main-6']
+        for typed, good in [('arrived in', True), ('arrived at', False)]:
+            await bot.ex_chapter(self.update,self.ctx,self.chat.id,e['ch'])
+            ex=self.state()['ex']
+            ex['idx']=ex['items'].index('ch21-main-6')
+            self.update.message=SimpleNamespace(text=typed)
+            await bot.on_text(self.update,self.ctx)
+            self.assertEqual(ex['score'],int(good))
+            self.assertIn(e['answer_explanation'].split()[0],self.chat.messages[-1]['text'])
+            await bot.on_text(self.update,self.ctx)           # seconda risposta: ignorata
+            self.assertEqual(ex['done'],1)
 
     async def test_old_exercise_skip_does_not_affect_new_session(self):
         await bot.ex_chapter(self.update,self.ctx,self.chat.id,1)
@@ -371,12 +436,14 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
             for ch in [1,2,18]:
                 await bot.ex_chapter(self.update,self.ctx,self.chat.id,ch)
                 ex=self.state()['ex']
-                for i,e in enumerate(ex['items']):
+                for i,name in enumerate(ex['items']):
+                    e=bot.EXERCISES[name]
                     if e.get('target'):
                         ex['idx']=i
                         await bot.send_exercise(self.update,self.ctx,self.chat.id)
                         text=self.chat.messages[-1]['text']
                         self.assertIn('<b>'+e['target']+'</b>',text)
+                        self.assertIn('<u>'+e['target']+'</u>',text)
                         self.assertNotIn('bold word',text)
                         self.assertNotIn('underlined',text)
                         if ch==18:
@@ -384,41 +451,88 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
                         else:
                             self.assertIn('parte del discorso' if lang=='it' else 'part of speech',text)
 
-    async def test_render_all_exercises_and_solutions_both_languages(self):
+    async def complete(self, e, lang):
+        """Completa l'esercizio come uno studente che conosce la soluzione del libro."""
+        ex=self.state()['ex']
+        mode=e['check_mode']
+        if mode=='scelta_multipla':
+            await self.click(bot.session_data('ex',ex,f"ans:{e['answer_idx']}"))
+        else:
+            if mode=='parti':
+                typed='\n'.join(f"{p['label']}) {p['answer_core']}" for p in e['parts'])
+            else:
+                typed=e['answer_core']
+            self.update.message=SimpleNamespace(text=typed)
+            await bot.on_text(self.update,self.ctx)
+            if mode=='autovalutazione':
+                await self.click(bot.session_data('ex',ex,'self:1'))
+
+    async def test_every_exercise_completable_and_scored_both_languages(self):
         for lang in ['it','en']:
             self.state()['lang']=lang
             for ch in range(1,26):
                 await bot.ex_chapter(self.update,self.ctx,self.chat.id,ch)
                 ex=self.state()['ex']
-                for i in range(len(ex['items'])):
-                    ex['idx']=i;ex['shown']=False
-                    await bot.send_exercise(self.update,self.ctx,self.chat.id)
-                    await bot.ex_show_answer(self.update,self.ctx,self.chat.id,typed=True)
+                names=list(ex['items'])
+                for name in names:
+                    e=bot.EXERCISES[name]
+                    shown=len(self.chat.messages)
+                    await self.complete(e, lang)
+                    self.assertTrue(ex['graded'], name)
+                    text='\n'.join(m['text'] for m in self.chat.messages[shown:])
+                    self.assertIn(f"p. {e['pdf_page']}", text)
+                    note=bot.KB['_notes_it']['exercises'].get(name)
+                    if note and lang=='it':
+                        self.assertIn(bot.render.esc(note), text)
+                    if lang=='en':
+                        self.assertNotIn('🇮🇹', text)
+                    await self.click(bot.session_data('ex',ex,'next'))
+                self.assertIsNone(self.state()['ex'])
+                self.assertIn(f"{len(names)}/{len(names)}", self.chat.messages[-1]['text'])
 
     async def test_html_special_characters_escaped(self):
-        await bot.ex_chapter(self.update,self.ctx,self.chat.id,1)
-        ex=self.state()['ex']
-        ex['items']=[{'q':'A < B & speech.','target':'speech','instr':'<unsafe>',
-                     'group':'','answer':'test'}]
-        await bot.send_exercise(self.update,self.ctx,self.chat.id)
-        text=self.chat.messages[-1]['text']
-        self.assertIn('&lt;',text)
-        self.assertIn('&amp;',text)
-        self.assertNotIn('<unsafe>',text)
+        fake={'source_id':'fake-1','ch':1,'q':'A < B & speech.','target':'speech','instr':'<unsafe>',
+              'group':'','answer':'test & <b>','check_mode':'autovalutazione','pdf_page':1,
+              'answer_pdf_page':1,'source_number':1}
+        with patch.dict(bot.EXERCISES,{'fake-1':fake}):
+            await bot.ex_chapter(self.update,self.ctx,self.chat.id,1)
+            ex=self.state()['ex']
+            ex['items']=['fake-1']
+            await bot.send_exercise(self.update,self.ctx,self.chat.id)
+            text=self.chat.messages[-1]['text']
+            self.assertIn('&lt;',text)
+            self.assertIn('&amp;',text)
+            self.assertNotIn('<unsafe>',text)
+            self.update.message=SimpleNamespace(text='<script>&')
+            await bot.on_text(self.update,self.ctx)
+            self.assertIn('&lt;script&gt;&amp;',self.chat.messages[-1]['text'])
 
     async def test_render_and_feedback_all_eligible_quiz_items(self):
-        pool = bot.KB['_reviewed_quiz']
-        self.assertEqual(len(pool), 160)
+        from tutor import book_quiz
+        refs = book_quiz.quiz_items(bot.KB)
+        self.assertEqual(len(refs), 1810)
         for lang in ['it','en']:
-            for original in pool:
-                state=bot.enter_mode(self.chat.id,'quiz')
-                state['lang']=lang
-                state['quiz']={'id':'offline','pool':[copy.deepcopy(original)],'idx':0,'score':0,'answered':False}
-                await bot.send_next_question(self.update,self.ctx,self.chat.id)
-                item=state['quiz']['pool'][0]
-                given=item['ok'] if item['type']=='tf' else item['answer_idx']
-                await bot.quiz_feedback(self.update,self.ctx,self.chat.id,given)
-                self.assertEqual(state['quiz']['score'],1)
+            for original in refs:
+                for correct in (True, False):
+                    state=bot.enter_mode(self.chat.id,'quiz')
+                    state['lang']=lang
+                    state['quiz']={'id':'offline','pool':[copy.deepcopy(original)],'idx':0,'score':0,'answered':False}
+                    await bot.send_next_question(self.update,self.ctx,self.chat.id)
+                    ref=state['quiz']['pool'][0]
+                    item=book_quiz.resolve(bot.KB,ref)
+                    if ref['type']=='tf':
+                        given=item['ok'] if correct else not item['ok']
+                    else:
+                        right=ref['answer_idx'] if ref['type']=='fix' else item['answer_idx']
+                        given=right if correct else (right+1)%len(bot.quiz_options(ref))
+                    await bot.quiz_feedback(self.update,self.ctx,self.chat.id,given)
+                    self.assertEqual(state['quiz']['score'],int(correct))
+                    text=self.chat.messages[-1]['text']
+                    self.assertIn('📖',text)
+                    if item.get('note') and ref['type']!='mcq':
+                        self.assertIn(bot.render.esc(item['note']),text)
+                    if 'page' in item:
+                        self.assertIn(f"p. {item['page']}",text)
 
     async def test_valid_glossary_selection_then_duplicate_rejected(self):
         await bot.start_glossary_query(self.update,self.ctx,self.chat.id,'clause')

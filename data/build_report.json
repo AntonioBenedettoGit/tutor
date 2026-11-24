@@ -2,9 +2,9 @@
  "status": "passed",
  "counts": {
   "chapters": 25,
-  "examples_ok": 1353,
-  "examples_bad": 242,
-  "fixes": 68,
+  "examples_ok": 1538,
+  "examples_bad": 336,
+  "fixes": 107,
   "exercises": 270,
   "exercises_mcq": 37,
   "verbs": 145,
@@ -37,19 +37,38 @@
   "24": 10,
   "25": 10
  },
+ "check_modes": {
+  "automatico": 129,
+  "automatico_con_varianti": 22,
+  "autovalutazione": 74,
+  "parti": 8,
+  "scelta_multipla": 37
+ },
  "quiz_eligible": {
-  "examples": 1537,
-  "fixes": 66,
+  "examples": 1870,
+  "fixes": 107,
   "mcq": 37
  },
+ "quiz_excluded": [
+  "ex-846960e895: fragment",
+  "ex-a2fe2322b4: fragment",
+  "ex-de743369c5: fragment"
+ ],
+ "reviewed_quiz_count": 8,
+ "notes_it": {
+  "exercises": 263,
+  "items": 0,
+  "sections": 266
+ },
  "limitations": [
-  "Legacy examples/fixes not re-extracted or fully editorially reviewed.",
+  "Phase 4.3: the bot scores the book items directly; book errors are shown in the original, without notes (user decision).",
+  "Assistant review is not human certification of the full book.",
   "Compound exercises kept together, never converted to a single MCQ."
  ],
- "backup": "data/backups/kb-3e86be3cc0f218f3.json",
- "output_sha256": "cb832b59c5929b474592cc4b4492660916b972713b49dcf4f3c297f528eabeeb",
+ "backup": "data/backups/kb-6ff4b2cc15343e70.json",
+ "output_sha256": "672267043e4efe4bef8c14d054d9b39e2da462e651d2c04e71cbe6b917125bc0",
  "source_pdf_sha256": "3687262299d7b534ccbfb25859a2df89ab494111ed82889d8c6cda642fa02f4e",
- "baseline_sha256": "3e86be3cc0f218f39f4b5685a49b4fecb50a566058d25ce909c54d8da49e0e3f",
+ "baseline_sha256": "6ff4b2cc15343e70c6d5e3e89af1f87d142bc488674d8e96c84a60aaaa04675a",
  "extractor": {
   "backend": "pymupdf",
   "version": "2.1"

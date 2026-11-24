@@ -1,10 +1,12 @@
 """Build deterministica e validata per lo specifico libro A1-C1.
 
-Esempi vero/falso e coppie vengono conservati dalla baseline: non si ricrea un
-pool valutato da semplici simboli ✓/✗. Una revisione editoriale è separata dal
-parsing geometrico di capitoli, esercizi, glossario e tabella dei verbi.
+Versione 3 (fase 4.2): teoria, esempi ✓/✗, coppie ✗ → ✓ e soluzioni degli esercizi
+sono estratti dal PDF conservando grassetto/corsivo/barrato (tutor.pdf_rich,
+tutor.book_parser). Gli esercizi restano vincolati alle impronte già approvate;
+ogni nuovo contenuto è vincolato al profilo v2, rigenerato solo dopo i controlli.
 """
 import copy
+from collections import Counter
 from datetime import date
 import hashlib
 import json
@@ -258,39 +260,160 @@ def exercise_fingerprint(e):
     return digest(json.dumps({key:e[key] for key in fields},ensure_ascii=False,sort_keys=True))
 
 
-def build_candidate(pdf, baseline, profile, chapters_spec, parts, synonyms):
+SCHEMA_VERSION = 3
+BUILDER_VERSION = 3
+ALLOWED_TAGS = re.compile(r'</?(?:b|i|s|u|code|pre)>')
+RESIDUE = re.compile(r'\*\*|~~|(?<!\w)\*|\*(?!\w)')
+SYMBOLS = re.compile(r'[✓✗→|]')
+EXAMPLE_KEYS = {'id', 't', 'ok', 'ch', 'kind', 'section', 'page', 'origin'}
+FIX_KEYS = {'id', 'bad', 'good', 'ch', 'section', 'page', 'origin'}
+RICH_EXERCISE_KEYS = {'instr_html', 'q_html', 'answer_html', 'answer_core', 'answer_explanation',
+                      'answer_scheme', 'check_mode'}
+
+
+def items_digest(kb):
+    return digest(json.dumps({s: kb[s] for s in ['examples', 'fixes']}, ensure_ascii=False, sort_keys=True))
+
+
+def blocks_digest(chapter):
+    return digest(json.dumps(chapter['blocks'], ensure_ascii=False, sort_keys=True))
+
+
+def extract_book(pdf):
+    """Estrazione ricca (stili + tabelle). Le tabelle si cercano solo nelle pagine con righe
+    in corpo piccolo: nel libro ogni tabella ha intestazioni a 8.7pt (censimento fase 4.2)."""
+    from tutor.pdf_rich import extract_rich, extract_tables
+    pages, backend = extract_rich(pdf)
+    small = [i + 1 for i, p in enumerate(pages) if any(l.size <= 9.5 for l in p)]
+    return pages, extract_tables(pdf, small), backend
+
+
+def build_candidate(pdf, baseline, profile, chapters_spec, parts, synonyms, extracted=None):
+    """KB v3 dal PDF: teoria con formattazione, esempi/coppie e soluzioni ricche estratti dal libro.
+
+    `extracted` permette di riusare un'estrazione già fatta (pagine, tabelle, backend)."""
+    from tutor.book_parser import (chapter_blocks, enrich_exercise, extract_examples, finalize_items,
+                                   render_blocks, rich_exercises)
     pdf = Path(pdf)
-    if profile.get('schema_version') != 1:
+    if profile.get('schema_version') != 2:
         raise BuildError('Versione del profilo non supportata')
     if digest(pdf.read_bytes()) != profile['pdf_sha256']:
         raise BuildError('PDF diverso da quello approvato nel profilo del libro')
-    pages, backend = extract_pages(pdf)
+    pages, tables, backend = extracted if extracted is not None else extract_book(pdf)
     if backend['version'] != profile['extractor_version']:
         raise BuildError('Versione estrattore diversa da quella approvata')
     if len(pages) != profile['pdf_pages']:
         raise BuildError('Numero di pagine PDF inatteso')
     sections, appendix_a, appendix_b = partition_book(pages)
-    chapters, exercises = [], []
-    for num,title,part in chapters_spec:
+    chapters, exercises, examples, fixes, rich = [], [], [], [], {}
+    for num, title, part in chapters_spec:
         lines = sections[num]
         practice, answers = practice_sections(lines)
-        items = parse_exercises(num,practice,answers)
-        chapters.append({'num':num,'title':title,'part':parts[part],
-                         'text':f'Chapter {num} — {title}\n\n'+paragraphs(lines),
-                         'pdf_page_start':lines[0].page,'pdf_page_end':lines[-1].page})
+        items = parse_exercises(num, practice, answers)
+        rich.update(rich_exercises(num, practice, answers))
+        blocks = chapter_blocks(lines, tables)
+        rendered = render_blocks(blocks)
+        head = f'Chapter {num} — {title}'
+        chapters.append({'num': num, 'title': title, 'part': parts[part],
+                         'text': head + '\n\n' + '\n\n'.join(r['text'] for r in rendered),
+                         'blocks': rendered,
+                         'pdf_page_start': lines[0].page, 'pdf_page_end': lines[-1].page})
         exercises.extend(items)
-    apply_mcq_policy(exercises,profile['mcq_allowlist'])
+        ex, fx = extract_examples(num, blocks)
+        examples.extend(ex)
+        fixes.extend(fx)
+    examples, fixes = finalize_items(examples, fixes)
+    apply_mcq_policy(exercises, profile['mcq_allowlist'])
+    for e in exercises:                    # dopo la politica MCQ: il tipo è definitivo
+        if e['id'] not in rich:
+            raise BuildError('Esercizio senza testo ricco: ' + e['id'])
+        try:
+            enrich_exercise(e, rich[e['id']])
+        except ValueError as exc:
+            raise BuildError(str(exc)) from exc
     verbs, verb_pages = extract_reference_verbs(appendix_a)
-    candidate = {'meta':{'schema_version':2,'title':baseline['meta']['title'],
-                        'source':pdf.name,'built':str(date.today()),
-                        'source_pdf_sha256':profile['pdf_sha256'],'source_pdf_pages':len(pages),
-                        'extractor':backend,'builder_version':2,
-                        'legacy_quiz_policy':'Examples and fixes preserved from baseline; no automatic re-extraction.'},
-                 'chapters':chapters,'exercises':exercises,'verbs':verbs,'verb_pages':verb_pages,
-                 'glossary':extract_glossary(appendix_b),'synonyms':copy.deepcopy(synonyms),
-                 'examples':copy.deepcopy(baseline['examples']),'fixes':copy.deepcopy(baseline['fixes'])}
+    candidate = {'meta': {'schema_version': SCHEMA_VERSION, 'title': baseline['meta']['title'],
+                          'source': pdf.name, 'built': str(date.today()),
+                          'source_pdf_sha256': profile['pdf_sha256'], 'source_pdf_pages': len(pages),
+                          'extractor': backend, 'builder_version': BUILDER_VERSION,
+                          'formatting': 'Telegram HTML subset: b, i, s, u, code, pre.',
+                          'book_items_policy': 'Examples, fixes, exercises and solutions extracted from the PDF '
+                                               'with formatting; damaged items repaired from the PDF, not excluded.'},
+                 'chapters': chapters, 'exercises': exercises, 'verbs': verbs, 'verb_pages': verb_pages,
+                 'glossary': extract_glossary(appendix_b), 'synonyms': copy.deepcopy(synonyms),
+                 'examples': examples, 'fixes': fixes}
     candidate['meta']['counts'] = counts(candidate)
     return candidate
+
+
+def _html_ok(value):
+    """Solo i tag ammessi, bilanciati e annidati correttamente."""
+    stack = []
+    for m in re.finditer(r'<(/?)([a-z]+)>|<', value):
+        if m[0] == '<' or not ALLOWED_TAGS.fullmatch(m[0]):
+            return False
+        if m[1]:
+            if not stack or stack.pop() != m[2]:
+                return False
+        else:
+            stack.append(m[2])
+    return not stack
+
+
+def content_errors(kb):
+    """Controlli che non dipendono dal profilo: forma e pulizia di ciò che il bot mostrerà."""
+    errors = []
+    chapters = {c['num']: c for c in kb['chapters']}
+    for c in kb['chapters']:
+        if not c.get('blocks') or any(set(b) != {'type', 'page', 'text', 'html'} for b in c['blocks']):
+            errors.append(f'Blocchi teoria mancanti/malformati: capitolo {c["num"]}')
+            continue
+        for b in c['blocks']:
+            if not _html_ok(b['html']) or RESIDUE.search(b['text']):
+                errors.append(f'Blocco teoria non pulito: capitolo {c["num"]} p.{b["page"]}')
+            if not c['pdf_page_start'] <= b['page'] <= c['pdf_page_end']:
+                errors.append(f'Blocco teoria fuori dal capitolo: {c["num"]}')
+    ids = set()
+    for section, keys, fields in (('examples', EXAMPLE_KEYS, ('t',)), ('fixes', FIX_KEYS, ('bad', 'good'))):
+        for e in kb[section]:
+            name = f'{section} {e.get("id")}'
+            if not keys <= set(e):
+                errors.append('Campi mancanti: ' + name)
+                continue
+            if e['id'] in ids:
+                errors.append('ID duplicato: ' + name)
+            ids.add(e['id'])
+            c = chapters.get(e['ch'])
+            if not c or not c['pdf_page_start'] <= e['page'] <= c['pdf_page_end']:
+                errors.append('Pagina/capitolo non validi: ' + name)
+            for f in fields:
+                t = e[f]
+                if not isinstance(t, str) or not t.strip() or t != ' '.join(t.split()):
+                    errors.append(f'Testo vuoto o con spazi anomali: {name}')
+                elif RESIDUE.search(t) or SYMBOLS.search(t):
+                    errors.append(f'Residui di markup/simboli: {name}: {t[:60]}')
+                elif t.count('(') != t.count(')'):
+                    errors.append(f'Parentesi sbilanciate: {name}: {t[:60]}')
+            if 't_html' in e and (not _html_ok(e['t_html']) or
+                                  re.sub(r'<[^>]+>', '', e['t_html']).replace('&lt;', '<').replace('&gt;', '>')
+                                  .replace('&amp;', '&') != e['t']):
+                errors.append('HTML non coerente col testo: ' + name)
+        if section == 'fixes':
+            for e in kb['fixes']:
+                if e.get('bad') == e.get('good'):
+                    errors.append('Coppia senza correzione: ' + str(e.get('id')))
+    for e in kb['exercises']:
+        missing = RICH_EXERCISE_KEYS - set(e)
+        if missing:
+            errors.append(f'Campi ricchi mancanti: {e["source_id"]} {sorted(missing)}')
+            continue
+        if not all(_html_ok(e[k]) for k in ('instr_html', 'q_html', 'answer_html')):
+            errors.append('HTML esercizio non valido: ' + e['source_id'])
+        if not e['answer_core'].strip():
+            errors.append('Risposta vuota: ' + e['source_id'])
+        if e['kind'] == 'compound' and e['check_mode'] == 'parti' and len(e.get('parts', [])) < 2:
+            errors.append('Parti mancanti: ' + e['source_id'])
+    return errors
 
 
 def validate_candidate(kb, profile, baseline):
@@ -302,7 +425,9 @@ def validate_candidate(kb, profile, baseline):
 
 def _validate_candidate(kb, profile, baseline):
     errors = []
-    if kb['meta'].get('schema_version') != 2 or kb['meta'].get('builder_version') != 2:
+    if profile.get('schema_version') != 2:
+        errors.append('Versione del profilo non supportata')
+    if kb['meta'].get('schema_version') != SCHEMA_VERSION or kb['meta'].get('builder_version') != BUILDER_VERSION:
         errors.append('Versione dello schema/build non approvata')
     if kb['meta'].get('source_pdf_sha256') != profile['pdf_sha256']:
         errors.append('Provenienza PDF non approvata')
@@ -314,6 +439,8 @@ def _validate_candidate(kb, profile, baseline):
     actual = counts(kb)
     if actual != kb['meta']['counts']:
         errors.append('Conteggi nei metadati incoerenti')
+    if actual != profile['counts']:
+        errors.append('Conteggi diversi dal profilo approvato')
     if {c['num'] for c in kb['chapters']} != set(range(1,26)) or len(kb['chapters']) != 25:
         errors.append('Capitoli mancanti o duplicati')
     by_chapter = {str(n):sum(e['ch']==n for e in kb['exercises']) for n in range(1,26)}
@@ -324,6 +451,8 @@ def _validate_candidate(kb, profile, baseline):
         errors.append('ID sorgente mancanti o duplicati')
     if {e.get('source_id'):exercise_fingerprint(e) for e in kb['exercises']} != profile['exercise_fingerprints']:
         errors.append('Contenuto/abbinamento esercizi diverso dal profilo approvato')
+    if {e.get('source_id'):rich_fingerprint(e) for e in kb['exercises']} != profile['exercise_rich_fingerprints']:
+        errors.append('Soluzioni/formattazione esercizi diverse dal profilo approvato')
     if set(kb['verbs']) != set(profile['verb_keys']):
         errors.append('Elenco verbi incompleto o inatteso')
     for base,forms in kb['verbs'].items():
@@ -335,12 +464,12 @@ def _validate_candidate(kb, profile, baseline):
         errors.append('Glossario incompleto o inatteso')
     if {str(c['num']):digest(c['text']) for c in kb['chapters']} != profile['chapter_sha256']:
         errors.append('Testo dei capitoli diverso dal riferimento approvato')
+    if {str(c['num']):blocks_digest(c) for c in kb['chapters'] if 'blocks' in c} != profile['chapter_blocks_sha256']:
+        errors.append('Formattazione dei capitoli diversa dal riferimento approvato')
     if digest(json.dumps(kb['glossary'],ensure_ascii=False,sort_keys=True)) != profile['glossary_sha256']:
         errors.append('Definizioni glossario diverse dal riferimento approvato')
-    if digest(json.dumps({s:kb[s] for s in ['examples','fixes']},ensure_ascii=False,sort_keys=True)) != profile['legacy_sha256']:
-        errors.append('Pool legacy diverso dal riferimento approvato')
-    if kb['examples'] != baseline['examples'] or kb['fixes'] != baseline['fixes']:
-        errors.append('Pool legacy modificato senza revisione editoriale separata')
+    if items_digest(kb) != profile['items_sha256']:
+        errors.append('Esempi/coppie diversi dal riferimento approvato')
     header = re.compile(r'C\s+H\s+A\s+P\s+T\s+E\s+R|\bPART [IV]+\b')
     for e in kb['exercises']:
         if not e['q'].strip() or not e['answer'].strip() or header.search(e['q']+' '+e['answer']):
@@ -363,19 +492,52 @@ def _validate_candidate(kb, profile, baseline):
             errors.append('Provenienza fuori dal PDF')
     if actual['exercises_mcq'] != len(profile['mcq_allowlist']):
         errors.append('MCQ approvate perse o aggiunte')
+    errors.extend(content_errors(kb))
     if errors:
-        raise BuildError('\n'.join(errors))
-    # Anche le correzioni runtime della prima fase devono restare applicabili.
+        raise BuildError('\n'.join(errors[:40]) + (f'\n… e altri {len(errors) - 40}' if len(errors) > 40 else ''))
+    # Correzioni runtime e registro editoriale (fase 3) devono restare applicabili.
     from tutor.content import prepare_content
-    prepared = prepare_content(copy.deepcopy(kb))
+    from tutor.book_quiz import load_notes
+    try:
+        prepared = prepare_content(copy.deepcopy(kb))
+        notes = load_notes(prepared)
+    except ValueError as exc:
+        raise BuildError('Correzioni/registro/note IT non applicabili: ' + str(exc)) from exc
     return {'status':'passed','counts':actual,'exercises_by_chapter':by_chapter,
+            'check_modes':dict(sorted(Counter(e['check_mode'] for e in kb['exercises']).items())),
             'quiz_eligible':{'examples':sum(e.get('quiz_eligible',True) for e in prepared['examples']),
                              'fixes':sum(e.get('quiz_eligible',True) for e in prepared['fixes']),
                              'mcq':sum(bool(e['options']) and e.get('quiz_eligible',True) for e in prepared['exercises'])},
+            'quiz_excluded':sorted(f"{e.get('source_id') or e['id']}: {','.join(e['quiz_exclusion_reasons'])}"
+                                   for sec in ('examples','fixes','exercises') for e in prepared[sec]
+                                   if e.get('quiz_exclusion_reasons')),
             'reviewed_quiz_count':len(prepared['_reviewed_quiz']),
-            'limitations':['Raw examples/fixes/exercises are consultation-only; scored quizzes use the separate editorial register.',
+            'notes_it':{k: len(v) for k, v in notes.items()},
+            'limitations':['Phase 4.3: the bot scores the book items directly; book errors are shown '
+                           'in the original, without notes (user decision).',
                            'Assistant review is not human certification of the full book.',
                            'Compound exercises kept together, never converted to a single MCQ.']}
+
+
+def rich_fingerprint(e):
+    fields = ['instr_html', 'q_html', 'answer_html', 'answer_core', 'answer_explanation', 'answer_scheme',
+              'answer_keywords', 'answer_variants', 'target', 'stem', 'parts', 'check_mode']
+    return digest(json.dumps({k: e.get(k) for k in fields}, ensure_ascii=False, sort_keys=True))
+
+
+def profile_from_candidate(kb, base_profile):
+    """Profilo v2: riprende i riferimenti già approvati (PDF, esercizi, verbi, glossario, MCQ) e
+    registra le nuove impronte di teoria, esempi/coppie e soluzioni ricche."""
+    profile = {k: copy.deepcopy(base_profile[k]) for k in
+               ('pdf_sha256', 'pdf_pages', 'extractor_version', 'mcq_allowlist', 'exercise_counts',
+                'exercise_fingerprints', 'verb_keys', 'verbs_sha256', 'glossary_terms', 'glossary_sha256')}
+    profile['schema_version'] = 2
+    profile['counts'] = counts(kb)
+    profile['chapter_sha256'] = {str(c['num']): digest(c['text']) for c in kb['chapters']}
+    profile['chapter_blocks_sha256'] = {str(c['num']): blocks_digest(c) for c in kb['chapters']}
+    profile['exercise_rich_fingerprints'] = {e['source_id']: rich_fingerprint(e) for e in kb['exercises']}
+    profile['items_sha256'] = items_digest(kb)
+    return dict(sorted(profile.items()))
 
 
 def atomic_json(path, data):

@@ -1,7 +1,12 @@
-"""Registro esplicito dei quiz revisionati: nessuna approvazione per difetto.
+"""Domande aggiuntive ricostruite dal libro (fase 3), rientrate nel pool del quiz in fase 4.
 
-Il PDF serve solo ai test di integrazione. A runtime si verificano riferimenti,
-contenuto citato, pagine e hash della fonte registrato nella KB.
+Dalla fase 4 il quiz usa direttamente esempi, coppie ed esercizi del libro; questo registro
+conserva solo le domande a scelta multipla ricostruite da dialoghi e discorsi del libro
+(«contextual_reconstruction»). Le riscritture editoriali non sono più ammesse: gli errori
+del libro si mostrano in originale (decisione utente). Gli esempi verbatim del vecchio
+registro sono già nel pool come esempi del libro.
+
+A runtime si verificano riferimenti, contenuto citato, pagine e hash della fonte.
 La revisione assistita non è una certificazione umana del libro.
 """
 import copy
@@ -23,13 +28,7 @@ def _bilingual(value):
 
 
 def apply_review(kb, review_path=DEFAULT_REVIEW):
-    # Il materiale grezzo rimane consultabile, mai fonte implicita di punti.
     kb['_reviewed_quiz'] = []
-    for section in ('examples', 'fixes', 'exercises'):
-        for item in kb[section]:
-            item['_mechanically_eligible'] = item.get('quiz_eligible', True)
-            item['quiz_eligible'] = False
-            item['quiz_review_status'] = 'consultation_only'
     if review_path is None:
         return kb
     doc = json.loads(Path(review_path).read_text(encoding='utf-8'))
@@ -76,7 +75,7 @@ def apply_review(kb, review_path=DEFAULT_REVIEW):
             _require(type(index) is int and 0 <= index < len(options), name + ': soluzione non valida')
         src = q.get('source', {})
         _require(src.get('chapter') == ch and src.get('kind') in (
-            'verbatim_example', 'contextual_reconstruction', 'editorial_rewrite'), name + ': fonte non valida')
+            'verbatim_example', 'contextual_reconstruction'), name + ': fonte non valida')
         citations = src.get('citations')
         _require(isinstance(citations, list) and bool(citations), name + ': citazioni mancanti')
         for cit in citations:
@@ -90,15 +89,6 @@ def apply_review(kb, review_path=DEFAULT_REVIEW):
                      and pages == list(range(pages[0], pages[-1] + 1)), name + ': pagine non valide')
         if kind == 'tf':
             _require(any(norm(text) in norm(c['quote']) for c in citations), name + ': testo TF non citato')
-        if src['kind'] == 'editorial_rewrite':
-            ref = q.get('exercise_ref', {})
-            matches = [e for e in kb['exercises'] if e.get('source_id') == ref.get('source_id')]
-            _require(len(matches) == 1, name + ': esercizio sorgente non trovato')
-            e = matches[0]
-            _require(all(e.get(key) == value for key, value in ref.items()) and
-                     all(q[key] == e[key] for key in ('q', 'options', 'answer_idx')),
-                     name + ': esercizio/soluzione sorgente cambiati')
-            _require(e.get('editorial_note') and e['ch'] == ch, name + ': override editoriale mancante')
         q['quiz_eligible'] = True
         result.append(q)
     kb['_reviewed_quiz'] = result

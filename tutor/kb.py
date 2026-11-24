@@ -9,6 +9,7 @@ import re
 from pathlib import Path
 
 from tutor.content import DEFAULT_CORRECTIONS, prepare_content
+from tutor.book_quiz import DEFAULT_NOTES, load_notes
 from tutor.editorial import DEFAULT_REVIEW
 
 DEFAULT_KB = Path(__file__).resolve().parent.parent / "data" / "kb.json"
@@ -16,11 +17,14 @@ DEFAULT_KB = Path(__file__).resolve().parent.parent / "data" / "kb.json"
 TOKEN_RE = re.compile(r"[a-zà-ÿ']{3,}")
 
 
-def load_kb(path=None, corrections_path=DEFAULT_CORRECTIONS, review_path=DEFAULT_REVIEW):
+def load_kb(path=None, corrections_path=DEFAULT_CORRECTIONS, review_path=DEFAULT_REVIEW,
+            notes_path=DEFAULT_NOTES):
     p = Path(path) if path else DEFAULT_KB
     with open(p, encoding="utf-8") as f:
         kb = json.load(f)
     prepare_content(kb, corrections_path, review_path)
+    kb["_notes_it"] = load_notes(kb, notes_path) if notes_path is not None else {
+        "exercises": {}, "items": {}, "sections": {}}
     kb["_chapters"] = {c["num"]: c for c in kb["chapters"]}
     kb["_by_title_words"] = {}
     kb["_word_index"] = {}   # parola -> {capitolo: peso}
@@ -144,41 +148,86 @@ def glossary_search(kb, query, limit=12):
     return hits[:limit]
 
 
-def chapter_pages(kb, num, size=3600):
-    """Testo completo del capitolo in pagine da <= size caratteri."""
-    text = kb["_chapters"][num]["text"]
-    return paginate(text, size)
+THEORY_STOP = ("Practice", "Answers")
+RULE_WORDS = ("Rule:", "Remember:", "Common mistake", "Watch out", "Tip:", "Good to know",
+              "Quick test", "Note —", "Key idea")
 
 
-def explain_summary(kb, num, size=3600):
-    """Sintesi del capitolo: introduzione + box regole/errori + esempi."""
-    blocks = kb["_chapters"][num]["text"].split("\n\n")
-    keep = []
-    intro_len = 0
-    rule_words = ("Rule:", "Remember:", "Common mistake", "Watch out",
-                  "Tip:", "Good to know", "Quick test", "Note —")
-    for b in blocks:
-        if len(b) > 900:
+def _theory_blocks(kb, num):
+    """Blocchi di teoria del capitolo (con la formattazione del libro), senza esercizi/soluzioni."""
+    out = []
+    for b in kb["_chapters"][num].get("blocks", []):
+        if b["type"] == "heading" and b["text"].strip() in THEORY_STOP:
+            break
+        out.append(b)
+    return out
+
+
+def _block_html(b):
+    from tutor.render import tidy_html
+    html = tidy_html(b.get("html") or "")
+    if b["type"] == "bullet":
+        return "• " + html
+    return html
+
+
+def chapter_pages(kb, num, size=3500):
+    """Teoria completa del capitolo in pagine HTML (Telegram) da <= size caratteri."""
+    blocks = _theory_blocks(kb, num)
+    if not blocks:
+        from html import escape
+        return paginate(escape(kb["_chapters"][num]["text"], quote=False), size)
+    return paginate_html([_block_html(b) for b in blocks], size)
+
+
+def explain_summary(kb, num, size=3500):
+    """Sintesi del capitolo: introduzione, riquadri regola/errore ed esempi del libro."""
+    from tutor.render import example_html
+    keep, intro_len = [], 0
+    for b in _theory_blocks(kb, num):
+        if len(b["text"]) > 900:
             continue
-        if any(b.startswith(w) for w in rule_words):
-            keep.append(b)
-        elif intro_len < 700 and not b.startswith(("Chapter", "Practice",
-                                                   "Answers", "Quick Review")):
-            keep.append(b)
-            intro_len += len(b)
-    # Solo esempi TF revisionati nelle liste riepilogative.
-    reviewed = [e for e in kb.get("_reviewed_quiz", [])
-                if e["ch"] == num and e["type"] == "tf"]
-    ex_ok = [e["t"] for e in reviewed if e["ok"]][:4]
-    ex_bad = [e["t"] for e in reviewed if not e["ok"]][:2]
-    if ex_ok:
-        keep.append("Examples from this chapter:\n" +
-                    "\n".join("✓ " + e for e in ex_ok))
-    if ex_bad:
-        keep.append("Common mistakes:\n" +
-                    "\n".join("✗ " + e for e in ex_bad))
-    summary = "\n\n".join(keep)
-    return paginate(summary, size)
+        if b["text"].startswith(RULE_WORDS):
+            keep.append(_block_html(b))
+        elif intro_len < 700 and b["type"] in ("para", "heading"):
+            keep.append(_block_html(b))
+            intro_len += len(b["text"])
+    book = [e for e in kb["examples"] if e["ch"] == num and e.get("quiz_eligible", True)]
+    ok = [e for e in book if e["ok"]][:4]
+    bad = [e for e in book if not e["ok"]][:2]
+    if ok:
+        keep.append("<b>Examples from this chapter:</b>\n" + "\n".join("✓ " + example_html(e) for e in ok))
+    if bad:
+        keep.append("<b>Common mistakes:</b>\n" + "\n".join("✗ " + example_html(e) for e in bad))
+    return paginate_html(keep, size)
+
+
+def paginate_html(blocks, size=3500):
+    """Pagine a confini di blocco: un tag HTML non viene mai spezzato."""
+    from html import escape
+    import re as _re
+    pages, cur = [], ""
+    for block in blocks:
+        block = block.strip()
+        if not block:
+            continue
+        if len(block) > size:
+            # caso limite: blocco enorme → testo semplice spezzato (nessun tag da rompere)
+            plain = escape(_re.sub(r"<[^>]+>", "", block).replace("&lt;", "<").replace("&gt;", ">")
+                           .replace("&amp;", "&"), quote=False)
+            if cur:
+                pages.append(cur)
+                cur = ""
+            pages.extend(plain[i:i + size] for i in range(0, len(plain), size))
+            continue
+        if cur and len(cur) + len(block) + 2 > size:
+            pages.append(cur)
+            cur = block
+        else:
+            cur = (cur + "\n\n" + block) if cur else block
+    if cur:
+        pages.append(cur)
+    return pages or [""]
 
 
 def paginate(text, size=3600):

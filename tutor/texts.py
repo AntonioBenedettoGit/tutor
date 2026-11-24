@@ -18,25 +18,25 @@ T = {
         "btn_glos": "Glossario",
         "btn_help": "Aiuto",
         "btn_menu": "Menu",
-        "quiz_start": "Nuovo quiz: {n} domande selezionate e revisionate sulla base del libro. "
-                      "Rispondi con i bottoni qui sotto.",
-        "quiz_tf": "Domanda {i}/{n} — la frase è corretta nello scritto standard neutro?",
+        "quiz_start": "Nuovo quiz: {n} domande prese dal libro (esempi ✓/✗, coppie da correggere, "
+                      "scelte multiple). Rispondi con i bottoni qui sotto.",
+        "quiz_tf": "Domanda {i}/{n} — secondo il libro, questa frase è corretta?",
         "quiz_which": "Domanda {i}/{n} — quale delle due frasi è corretta?",
         "quiz_fill": "Domanda {i}/{n} — scegli la risposta:",
         "btn_correct": "Corretta",
         "btn_wrong": "Errata",
         "quiz_right": "Esatto!",
         "quiz_wrong": "No, non è così.",
-        "reviewed_answer": "Risposta revisionata: {a}",
-        "reviewed_correction": "Una versione corretta: {a}",
-        "reviewed_source": "Revisione assistita; riferimento alla fonte: pagine PDF {p}.",
-        "consultation_source": "Testo della fonte per consultazione: non interamente revisionato; può contenere imprecisioni. I quiz usano un registro separato.",
-        "consultation_only": "Esercizio estratto dal libro per consultazione: non assegna punti. La soluzione non è stata revisionata editorialmente.",
-        "ex_edited_answer": "Soluzione corretta editorialmente:\n{a}",
-        "quiz_tf_ok": "La frase è un esempio CORRETTO del libro (cap. {ch}).",
-        "quiz_tf_bad": "La frase è un esempio DI ERRORE nel libro (cap. {ch}).",
-        "quiz_fix": "La versione corretta è:\n✓ {good}\n(quella errata era: ✗ {bad}, cap. {ch})",
-        "quiz_book_answer": "Risposta del libro: {a}",
+        "tf_is_ok": "Nel libro è un esempio corretto:",
+        "tf_is_bad": "Nel libro è un esempio di errore:",
+        "book_note": "Spiegazione del libro: {a}",
+        "book_answer": "Risposta del libro: {a}",
+        "book_solution": "Soluzione del libro:\n{a}",
+        "fix_book_form": "(nel libro: «{a}»)",
+        "quiz_fix": "Versione corretta nel libro:\n✓ {good}\n✗ {bad}",
+        "src_chapter": "Cap. {n} — {t}",
+        "src_exercise": "esercizio {n}",
+        "src_pages": "p. {p}",
         "score": "Punteggio: {c}/{t}",
         "expired": "Questo pulsante non è più attivo. Usa quelli dell’attività corrente o /menu.",
         "ex_target_pos": "Che parte del discorso è {target} nella frase?",
@@ -46,18 +46,30 @@ T = {
         "btn_stop_quiz": "Chiudi il quiz",
         "quiz_done": "Quiz finito! Punteggio: {c}/{t}.\nVuoi riprovare con nuove domande?",
         "quiz_again": "Ancora un quiz",
-        "quiz_few": "Questo capitolo ha {n} domande revisionate: il quiz resta nel capitolo scelto.",
+        "quiz_few": "Questo capitolo ha {n} domande: il quiz resta nel capitolo scelto.",
         "ex_choose": "Scegli il capitolo di cui vuoi fare gli esercizi:",
-        "ex_q": "Esercizio {i}/{n} — Capitolo {ch}: {title}\n\n{instr}\n\n{q}\n\n"
-                "(Puoi anche scrivere la tua risposta qui in chat: ti mostro quella del libro per confronto.)",
-        "btn_show": "Mostra la risposta",
+        "ex_head": "Esercizio {i}/{n} — Capitolo {ch}: {title}",
+        "ex_how_automatico": "Scrivi la risposta qui in chat: la confronto con la soluzione del libro.",
+        "ex_how_parti": "Scrivi una risposta per ogni parte, una per riga (a, b, c…) oppure separate da virgole.",
+        "ex_how_scelta_multipla": "Scegli la risposta con i bottoni.",
+        "ex_how_autovalutazione": "Scrivi la tua risposta qui in chat (o pensala), poi guarda la soluzione "
+                                  "del libro e dimmi se hai risposto bene.",
+        "ex_right": "✅ Esatto!",
+        "ex_wrong": "❌ Non coincide con la soluzione del libro.",
+        "ex_your": "La tua risposta: {a}",
+        "ex_parts": "Parti corrette: {c}/{t}",
+        "ex_shown": "Soluzione mostrata senza risposta: nessun punto.",
+        "ex_self_ask": "Confronta con la soluzione: hai risposto bene?",
+        "ex_use_buttons": "Per questo esercizio scegli una delle risposte con i bottoni.",
+        "btn_self_ok": "Ho risposto bene",
+        "btn_self_ko": "Ho risposto male",
+        "btn_show": "Mostra la soluzione",
         "btn_skip": "Salta",
-        "ex_answer": "Risposta del libro:\n{a}",
-        "ex_typed": "Confronta la tua risposta con quella del libro:\n{a}",
-        "ex_done": "Esercizi del capitolo {n} finiti! Trovi altri esercizi nel menu.",
+        "ex_score": "Punteggio esercizi: {c}/{t}",
+        "ex_done": "Esercizi del capitolo {n} finiti! Punteggio: {c}/{t} (saltati: {s}).",
         "exp_ask": "Modalità spiegazioni attiva.\n\nScrivi l'argomento, in italiano o inglese. "
                    "Esempi: «present perfect», «passivo», «phrasal verbs», «articoli», "
-                   "«condizionali». Il bot cerca il capitolo giusto nel libro e te lo riassume.",
+                   "«condizionali». Il bot cerca il capitolo giusto nel libro e ti mostra la teoria.",
         "exp_notfound": "Non ho trovato questo argomento nel libro. Prova con parole più "
                         "generali (es. «present perfect», «plurali», «question tags») oppure "
                         "usa l'indice dei capitoli.",
@@ -79,7 +91,7 @@ T = {
         "help": "Comandi:\n"
                 "/menu — menu principale\n"
                 "/quiz — quiz a domande prese dal libro\n"
-                "/esercizi — esercizi del libro, capitolo per capitolo\n"
+                "/esercizi — esercizi del libro con correzione, capitolo per capitolo\n"
                 "/spiega <argomento> — spiegazioni dal libro\n"
                 "/capitoli — indice dei 25 capitoli\n"
                 "/verbi — cerca un verbo irregolare\n"
@@ -105,25 +117,25 @@ T = {
         "btn_glos": "Glossary",
         "btn_help": "Help",
         "btn_menu": "Menu",
-        "quiz_start": "New quiz: {n} selected, reviewed questions based on the book. "
-                      "Answer with the buttons below.",
-        "quiz_tf": "Question {i}/{n} — is this correct in neutral standard written English?",
+        "quiz_start": "New quiz: {n} questions from the book (✓/✗ examples, sentences to correct, "
+                      "multiple choice). Answer with the buttons below.",
+        "quiz_tf": "Question {i}/{n} — according to the book, is this sentence correct?",
         "quiz_which": "Question {i}/{n} — which sentence is correct?",
         "quiz_fill": "Question {i}/{n} — choose the answer:",
         "btn_correct": "Correct",
         "btn_wrong": "Incorrect",
         "quiz_right": "Correct!",
         "quiz_wrong": "No, that's not it.",
-        "reviewed_answer": "Reviewed answer: {a}",
-        "reviewed_correction": "One correct version: {a}",
-        "reviewed_source": "Assistant editorial review; source reference: PDF pages {p}.",
-        "consultation_source": "Source text for consultation: not fully reviewed and may contain inaccuracies. Quizzes use a separate register.",
-        "consultation_only": "Book exercise for consultation: no points are awarded. Its solution has not been editorially reviewed.",
-        "ex_edited_answer": "Editorially corrected solution:\n{a}",
-        "quiz_tf_ok": "The sentence is a CORRECT example from the book (ch. {ch}).",
-        "quiz_tf_bad": "The sentence is an example of a MISTAKE in the book (ch. {ch}).",
-        "quiz_fix": "The correct version is:\n✓ {good}\n(the wrong one was: ✗ {bad}, ch. {ch})",
-        "quiz_book_answer": "Book answer: {a}",
+        "tf_is_ok": "In the book this is a correct example:",
+        "tf_is_bad": "In the book this is an example of a mistake:",
+        "book_note": "Book explanation: {a}",
+        "book_answer": "Book answer: {a}",
+        "book_solution": "Book solution:\n{a}",
+        "fix_book_form": "(in the book: «{a}»)",
+        "quiz_fix": "Correct version in the book:\n✓ {good}\n✗ {bad}",
+        "src_chapter": "Ch. {n} — {t}",
+        "src_exercise": "exercise {n}",
+        "src_pages": "p. {p}",
         "score": "Score: {c}/{t}",
         "expired": "This button is no longer active. Use the current activity buttons or /menu.",
         "ex_target_pos": "What part of speech is {target} in this sentence?",
@@ -133,18 +145,30 @@ T = {
         "btn_stop_quiz": "End quiz",
         "quiz_done": "Quiz finished! Score: {c}/{t}.\nWant to try again with new questions?",
         "quiz_again": "Another quiz",
-        "quiz_few": "This chapter has {n} reviewed questions: the quiz stays within the selected chapter.",
+        "quiz_few": "This chapter has {n} questions: the quiz stays within the selected chapter.",
         "ex_choose": "Choose the chapter you want to practise:",
-        "ex_q": "Exercise {i}/{n} — Chapter {ch}: {title}\n\n{instr}\n\n{q}\n\n"
-                "(You can also type your answer here in chat: I will show you the book's answer to compare.)",
-        "btn_show": "Show answer",
+        "ex_head": "Exercise {i}/{n} — Chapter {ch}: {title}",
+        "ex_how_automatico": "Type your answer here in chat: I will check it against the book's solution.",
+        "ex_how_parti": "Type one answer per part, one per line (a, b, c…) or separated by commas.",
+        "ex_how_scelta_multipla": "Choose the answer with the buttons.",
+        "ex_how_autovalutazione": "Type your answer here in chat (or just think it), then look at the book's "
+                                  "solution and tell me whether you got it right.",
+        "ex_right": "✅ Correct!",
+        "ex_wrong": "❌ This does not match the book's solution.",
+        "ex_your": "Your answer: {a}",
+        "ex_parts": "Correct parts: {c}/{t}",
+        "ex_shown": "Solution shown without an answer: no points.",
+        "ex_self_ask": "Compare with the solution: did you get it right?",
+        "ex_use_buttons": "For this exercise, choose one of the answers with the buttons.",
+        "btn_self_ok": "I got it right",
+        "btn_self_ko": "I got it wrong",
+        "btn_show": "Show solution",
         "btn_skip": "Skip",
-        "ex_answer": "Book answer:\n{a}",
-        "ex_typed": "Compare your answer with the book's:\n{a}",
-        "ex_done": "Chapter {n} exercises finished! You will find more in the menu.",
+        "ex_score": "Exercise score: {c}/{t}",
+        "ex_done": "Chapter {n} exercises finished! Score: {c}/{t} (skipped: {s}).",
         "exp_ask": "Explanations mode on.\n\nType a topic, in English or your own language. "
                    "Examples: «present perfect», «passive», «phrasal verbs», «articles», "
-                   "«conditionals». The bot finds the right chapter in the book and summarises it.",
+                   "«conditionals». The bot finds the right chapter in the book and shows you the theory.",
         "exp_notfound": "I could not find that topic in the book. Try broader words "
                         "(e.g. «present perfect», «plurals», «question tags») or use the chapter index.",
         "exp_source": "Source — Chapter {n}: {t}",
@@ -165,7 +189,7 @@ T = {
         "help": "Commands:\n"
                 "/menu — main menu\n"
                 "/quiz — quiz with questions taken from the book\n"
-                "/esercizi — book exercises, chapter by chapter\n"
+                "/esercizi — book exercises with scoring, chapter by chapter\n"
                 "/spiega <topic> — explanations from the book\n"
                 "/capitoli — index of the 25 chapters\n"
                 "/verbi — look up an irregular verb\n"

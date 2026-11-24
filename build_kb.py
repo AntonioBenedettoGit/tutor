@@ -6,7 +6,9 @@
     python build_kb.py libro.pdf data/kb.candidate.json
 
 La KB attiva si sostituisce soltanto con --replace, dopo tutti i controlli e
-con backup. Esempi e coppie quiz sono preservati, non reimportati automaticamente.
+con backup. Dalla versione 3 teoria, esempi, coppie e soluzioni sono estratti dal
+PDF con la formattazione; ogni contenuto deve corrispondere al profilo approvato
+(data/book_profile.json, rigenerabile solo con tools/approve_profile.py).
 """
 import argparse
 import json

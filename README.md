@@ -19,7 +19,9 @@ Il runtime legge il JSON già incluso: **non deve elaborare il PDF** e non richi
 
 - [Fase 1: sessioni, pulsanti, bersagli degli esercizi e logging](STEP1.md).
 - [Fase 2: parser, dati rigenerati, controlli e test](STEP2.md).
-- **[Fase 3: revisione editoriale e separazione dei quiz dalla fonte](STEP3.md)** — versione corrente locale, non distribuita su Render.
+- **[Fase 3: revisione editoriale e separazione dei quiz dalla fonte](STEP3.md)** — distribuita su Render.
+- **[Fase 4.2: parser migliorato, KB v3 estratta dal libro con formattazione](STEP4-2.md)** — solo dati e build; il comportamento del bot cambia nella fase 4.3.
+- **[Fase 4.3–4.4: il bot torna al libro](STEP4-3.md)** — quiz ed esercizi dal libro con punteggio, spiegazione del libro + pagina + nota in italiano; errori del libro mostrati in originale.
 
 La KB attuale contiene 25 capitoli, 270 esercizi, 145 verbi e 93 voci di glossario.
 Il punteggio usa **solo le 160 domande del registro editoriale** (150 vero/falso e 10 MCQ), con spiegazioni IT/EN e citazioni. Gli esempi e gli esercizi grezzi restano consultabili senza assegnare punti. I quiz tematici hanno 6–9 domande e non pescano da altri capitoli.

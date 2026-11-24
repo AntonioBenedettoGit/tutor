@@ -1,4 +1,4 @@
-"""Regressioni parser/build fase 2. Fixture del PDF; integrazione completa opzionale.
+"""Regressioni parser/build (fase 2, KB v3 dalla fase 4.2). Fixture del PDF; integrazione completa opzionale.
 TUTOR_TEST_PDF=/percorso/libro.pdf python -m unittest discover -s tests -v
 """
 import copy
@@ -220,6 +220,47 @@ class ValidationTests(unittest.TestCase):
     def test_legacy_pool_cannot_be_silently_reimported(self):
         self.candidate['examples'].pop();self.reject()
 
+    def test_changed_book_example_rejected(self):
+        self.candidate['examples'][0]['t']+=' extra';self.reject()
+
+    def test_markup_residue_or_symbol_in_example_rejected(self):
+        for bad in ('She **is** here.','She is here ✓','She is ~~here~~.'):
+            self.candidate=copy.deepcopy(self.reference)
+            self.candidate['examples'][0]['t']=bad
+            with self.assertRaises(BuildError):validate_candidate(self.candidate,PROFILE,self.baseline)
+
+    def test_unsafe_or_unbalanced_html_rejected(self):
+        for html in ('<b>x','<a href="x">x</a>','<i>x</b>','<script>x</script>'):
+            self.candidate=copy.deepcopy(self.reference)
+            self.candidate['exercises'][0]['answer_html']=html
+            with self.assertRaises(BuildError):validate_candidate(self.candidate,PROFILE,self.baseline)
+
+    def test_changed_book_solution_split_rejected(self):
+        e=next(e for e in self.candidate['exercises'] if e['answer_explanation'])
+        e['answer_explanation']='';self.reject()
+
+    def test_theory_formatting_pinned(self):
+        self.candidate['chapters'][3]['blocks'][1]['html']='<b>Changed</b>';self.reject()
+
+    def test_example_page_outside_chapter_rejected(self):
+        self.candidate['examples'][0]['page']=340;self.reject()
+
+    def test_v3_reference_shape(self):
+        kb=self.reference
+        self.assertEqual(kb['meta']['schema_version'],3)
+        for e in kb['examples']:
+            self.assertNotIn('*',e['t']);self.assertNotRegex(e['t'],'[✓✗→|]')
+        modes={e['check_mode'] for e in kb['exercises']}
+        self.assertEqual(modes,{'automatico','automatico_con_varianti','autovalutazione','parti','scelta_multipla'})
+        self.assertTrue(all(e['check_mode']=='scelta_multipla' for e in kb['exercises'] if e['options']))
+        targets={e['source_id']:e.get('target') for e in kb['exercises'] if e.get('target')}
+        self.assertEqual(targets['ch01-A-1'],'speech');self.assertEqual(targets['ch18-B-2'],'the newspaper')
+        self.assertEqual(len(targets),15)
+        zero=next(e for e in kb['exercises'] if e['source_id']=='ch05-main-5')
+        self.assertEqual(zero['answer_core'],'—');self.assertIn('no article',zero['answer_variants'])
+        tail=next(f for f in kb['fixes'] if f['ch']==7 and 'wagged' in f['bad'])
+        self.assertEqual(tail['good'],'The dog wagged its tail.');self.assertEqual(tail['good_book'],'its tail.')
+
     def test_malformed_schema_rejected(self):
         del self.candidate['exercises'][0]['source_q'];self.reject()
 
@@ -271,7 +312,7 @@ class ValidationTests(unittest.TestCase):
     def test_unknown_pdf_rejected_before_extraction(self):
         with tempfile.TemporaryDirectory() as temp:
             pdf=Path(temp)/'other.pdf';pdf.write_bytes(b'NOT THE BOOK')
-            with patch('tutor.kb_builder.extract_pages') as extract:
+            with patch('tutor.kb_builder.extract_book') as extract:
                 with self.assertRaisesRegex(BuildError,'PDF diverso'):
                     build_candidate(pdf,self.baseline,PROFILE,build_kb.CHAPTERS,build_kb.PARTS,build_kb.SYNONYMS)
                 extract.assert_not_called()
@@ -326,16 +367,17 @@ class RuntimeDataTests(unittest.TestCase):
         for form,base in [('went','go'),('gone','go'),('dreamed','dream'),('quitted','quit')]:
             self.assertEqual(kbmod.search(self.kb,form)[0],('verbs',base))
 
-    def test_four_corrections_reconstructed_without_reenabling_fragments(self):
-        by_id={f.get('id'):f for f in self.kb['fixes']}
-        self.assertEqual(by_id['fix-ch14-34']['good'],'A problem occurred')
-        self.assertTrue(by_id['fix-ch14-34']['_mechanically_eligible'])
-        self.assertFalse(by_id['fix-ch14-34']['quiz_eligible'])
-        self.assertEqual(by_id['fix-ch23-57']['good'],'The book (that) I read was good')
-        self.assertTrue(by_id['fix-ch23-57']['_mechanically_eligible'])
-        self.assertFalse(by_id['fix-ch23-57']['quiz_eligible'])
-        self.assertFalse(by_id['fix-ch23-53']['quiz_eligible'])
-        self.assertFalse(by_id['fix-ch06-08']['quiz_eligible'])
+    def test_four_corrections_reconstructed_by_parser_and_scored(self):
+        # Fase 4: il parser ricostruisce le quattro coppie dal PDF; tutte valutabili.
+        by_bad={f['bad']:f for f in self.kb['fixes']}
+        expected={'A problem was occurred.':'A problem occurred.',
+                  'The book that I read it was good.':'The book (that) I read was good.',
+                  'The book what I read…':'The book (that) I read…',
+                  'Most of people':'Most people'}
+        for bad,good in expected.items():
+            self.assertEqual(by_bad[bad]['good'],good)
+            self.assertTrue(by_bad[bad]['quiz_eligible'])
+            self.assertNotIn('_mechanically_eligible',by_bad[bad])
 
     def test_runtime_corrections_are_idempotent(self):
         before=copy.deepcopy(self.kb)

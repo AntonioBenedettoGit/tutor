@@ -16,6 +16,15 @@ LETTERS = 'ABCDEF'
 TAG = re.compile(r'<(/?)(b|i|s|u|code|pre)>')
 
 
+def clean_for_display(text):
+    """Pulisce i glitch di formattazione ereditati dal PDF/parsing:
+    separatori di tabella '| | | |' e spazi doppi."""
+    text = re.sub(r"\s*\|+\s*", " ", text)
+    text = re.sub(r"[ \t]{2,}", " ", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
 def esc(text):
     return _escape(text or '', quote=False)
 
@@ -102,25 +111,33 @@ def quiz_head(lang, i, n):
     return tr(lang, 'quiz_head', i=i, n=n, bar=progress_bar(i, n))
 
 
+def quiz_question_parts(kb, lang, ref_item, item):
+    """(consegna, riga in corsivo, testo nel riquadro) della domanda — senza intestazione né opzioni.
+    Usata dalla chat (quiz_question) e dalla mini app, così il contenuto è lo stesso."""
+    kind = ref_item['type']
+    if kind == 'tf':
+        where = esc(item.get('section') or chapter_title(kb, item['ch']))
+        return tr(lang, 'quiz_tf'), tr(lang, 'src_chapter', n=item['ch'], t=where), example_html(item)
+    if kind == 'fix':
+        return tr(lang, 'quiz_which'), '', ''
+    if 'source' in item:                      # domanda ricostruita dal libro (fase 3)
+        return tr(lang, 'quiz_fill'), esc(item.get('context', {}).get(lang, '')), esc(item['q'])
+    instr = tidy_html(item.get('instr_html') or esc(item.get('instr')))
+    return tr(lang, 'quiz_fill'), instr, tidy_html(item.get('q_html') or esc(item['q']))
+
+
 def quiz_question(kb, lang, ref_item, item, i, n, fix_opts=None):
     kind = ref_item['type']
     head = quiz_head(lang, i, n)
+    ask, sub, text = quiz_question_parts(kb, lang, ref_item, item)
     if kind == 'tf':
-        where = esc(item.get('section') or chapter_title(kb, item['ch']))
-        return (f"{head}\n{tr(lang, 'quiz_tf')}\n<i>{tr(lang, 'src_chapter', n=item['ch'], t=where)}</i>"
-                f"\n\n{quote(example_html(item))}")
+        return f"{head}\n{ask}\n<i>{sub}</i>\n\n{quote(text)}"
     if kind == 'fix':
         a, b = fix_opts
-        return f"{head}\n{tr(lang, 'quiz_which')}\n\n<b>A)</b> {esc(a)}\n<b>B)</b> {esc(b)}"
+        return f"{head}\n{ask}\n\n<b>A)</b> {esc(a)}\n<b>B)</b> {esc(b)}"
     opts = '\n'.join(f"<b>{LETTERS[j]})</b> {esc(o)}" for j, o in enumerate(item['options']))
-    if 'source' in item:                      # domanda ricostruita dal libro (fase 3)
-        ctx = esc(item.get('context', {}).get(lang, ''))
-        ctx = f"\n<i>{ctx}</i>" if ctx else ''
-        return f"{head}\n{tr(lang, 'quiz_fill')}{ctx}\n\n{quote(esc(item['q']))}\n{opts}"
-    instr = tidy_html(item.get('instr_html') or esc(item.get('instr')))
-    q = tidy_html(item.get('q_html') or esc(item['q']))
-    instr = f"\n<i>{instr}</i>" if instr else ''
-    return f"{head}\n{tr(lang, 'quiz_fill')}{instr}\n\n{quote(q)}\n{opts}"
+    sub = f"\n<i>{sub}</i>" if sub else ''
+    return f"{head}\n{ask}{sub}\n\n{quote(text)}\n{opts}"
 
 
 def feedback_head(lang, good, score, total, right_key='quiz_right', wrong_key='quiz_wrong'):
@@ -131,25 +148,30 @@ def feedback_head(lang, good, score, total, right_key='quiz_right', wrong_key='q
 def quiz_feedback(kb, lang, ref_item, item, good, score, total, given=None):
     """Esito, poi riquadro con la risposta/spiegazione del libro, fonte e nota italiana."""
     head = feedback_head(lang, good, score, total)
+    return f"{head}\n\n{quiz_feedback_body(kb, lang, ref_item, item)}"
+
+
+def quiz_feedback_body(kb, lang, ref_item, item):
+    """Risposta/spiegazione del libro, fonte e nota italiana (uguale per chat e mini app)."""
     kind = ref_item['type']
     if kind == 'tf':
         verdict = tr(lang, 'tf_is_ok' if item['ok'] else 'tf_is_bad')
         body = f"{verdict}\n{'✓' if item['ok'] else '✗'} {example_html(item)}"
         if item.get('note'):
             body += '\n\n' + tr(lang, 'book_note', a=esc(item['note']))
-        return f"{head}\n\n{quote(body)}\n{source_line(kb, lang, item, 'item')}{it_note(kb, lang, item, 'item')}"
+        return f"{quote(body)}\n{source_line(kb, lang, item, 'item')}{it_note(kb, lang, item, 'item')}"
     if kind == 'fix':
         body = tr(lang, 'quiz_fix', good=esc(item['good']), bad=esc(item['bad']))
         if item.get('good_book'):
             body += '\n' + tr(lang, 'fix_book_form', a=esc(item['good_book']))
         if item.get('note'):
             body += '\n\n' + tr(lang, 'book_note', a=esc(item['note']))
-        return f"{head}\n\n{quote(body)}\n{source_line(kb, lang, item, 'item')}{it_note(kb, lang, item, 'item')}"
+        return f"{quote(body)}\n{source_line(kb, lang, item, 'item')}{it_note(kb, lang, item, 'item')}"
     if 'source' in item:
         body = tr(lang, 'book_answer', a=f"<b>{esc(item['options'][item['answer_idx']])}</b>")
         body += '\n\n' + esc(item['explanation'][lang])
-        return f"{head}\n\n{quote(body)}\n{source_line(kb, lang, item, 'reviewed')}"
-    return f"{head}\n\n{solution_html(kb, lang, item)}"
+        return f"{quote(body)}\n{source_line(kb, lang, item, 'reviewed')}"
+    return solution_html(kb, lang, item)
 
 
 def quiz_snippet(kb, ref_item, item, width=70):
@@ -167,7 +189,8 @@ def quiz_snippet(kb, ref_item, item, width=70):
 
 
 # --------------------------------------------------------------------------- esercizi
-def exercise_prompt(kb, lang, item, i, n):
+def exercise_parts(kb, lang, item):
+    """(consegna, testo) dell'esercizio, con il bersaglio sottolineato: uguale per chat e mini app."""
     from tutor.content import target_span
     instr = tidy_html(item.get('instr_html') or esc(item.get('instr')))
     if item.get('group'):
@@ -178,6 +201,11 @@ def exercise_prompt(kb, lang, item, i, n):
         q = esc(item['q'][:a]) + '<b><u>' + esc(item['q'][a:b]) + '</u></b>' + esc(item['q'][b:])
         key = 'ex_target_pronoun' if 'underlined' in item['instr'] else 'ex_target_pos'
         instr = tr(lang, key, target=f"<b>{esc(item['target'])}</b>")
+    return instr, q
+
+
+def exercise_prompt(kb, lang, item, i, n):
+    instr, q = exercise_parts(kb, lang, item)
     from tutor.texts import chapter_title as local_title
     head = tr(lang, 'ex_head', i=i, n=n, bar=progress_bar(i, n), ch=item['ch'],
               title=esc(local_title(kb, item['ch'], lang)))

@@ -18,17 +18,27 @@
   --accent-text:var(--tg-theme-button-text-color,#ffffff);
   --sep:var(--tg-theme-section-separator-color,rgba(127,127,127,.18));
   --header:var(--tg-theme-section-header-text-color,var(--hint));
+  --ok:#2fa84f;
+  --ko:var(--tg-theme-destructive-text-color,#e5484d);
+  --tint:rgba(42,122,226,.10);
+  --ok-tint:rgba(47,168,79,.14);
+  --ko-tint:rgba(229,72,77,.12);
+}
+@supports (background:color-mix(in srgb,red 10%,transparent)){
+  :root{--tint:color-mix(in srgb,var(--accent) 10%,transparent);
+        --ok-tint:color-mix(in srgb,var(--ok) 14%,transparent);
+        --ko-tint:color-mix(in srgb,var(--ko) 12%,transparent)}
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg2);color:var(--text);
-  font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
-body{min-height:100vh;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+  font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+body{min-height:100vh;padding-bottom:calc(28px + env(safe-area-inset-bottom))}
 button{font:inherit;color:inherit}
 .hidden{display:none!important}
 main{max-width:640px;margin:0 auto;padding:12px 12px 0}
 
 /* intestazione home */
-.hero{padding:18px 6px 14px}
+.hero{padding:18px 6px 6px}
 .hero h1{margin:0;font-size:24px;letter-spacing:-.01em}
 .hero p{margin:4px 0 0;color:var(--hint);font-size:14px}
 
@@ -39,13 +49,14 @@ main{max-width:640px;margin:0 auto;padding:12px 12px 0}
 .row+.row::before{content:"";position:absolute;top:0;left:56px;right:0;height:1px;background:var(--sep)}
 .row:active{background:var(--sep)}
 .row .ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:17px;background:var(--bg2);flex:none}
+.row .ico.num{font-size:14px;font-weight:600;color:var(--hint)}
 .row .lbl{flex:1;min-width:0}
 .row .lbl b{display:block;font-weight:600}
 .row .lbl small{display:block;color:var(--hint);font-size:13px}
 .row .chev{color:var(--hint);font-size:18px}
-.row.soon{cursor:default;opacity:.55}
-.row.soon:active{background:none}
-.badge{font-size:12px;color:var(--hint);border:1px solid var(--sep);border-radius:10px;padding:1px 8px}
+.badge{font-size:12px;color:var(--hint);border:1px solid var(--sep);border-radius:10px;padding:1px 8px;white-space:nowrap}
+.badge.done{color:var(--ok);border-color:var(--ok)}
+.tick{color:var(--ok);font-weight:700}
 
 /* barra di ricerca */
 .searchbar{position:sticky;top:0;z-index:2;background:var(--bg2);padding:10px 0 8px}
@@ -80,6 +91,7 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
 .empty{padding:22px 16px;text-align:center;color:var(--hint)}
 .source{margin:10px 6px 0;color:var(--hint);font-size:13px}
 .note{margin:14px 6px 0;color:var(--hint);font-size:13px;text-align:center}
+.linkbtn{display:block;margin:8px auto 0;border:0;background:none;color:var(--hint);font-size:13px;text-decoration:underline;cursor:pointer}
 
 /* lingua */
 .seg{display:inline-flex;background:var(--section);border-radius:10px;padding:3px;gap:3px}
@@ -91,7 +103,74 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
 .state{padding:60px 20px;text-align:center;color:var(--hint)}
 .spinner{width:28px;height:28px;border-radius:50%;border:3px solid var(--sep);border-top-color:var(--accent);margin:0 auto 14px;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.btn{display:inline-block;margin-top:14px;border:0;border-radius:10px;padding:10px 18px;background:var(--accent);color:var(--accent-text);cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);max-width:92%;
+  background:var(--text);color:var(--bg);font-size:14px;padding:9px 14px;border-radius:12px;z-index:9;opacity:.94;text-align:center}
+
+/* bottoni */
+.btn{display:block;width:100%;margin-top:10px;border:0;border-radius:12px;padding:12px 16px;background:var(--accent);color:var(--accent-text);cursor:pointer;font-weight:600;text-align:center}
+.btn.inline{display:inline-block;width:auto}
+.btn2{display:block;width:100%;margin-top:8px;border:0;border-radius:12px;padding:11px 14px;background:var(--section);color:var(--link);cursor:pointer;text-align:center}
+.btn:disabled,.btn2:disabled{opacity:.5;cursor:default}
+.pair{display:flex;gap:8px}
+.pair>*{flex:1}
+
+/* pagine dinamiche */
+.top{padding:8px 4px 4px}
+.top small{display:block;color:var(--hint);font-size:13px}
+.top h2{margin:2px 0 0;font-size:21px;line-height:1.25}
+.top .orig{color:var(--hint);font-size:14px;margin-top:2px}
+.bar{height:6px;border-radius:3px;background:var(--sep);overflow:hidden;margin:8px 0 2px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .25s}
+.card{background:var(--section);border-radius:14px;padding:14px;margin-top:12px}
+.rich{white-space:pre-wrap;overflow-wrap:anywhere}
+.rich blockquote,.card blockquote{margin:8px 0;padding:8px 12px;border-left:3px solid var(--accent);background:var(--tint);border-radius:4px 10px 10px 4px;white-space:pre-wrap}
+.rich blockquote.it{border-left-color:var(--hint);background:var(--bg2);font-size:15px}
+.rich code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em}
+.ask{font-weight:600}
+.sub{color:var(--hint);font-size:14px;margin-top:2px}
+.instr{color:var(--hint);font-size:15px;margin-bottom:4px}
+.opts{margin-top:10px}
+.opt{display:flex;gap:10px;width:100%;text-align:left;border:1.5px solid var(--sep);background:var(--section);border-radius:12px;padding:11px 12px;margin-top:8px;cursor:pointer}
+.opt b{color:var(--hint);flex:none}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-tint)}
+.opt.wrong{border-color:var(--ko);background:var(--ko-tint)}
+.field{width:100%;border:1.5px solid var(--sep);background:var(--bg);color:var(--text);border-radius:12px;padding:11px 12px;font:inherit;font-size:16px;outline:0;margin-top:10px}
+.field:focus{border-color:var(--accent)}
+textarea.field{min-height:84px;resize:vertical}
+.partrow{display:flex;align-items:center;gap:8px}
+.partrow b{width:22px;color:var(--hint)}
+.partrow .field{margin-top:8px}
+.how{color:var(--hint);font-size:13px;margin-top:8px}
+.verdict{font-weight:700;font-size:17px}
+.verdict.ok{color:var(--ok)}
+.verdict.ko{color:var(--ko)}
+.muted{color:var(--hint);font-size:14px}
+.feedback{margin-top:12px}
+.feedback .card{margin-top:0}
+.score{color:var(--hint);font-size:14px;margin-top:10px}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--sep);display:block}
+.dots i.ok{background:var(--ok)}
+.dots i.ko{background:var(--ko)}
+.dots i.sk{background:var(--hint)}
+.big{font-size:28px;letter-spacing:2px;margin:6px 0 0}
+.result{font-size:22px;font-weight:700}
+.wrongs .row{padding:10px 14px}
+.wrongs .row .lbl{font-size:15px}
+
+/* teoria */
+.theory{background:var(--section);border-radius:14px;padding:6px 16px 14px;margin-top:12px}
+.theory h3{font-size:18px;margin:18px 0 6px;line-height:1.3}
+.theory h3 strong{font-weight:700}
+.theory p{margin:8px 0}
+.theory .bullet{margin:5px 0 5px 4px}
+.theory .table{margin:10px 0;padding:10px 12px;background:var(--bg2);border-radius:10px;font-size:15px}
+.theory pre{margin:10px 0;padding:10px 12px;background:var(--bg2);border-radius:10px;overflow:auto;white-space:pre-wrap}
+details.toc{background:var(--section);border-radius:14px;margin-top:12px;padding:10px 14px}
+details.toc summary{cursor:pointer;color:var(--link)}
+details.toc button{display:block;width:100%;text-align:left;border:0;background:none;padding:7px 0;color:var(--text);cursor:pointer;border-top:1px solid var(--sep)}
+details.toc button:first-of-type{border-top:0}
 </style>
 </head>
 <body>
@@ -100,7 +179,7 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
   <section id="state" class="state">
     <div class="spinner"></div>
     <div id="state-text"></div>
-    <button id="retry" class="btn hidden"></button>
+    <button id="retry" class="btn inline hidden"></button>
   </section>
 
   <!-- home -->
@@ -109,7 +188,25 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
       <h1 id="hello"></h1>
       <p id="book"></p>
     </div>
-    <div class="group-title" data-i18n="available"></div>
+    <div class="group-title" data-i18n="study"></div>
+    <div class="group">
+      <button class="row" data-go="theory">
+        <span class="ico">📘</span>
+        <span class="lbl"><b data-i18n="theory"></b><small id="theory-sub"></small></span>
+        <span class="chev">›</span>
+      </button>
+      <button class="row" data-go="exercises">
+        <span class="ico">✍️</span>
+        <span class="lbl"><b data-i18n="exercises"></b><small id="exercises-sub"></small></span>
+        <span class="chev">›</span>
+      </button>
+      <button class="row" data-go="quiz">
+        <span class="ico">🧠</span>
+        <span class="lbl"><b data-i18n="quiz"></b><small id="quiz-sub"></small></span>
+        <span class="chev">›</span>
+      </button>
+    </div>
+    <div class="group-title" data-i18n="consult"></div>
     <div class="group">
       <button class="row" data-go="verbs">
         <span class="ico">🔤</span>
@@ -122,18 +219,14 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
         <span class="chev">›</span>
       </button>
     </div>
-    <div class="group-title" data-i18n="coming"></div>
-    <div class="group">
-      <div class="row soon"><span class="ico">📘</span><span class="lbl"><b data-i18n="theory"></b><small data-i18n="theory_sub"></small></span><span class="badge" data-i18n="soon"></span></div>
-      <div class="row soon"><span class="ico">✍️</span><span class="lbl"><b data-i18n="exercises"></b><small data-i18n="exercises_sub"></small></span><span class="badge" data-i18n="soon"></span></div>
-      <div class="row soon"><span class="ico">🧠</span><span class="lbl"><b data-i18n="quiz"></b><small data-i18n="quiz_sub"></small></span><span class="badge" data-i18n="soon"></span></div>
-    </div>
     <div class="langrow">
       <div class="seg" role="group" aria-label="Lingua / Language">
         <button data-lang="it">Italiano</button><button data-lang="en">English</button>
       </div>
     </div>
     <p class="note" data-i18n="no_ai"></p>
+    <p class="note" data-i18n="progress_note"></p>
+    <button class="linkbtn" id="reset" data-i18n="reset"></button>
   </section>
 
   <!-- verbi -->
@@ -167,19 +260,25 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
     </div>
     <div class="group" id="glossary-list"></div>
   </section>
+
+  <!-- pagine costruite dal codice: capitoli, teoria, esercizi, quiz, riepiloghi -->
+  <section id="page" class="hidden"></section>
 </main>
+<div id="toast" class="toast hidden"></div>
 
 <script type="application/json" id="i18n">
 {
   "it": {
     "hello": "Ciao {name}!", "hello_anon": "Ciao!",
-    "available": "Disponibile", "coming": "In arrivo", "soon": "presto",
+    "study": "Studia", "consult": "Consulta",
     "verbs": "Verbi irregolari", "verbs_sub": "{n} verbi · base, past, participio",
     "glossary": "Glossario", "glossary_sub": "{n} termini grammaticali",
-    "theory": "Teoria", "theory_sub": "I 25 capitoli del libro",
-    "exercises": "Esercizi", "exercises_sub": "Con correzione e spiegazione",
-    "quiz": "Quiz", "quiz_sub": "Domande dal libro",
+    "theory": "Teoria", "theory_sub": "{n} capitoli · letti {r}",
+    "exercises": "Esercizi", "exercises_sub": "{n} esercizi · fatti {d}",
+    "quiz": "Quiz", "quiz_sub": "Domande dal libro · quiz fatti: {k}",
     "no_ai": "Niente AI: tutto il contenuto viene dal libro. La chat del bot resta disponibile come sempre.",
+    "progress_note": "I progressi della mini app sono salvati nel tuo account Telegram, separati da quelli della chat.",
+    "reset": "Azzera i progressi della mini app", "reset_ask": "Azzerare tutti i progressi della mini app? La chat non cambia.",
     "verbs_ph": "Cerca un verbo (es. went, taken)", "glossary_ph": "Cerca un termine o una parola",
     "col_base": "Base", "col_past": "Past simple", "col_pp": "Participle",
     "count": "{n} su {t}", "verbs_none": "«{q}» non è tra i verbi irregolari del libro: probabilmente è regolare (aggiungi -ed).",
@@ -187,17 +286,56 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
     "verbs_source": "📖 Dal libro, Appendice A · p. {a}–{b}", "page_appendix": "📖 Dal libro, Appendice A · p. {p}", "page": "📖 Dal libro, p. {p}",
     "loading": "Caricamento…", "waking": "Il server si sta svegliando, ci vuole al massimo un minuto…",
     "error_auth": "Apri la mini app dal bot su Telegram (comando /app).",
-    "error_net": "Connessione non riuscita.", "retry": "Riprova"
+    "error_net": "Connessione non riuscita.", "retry": "Riprova",
+    "part": "Parte {p} · {t}", "chapter_part": "Capitolo {n} · Parte {p}", "pages": "📖 Dal libro, p. {a}–{b}",
+    "search_ph": "Cerca un argomento (es. present perfect, passivo)",
+    "exp_notfound": "Non ho trovato questo argomento nel libro. Prova con parole più generali (es. «present perfect», «plurali», «question tags») oppure apri 📘 Teoria.",
+    "n_ex": "{n} esercizi", "n_q": "{n} domande nel libro",
+    "mixed": "Quiz misto", "mixed_sub": "{n} domande da tutto il libro",
+    "pick_theory": "📘 Teoria", "pick_ex": "✍️ Esercizi", "pick_quiz": "🧠 Quiz",
+    "toc": "Indice del capitolo",
+    "btn_ex_ch": "✍️ Esercizi", "btn_quiz_ch": "🧠 Quiz sul capitolo", "btn_next_theory": "📘 Capitolo {n} ▶️",
+    "ex_intro": "{n} esercizi del libro, corretti con le soluzioni del libro.",
+    "ex_progress": "Fatti {d} su {n} · giusti {c}",
+    "btn_start": "Inizia", "btn_continue": "Continua dall'esercizio {i}", "btn_restart": "Ricomincia da capo",
+    "btn_redo_wrong": "🔁 Rifai sbagliati e saltati ({n})",
+    "ex_head": "✍️ Esercizio {i}/{n}", "ex_src": "Cap. {n} — {t} · esercizio {l}",
+    "how_auto": "Scrivi la risposta: la confronto con la soluzione del libro.",
+    "how_parts": "Scrivi una risposta per ogni parte.",
+    "how_mcq": "Scegli una risposta.",
+    "how_self": "Scrivi la tua risposta (o pensala), poi guarda la soluzione del libro e valutati.",
+    "answer_ph": "La tua risposta", "answer_ph_opt": "La tua risposta (facoltativa)", "btn_check": "Controlla",
+    "btn_show": "Mostra la soluzione", "btn_skip": "Salta",
+    "ex_right": "✅ Esatto!", "ex_wrong": "❌ Non coincide con la soluzione del libro.",
+    "ex_shown": "Soluzione mostrata senza risposta: nessun punto.",
+    "ex_your": "La tua risposta: {a}", "ex_parts": "Parti corrette: {c}/{t}",
+    "ex_self_ask": "Confronta con la soluzione: hai risposto bene?",
+    "btn_self_ok": "✓ Ho risposto bene", "btn_self_ko": "✗ Ho risposto male",
+    "btn_next_ex": "Prossimo esercizio ▶️", "ex_score": "Punteggio esercizi {c}/{t}",
+    "ex_done": "🏁 Esercizi del capitolo {n} finiti", "ex_skipped": "Saltati: {s}",
+    "btn_redo_ex": "🔁 Rifai il capitolo", "btn_next_chapter": "✍️ Capitolo {n} ▶️", "btn_theory_ch": "📘 Teoria cap. {n}",
+    "verdict_1": "Ripassa i capitoli suggeriti e riprova.", "verdict_2": "Buon lavoro, continua così.",
+    "verdict_3": "Molto bene!", "verdict_4": "Eccellente!",
+    "quiz_head": "🧠 Domanda {i}/{n}",
+    "btn_correct": "✓ Corretta", "btn_wrong": "✗ Errata",
+    "quiz_right": "✅ Esatto!", "quiz_wrong": "❌ Non è così.", "score": "Punteggio {c}/{t}",
+    "btn_next": "Prossima domanda ▶️", "see_result": "Vedi il risultato ▶️",
+    "quiz_done": "🏁 Quiz finito", "review_head": "Da ripassare",
+    "btn_redo": "🔁 Rifai gli errori ({n})", "btn_review_ch": "📘 Ripassa cap. {n}", "quiz_again": "🧠 Nuovo quiz",
+    "ch_short": "cap. {n}", "quit_quiz": "Interrompere il quiz? Le risposte date finora non vengono salvate.",
+    "home": "Torna alla home", "best": "migliore {c}/{t}", "error_generic": "Qualcosa non ha funzionato. Riprova."
   },
   "en": {
     "hello": "Hi {name}!", "hello_anon": "Hi!",
-    "available": "Available", "coming": "Coming soon", "soon": "soon",
+    "study": "Study", "consult": "Reference",
     "verbs": "Irregular verbs", "verbs_sub": "{n} verbs · base, past, participle",
     "glossary": "Glossary", "glossary_sub": "{n} grammar terms",
-    "theory": "Theory", "theory_sub": "The book's 25 chapters",
-    "exercises": "Exercises", "exercises_sub": "With scoring and explanations",
-    "quiz": "Quiz", "quiz_sub": "Questions from the book",
-    "no_ai": "No AI: all content comes from the book. The bot chat is still available as always.",
+    "theory": "Theory", "theory_sub": "{n} chapters · read {r}",
+    "exercises": "Exercises", "exercises_sub": "{n} exercises · done {d}",
+    "quiz": "Quiz", "quiz_sub": "Questions from the book · quizzes taken: {k}",
+    "no_ai": "No AI: all content comes from the book. The bot chat stays available as always.",
+    "progress_note": "Mini app progress is saved in your Telegram account, separate from the chat.",
+    "reset": "Reset mini app progress", "reset_ask": "Reset all mini app progress? The chat is not affected.",
     "verbs_ph": "Search a verb (e.g. went, taken)", "glossary_ph": "Search a term or a word",
     "col_base": "Base", "col_past": "Past simple", "col_pp": "Participle",
     "count": "{n} of {t}", "verbs_none": "«{q}» is not in the book's irregular verb list: it is probably regular (add -ed).",
@@ -205,7 +343,44 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
     "verbs_source": "📖 From the book, Appendix A · p. {a}–{b}", "page_appendix": "📖 From the book, Appendix A · p. {p}", "page": "📖 From the book, p. {p}",
     "loading": "Loading…", "waking": "The server is waking up, it takes up to a minute…",
     "error_auth": "Open the mini app from the bot in Telegram (/app command).",
-    "error_net": "Connection failed.", "retry": "Retry"
+    "error_net": "Connection failed.", "retry": "Retry",
+    "part": "Part {p} · {t}", "chapter_part": "Chapter {n} · Part {p}", "pages": "📖 From the book, p. {a}–{b}",
+    "search_ph": "Search a topic (e.g. present perfect, passive)",
+    "exp_notfound": "I could not find that topic in the book. Try broader words (e.g. «present perfect», «plurals», «question tags») or open 📘 Theory.",
+    "n_ex": "{n} exercises", "n_q": "{n} questions in the book",
+    "mixed": "Mixed quiz", "mixed_sub": "{n} questions from the whole book",
+    "pick_theory": "📘 Theory", "pick_ex": "✍️ Exercises", "pick_quiz": "🧠 Quiz",
+    "toc": "Chapter contents",
+    "btn_ex_ch": "✍️ Exercises", "btn_quiz_ch": "🧠 Chapter quiz", "btn_next_theory": "📘 Chapter {n} ▶️",
+    "ex_intro": "{n} exercises from the book, checked against the book's solutions.",
+    "ex_progress": "Done {d} of {n} · correct {c}",
+    "btn_start": "Start", "btn_continue": "Continue from exercise {i}", "btn_restart": "Start over",
+    "btn_redo_wrong": "🔁 Redo wrong and skipped ({n})",
+    "ex_head": "✍️ Exercise {i}/{n}", "ex_src": "Ch. {n} — {t} · exercise {l}",
+    "how_auto": "Type your answer: I compare it with the book's solution.",
+    "how_parts": "Type one answer for each part.",
+    "how_mcq": "Choose an answer.",
+    "how_self": "Type your answer (or think it), then look at the book's solution and grade yourself.",
+    "answer_ph": "Your answer", "answer_ph_opt": "Your answer (optional)", "btn_check": "Check",
+    "btn_show": "Show solution", "btn_skip": "Skip",
+    "ex_right": "✅ Correct!", "ex_wrong": "❌ This does not match the book's solution.",
+    "ex_shown": "Solution shown without an answer: no points.",
+    "ex_your": "Your answer: {a}", "ex_parts": "Correct parts: {c}/{t}",
+    "ex_self_ask": "Compare with the solution: did you get it right?",
+    "btn_self_ok": "✓ I got it right", "btn_self_ko": "✗ I got it wrong",
+    "btn_next_ex": "Next exercise ▶️", "ex_score": "Exercise score {c}/{t}",
+    "ex_done": "🏁 Chapter {n} exercises finished", "ex_skipped": "Skipped: {s}",
+    "btn_redo_ex": "🔁 Redo the chapter", "btn_next_chapter": "✍️ Chapter {n} ▶️", "btn_theory_ch": "📘 Theory ch. {n}",
+    "verdict_1": "Review the suggested chapters and try again.", "verdict_2": "Good work, keep going.",
+    "verdict_3": "Very good!", "verdict_4": "Excellent!",
+    "quiz_head": "🧠 Question {i}/{n}",
+    "btn_correct": "✓ Correct", "btn_wrong": "✗ Incorrect",
+    "quiz_right": "✅ Correct!", "quiz_wrong": "❌ That's not it.", "score": "Score {c}/{t}",
+    "btn_next": "Next question ▶️", "see_result": "See the result ▶️",
+    "quiz_done": "🏁 Quiz finished", "review_head": "To review",
+    "btn_redo": "🔁 Retry mistakes ({n})", "btn_review_ch": "📘 Review ch. {n}", "quiz_again": "🧠 New quiz",
+    "ch_short": "ch. {n}", "quit_quiz": "Stop the quiz? Answers given so far are not saved.",
+    "home": "Back to home", "best": "best {c}/{t}", "error_generic": "Something went wrong. Please try again."
   }
 }
 </script>
@@ -213,11 +388,15 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
 (function () {
   "use strict";
   var I18N = JSON.parse(document.getElementById("i18n").textContent);
-  var DEMO = window.__DEMO__ || null;          // solo per l'anteprima statica, mai dal server
+  var DEMO = window.__DEMO__ || null;          // solo per anteprime statiche, mai dal server
   var tg = (window.Telegram && window.Telegram.WebApp) || null;
-  var data = null, view = "home";
+  var data = null;
   var params = new URLSearchParams(location.search);
   var lang = pickLang(params.get("lang"));
+  var STATIC = { home: 1, verbs: 1, glossary: 1 };
+  var stack = [{ name: "home" }];
+  var skipPop = 0, seq = 0;
+  var cache = { theory: {}, ex: {} };
 
   function pickLang(wanted) {
     if (wanted === "it" || wanted === "en") return wanted;
@@ -236,13 +415,45 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
     if (text != null) n.textContent = text;
     return n;
   }
+  function add(parent, child) { parent.appendChild(child); return child; }
+  function button(cls, text, onClick) {
+    var b = el("button", cls, text);
+    b.addEventListener("click", function () { haptic(); onClick(b); });
+    return b;
+  }
   function norm(s) {
     return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       .replace(/[’']/g, "'").replace(/\s+/g, " ").trim();
   }
-  function haptic(kind) { try { tg && tg.HapticFeedback && tg.HapticFeedback.selectionChanged(); } catch (e) {} }
+  function haptic() { try { tg && tg.HapticFeedback && tg.HapticFeedback.selectionChanged(); } catch (e) {} }
+  function notify(kind) { try { tg && tg.HapticFeedback && tg.HapticFeedback.notificationOccurred(kind); } catch (e) {} }
+  function pyRound(x) {                         // come round() di Python (pari più vicino): stelle identiche alla chat
+    var r = Math.round(x);
+    if (Math.abs(x % 1) === 0.5) r = 2 * Math.round(x / 2);
+    return r;
+  }
+  function stars(c, n) { var k = n ? pyRound(5 * c / n) : 0; return "★★★★★".slice(0, k) + "☆☆☆☆☆".slice(0, 5 - k); }
+  function verdict(c, n) {
+    var r = n ? c / n : 0;
+    return t("verdict_" + (r >= 0.9 ? 4 : r >= 0.7 ? 3 : r >= 0.5 ? 2 : 1));
+  }
+  function chapter(n) { for (var i = 0; i < data.chapters.length; i++) if (data.chapters[i].n === n) return data.chapters[i]; return null; }
+  function title(ch) { return lang === "it" ? ch.it : ch.en; }
 
-  /* evidenzia la parte cercata costruendo nodi di testo (mai HTML dai dati) */
+  /* contenuto del libro: albero di nodi dal server → DOM, solo nodi di testo (mai HTML dai dati) */
+  var TAGS = { b: "strong", i: "em", u: "u", s: "s", code: "code", pre: "pre", bq: "blockquote", bqx: "blockquote" };
+  function rich(nodes, parent) {
+    (nodes || []).forEach(function (n) {
+      if (typeof n === "string") { parent.appendChild(document.createTextNode(n)); return; }
+      var e = document.createElement(TAGS[n[0]] || "span");
+      if (n[0] === "bqx") e.className = "it";
+      rich(n[1], e);
+      parent.appendChild(e);
+    });
+    return parent;
+  }
+
+  /* evidenzia la parte cercata costruendo nodi di testo */
   function highlighted(text, q) {
     var frag = document.createDocumentFragment();
     var i = q ? norm(text).indexOf(q) : -1;
@@ -253,38 +464,175 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
     return frag;
   }
 
-  /* ---------------------------------------------------------------- testi */
+  var toastTimer = null;
+  function toast(text, ms) {
+    var n = $("toast");
+    n.textContent = text; n.classList.remove("hidden");
+    clearTimeout(toastTimer);
+    if (ms) toastTimer = setTimeout(function () { n.classList.add("hidden"); }, ms);
+  }
+  function hideToast() { clearTimeout(toastTimer); $("toast").classList.add("hidden"); }
+
+  /* ---------------------------------------------------------------- API (firma Telegram in ogni richiesta) */
+  var pending = 0, slowTimer = null;
+  function api(path, body) {
+    if (DEMO) return DEMO.api ? DEMO.api(path, body) : Promise.reject(new Error("demo"));
+    var initData = tg && tg.initData;
+    if (!initData) { var a = new Error("auth"); a.auth = true; return Promise.reject(a); }
+    var opts = { headers: { "Authorization": "tma " + initData }, cache: "no-store" };
+    if (body) { opts.method = "POST"; opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+    var ctrl = window.AbortController ? new AbortController() : null;
+    if (ctrl) opts.signal = ctrl.signal;
+    var stop = setTimeout(function () { ctrl && ctrl.abort(); }, 90000);
+    if (pending++ === 0) slowTimer = setTimeout(function () { toast(t("waking")); }, 3500);
+    function done() { clearTimeout(stop); if (--pending === 0) { clearTimeout(slowTimer); hideToast(); } }
+    return fetch(path, opts).then(function (r) {
+      done();
+      if (r.status === 401) { var e = new Error("auth"); e.auth = true; throw e; }
+      if (!r.ok) throw new Error("http " + r.status);
+      return r.json();
+    }, function (err) { done(); throw err; });
+  }
+
+  /* ---------------------------------------------------------------- progressi (CloudStorage di Telegram) */
+  var Store = (function () {
+    var values = {};
+    var cloud = !!(tg && tg.CloudStorage && tg.isVersionAtLeast && tg.isVersionAtLeast("6.9"));
+    function keys() {
+      var k = ["th", "qzall"];
+      data.chapters.forEach(function (c) { k.push("ex" + c.n, "qz" + c.n); });
+      return k;
+    }
+    function loadLocal(ks) {
+      ks.forEach(function (k) { try { var v = localStorage.getItem("tutor_p_" + k); if (v) values[k] = v; } catch (e) {} });
+    }
+    function load(cb) {
+      var ks = keys(), finished = false;
+      function finish() { if (!finished) { finished = true; cb(); } }
+      if (!cloud) { loadLocal(ks); finish(); return; }
+      setTimeout(function () { if (!finished) { cloud = false; loadLocal(ks); finish(); } }, 4000);
+      try {
+        tg.CloudStorage.getItems(ks, function (err, vals) {
+          if (finished) return;
+          if (err || !vals) { cloud = false; loadLocal(ks); }
+          else ks.forEach(function (k) { if (vals[k]) values[k] = vals[k]; });
+          finish();
+        });
+      } catch (e) { cloud = false; loadLocal(ks); finish(); }
+    }
+    function get(k) { return values[k] || ""; }
+    function set(k, v) {
+      values[k] = v;
+      if (cloud) { try { tg.CloudStorage.setItem(k, v, function () {}); return; } catch (e) {} }
+      try { localStorage.setItem("tutor_p_" + k, v); } catch (e) {}
+    }
+    function clear() {
+      var ks = keys();
+      values = {};
+      if (cloud) { try { tg.CloudStorage.removeItems(ks, function () {}); } catch (e) {} }
+      ks.forEach(function (k) { try { localStorage.removeItem("tutor_p_" + k); } catch (e) {} });
+    }
+    return { load: load, get: get, set: set, clear: clear };
+  })();
+
+  function readSet() { var s = {}; Store.get("th").split(",").forEach(function (x) { if (x) s[x] = 1; }); return s; }
+  function markRead(n) { var s = readSet(); if (!s[n]) { s[n] = 1; Store.set("th", Object.keys(s).join(",")); } }
+  function exStatus(n) {                                   // un carattere per esercizio: 1 giusto, 0 sbagliato, s saltato, . da fare
+    var ch = chapter(n), v = Store.get("ex" + n);
+    return v.length === ch.ex && /^[10s.]*$/.test(v) ? v : new Array(ch.ex + 1).join(".");
+  }
+  function setExStatus(n, i, c) { var v = exStatus(n); Store.set("ex" + n, v.slice(0, i) + c + v.slice(i + 1)); }
+  function count(str, chars) { var k = 0; for (var i = 0; i < str.length; i++) if (chars.indexOf(str[i]) >= 0) k++; return k; }
+  function quizStat(key) {                                 // «ultimo;migliore;volte» es. 7/10;9/10;3
+    var p = Store.get(key).split(";");
+    if (p.length !== 3) return null;
+    var l = p[0].split("/").map(Number), b = p[1].split("/").map(Number), k = Number(p[2]);
+    return isNaN(k) || l.length !== 2 || b.length !== 2 ? null : { last: l, best: b, times: k };
+  }
+  function saveQuiz(key, c, n) {
+    var s = quizStat(key), best = [c, n];
+    if (s && s.best[1] && s.best[0] / s.best[1] > c / n) best = s.best;
+    Store.set(key, c + "/" + n + ";" + best[0] + "/" + best[1] + ";" + ((s ? s.times : 0) + 1));
+  }
+
+  /* ---------------------------------------------------------------- navigazione (tasto Indietro di Telegram) */
+  function top() { return stack[stack.length - 1]; }
+  function render() {
+    var v = top();
+    ["state", "home", "verbs", "glossary", "page"].forEach(function (id) {
+      $(id).classList.toggle("hidden", STATIC[v.name] ? id !== v.name : id !== "page");
+    });
+    if (tg && tg.BackButton) { if (stack.length > 1) tg.BackButton.show(); else tg.BackButton.hide(); }
+    if (v.name === "home") renderHome();
+    else if (v.name === "verbs") renderVerbs();
+    else if (v.name === "glossary") renderGlossary();
+    else renderPage(v);
+    window.scrollTo(0, v.scroll || 0);
+  }
+  function nav(entry) {
+    top().scroll = window.scrollY;
+    stack.push(entry);
+    try { history.pushState({ d: stack.length }, ""); } catch (e) {}
+    haptic(); render();
+  }
+  function replace(entry) { stack[stack.length - 1] = entry; render(); }
+  function goHome() {
+    var k = stack.length - 1;
+    if (!k) return render();
+    stack = [stack[0]]; skipPop++;
+    try { history.go(-k); } catch (e) { skipPop--; }
+    render();
+  }
+  function back() {
+    if (stack.length <= 1) return;
+    var v = top();
+    if (v.name === "quizrun" && v.s && v.s.pos > 0 && !v.s.finished) {
+      var go = function (ok) { if (ok) history.back(); };
+      if (tg && tg.showConfirm && tg.isVersionAtLeast && tg.isVersionAtLeast("6.2")) tg.showConfirm(t("quit_quiz"), go);
+      else go(window.confirm(t("quit_quiz")));
+      return;
+    }
+    history.back();
+  }
+  window.addEventListener("popstate", function () {
+    if (skipPop) { skipPop--; return; }
+    if (stack.length > 1 && data) { stack.pop(); render(); }
+  });
+
+  /* ---------------------------------------------------------------- testi e home */
   function applyTexts() {
     document.documentElement.lang = lang;
     Array.prototype.forEach.call(document.querySelectorAll("[data-i18n]"), function (n) { n.textContent = t(n.getAttribute("data-i18n")); });
     Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) { b.classList.toggle("on", b.getAttribute("data-lang") === lang); });
     $("verbs-q").placeholder = t("verbs_ph");
     $("glossary-q").placeholder = t("glossary_ph");
-    if (!data) return;
+  }
+  function renderHome() {
+    applyTexts();
     var name = data.user && data.user.first_name;
     $("hello").textContent = name ? t("hello", { name: name }) : t("hello_anon");
     $("book").textContent = "«" + data.book + "»";
+    var done = 0, times = 0;
+    data.chapters.forEach(function (c) {
+      done += c.ex - count(exStatus(c.n), ".");
+      var q = quizStat("qz" + c.n); if (q) times += q.times;
+    });
+    var all = quizStat("qzall"); if (all) times += all.times;
+    $("theory-sub").textContent = t("theory_sub", { n: data.chapters.length, r: Object.keys(readSet()).length });
+    $("exercises-sub").textContent = t("exercises_sub", { n: data.counts.exercises, d: done });
+    $("quiz-sub").textContent = t("quiz_sub", { k: times });
     $("verbs-sub").textContent = t("verbs_sub", { n: data.counts.verbs });
     $("glossary-sub").textContent = t("glossary_sub", { n: data.counts.glossary });
     var vp = data.verb_pages || [];
     $("verbs-source").textContent = !vp.length ? "" : vp[0] === vp[1] ? t("page_appendix", { p: vp[0] }) : t("verbs_source", { a: vp[0], b: vp[1] });
-    renderVerbs(); renderGlossary();
   }
-
-  /* ---------------------------------------------------------------- navigazione */
-  function show(name) {
-    view = name;
-    ["state", "home", "verbs", "glossary"].forEach(function (id) { $(id).classList.toggle("hidden", id !== name); });
-    if (tg && tg.BackButton) { if (name === "verbs" || name === "glossary") tg.BackButton.show(); else tg.BackButton.hide(); }
-    window.scrollTo(0, 0);
-  }
-  function go(name) { haptic(); show(name); if (name === "verbs" || name === "glossary") { history.pushState({ v: name }, ""); } }
-  window.addEventListener("popstate", function () { if (view !== "home" && data) show("home"); });
 
   /* ---------------------------------------------------------------- verbi */
   function verbForms(v) { return [v.b].concat(v.p.split("/"), v.pp.split("/")).map(norm).filter(Boolean); }
   function renderVerbs() {
+    applyTexts();
     var q = norm($("verbs-q").value), list = $("verbs-list"), all = data.verbs;
+    $("verbs-q").nextElementSibling.classList.toggle("hidden", !$("verbs-q").value);
     list.textContent = "";
     var hits = all.filter(function (v) { return !q || verbForms(v).some(function (f) { return f.indexOf(q) === 0; }); });
     hits.sort(function (a, b) {                  // prima chi ha una forma identica a quella cercata
@@ -302,7 +650,9 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
 
   /* ---------------------------------------------------------------- glossario */
   function renderGlossary() {
+    applyTexts();
     var q = norm($("glossary-q").value), list = $("glossary-list"), all = data.glossary;
+    $("glossary-q").nextElementSibling.classList.toggle("hidden", !$("glossary-q").value);
     list.textContent = "";
     var scored = [];
     all.forEach(function (g) {
@@ -326,49 +676,482 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
     $("glossary-count").textContent = q ? t("count", { n: scored.length, t: all.length }) : "";
   }
 
+  /* ---------------------------------------------------------------- pagine dinamiche */
+  function renderPage(v) {
+    var page = $("page");
+    page.textContent = "";
+    seq++;
+    ({ picker: renderPicker, reader: renderReader, exintro: renderExIntro, exrun: renderExRun,
+       exsum: renderExSummary, quizrun: renderQuizRun, quizsum: renderQuizSummary })[v.name](page, v);
+  }
+  function loading(page) {
+    var box = add(page, el("div", "state"));
+    add(box, el("div", "spinner"));
+    add(box, el("div", null, t("loading")));
+    return box;
+  }
+  function failed(page, err, retry) {
+    page.textContent = "";
+    var box = add(page, el("div", "state"));
+    add(box, el("div", null, err && err.auth ? t("error_auth") : err && err.message === "http 400" ? t("error_generic") : t("error_net")));
+    if (!(err && err.auth)) add(box, button("btn inline", t("retry"), retry));
+  }
+  function guard(fn) { var my = seq; return function (x) { if (my === seq) fn(x); }; }
+  function header(page, small, h2, orig) {
+    var box = add(page, el("div", "top"));
+    if (small) add(box, el("small", null, small));
+    add(box, el("h2", null, h2));
+    if (orig) add(box, el("div", "orig", orig));
+    return box;
+  }
+  function progressBar(parent, i, n) { var b = add(parent, el("div", "bar")); add(b, el("i")).style.width = (n ? 100 * i / n : 0) + "%"; }
+
+  /* --- elenco dei capitoli per Parte (teoria, esercizi, quiz) */
+  function renderPicker(page, v) {
+    var purpose = v.purpose;
+    header(page, null, t({ theory: "pick_theory", ex: "pick_ex", quiz: "pick_quiz" }[purpose]));
+    if (purpose === "theory") {
+      var form = add(page, el("form", "search"));
+      form.style.marginTop = "8px";
+      add(form, el("span", null, "🔎")).setAttribute("aria-hidden", "true");
+      var input = add(form, el("input"));
+      input.type = "search"; input.placeholder = t("search_ph"); input.enterKeyHint = "search";
+      input.setAttribute("autocomplete", "off");
+      var msg = add(page, el("div", "count"));
+      form.addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        var q = input.value.trim();
+        if (!q) return;
+        input.blur(); msg.textContent = t("loading");
+        api("/api/search?q=" + encodeURIComponent(q)).then(guard(function (r) {
+          msg.textContent = "";
+          if (r.kind === "chapter") nav({ name: "reader", n: r.n });
+          else if (r.kind === "verbs") { $("verbs-q").value = r.q || q; nav({ name: "verbs" }); }
+          else if (r.kind === "glossary") { $("glossary-q").value = r.q || q; nav({ name: "glossary" }); }
+          else msg.textContent = t("exp_notfound");
+        }), guard(function () { msg.textContent = t("error_net"); }));
+      });
+    }
+    if (purpose === "quiz") {
+      add(page, el("div", "group-title", t("quiz")));
+      var g = add(page, el("div", "group"));
+      var s = quizStat("qzall");
+      chapterLikeRow(g, "🧠", t("mixed"), t("mixed_sub", { n: data.quiz_size }),
+        s ? t("best", { c: s.best[0], t: s.best[1] }) : "", false, function () { nav({ name: "quizrun", ch: null }); });
+    }
+    var read = readSet();
+    data.parts.forEach(function (part) {
+      var list = data.chapters.filter(function (c) { return c.part === part.id; });
+      if (!list.length) return;
+      add(page, el("div", "group-title", t("part", { p: part.id, t: lang === "it" ? part.it : part.en })));
+      var g = add(page, el("div", "group"));
+      list.forEach(function (c) {
+        var sub, badge = "", full = false, go;
+        if (purpose === "theory") {
+          sub = lang === "it" ? c.en : (c.pp[0] ? t("pages", { a: c.pp[0], b: c.pp[1] }) : "");
+          badge = read[c.n] ? "✓" : ""; full = !!read[c.n];
+          go = function () { nav({ name: "reader", n: c.n }); };
+        } else if (purpose === "ex") {
+          var st = exStatus(c.n), d = c.ex - count(st, ".");
+          sub = t("n_ex", { n: c.ex });
+          if (d) { badge = count(st, "1") + "/" + c.ex; full = d === c.ex; }
+          go = function () { nav({ name: "exintro", n: c.n }); };
+        } else {
+          var q = quizStat("qz" + c.n);
+          sub = t("n_q", { n: c.q });
+          if (q) badge = q.best[0] + "/" + q.best[1];
+          go = function () { nav({ name: "quizrun", ch: c.n }); };
+        }
+        chapterLikeRow(g, String(c.n), title(c), sub, badge, full, go);
+      });
+    });
+  }
+  function chapterLikeRow(group, ico, name, sub, badge, full, onClick) {
+    var row = add(group, button("row", null, onClick));
+    add(row, el("span", "ico" + (/^\d+$/.test(ico) ? " num" : ""), ico));
+    var lbl = add(row, el("span", "lbl"));
+    add(lbl, el("b", null, name));
+    if (sub) add(lbl, el("small", null, sub));
+    if (badge) add(row, el("span", "badge" + (full ? " done" : ""), badge));
+    add(row, el("span", "chev", "›"));
+    return row;
+  }
+
+  /* --- teoria completa del capitolo */
+  function theory(n) {
+    if (cache.theory[n]) return Promise.resolve(cache.theory[n]);
+    return api("/api/theory?n=" + n).then(function (d) { cache.theory[n] = d; return d; });
+  }
+  function renderReader(page, v) {
+    var c = chapter(v.n);
+    loading(page);
+    theory(v.n).then(guard(function (d) {
+      page.textContent = "";
+      header(page, t("chapter_part", { n: c.n, p: c.part }), title(c), lang === "it" ? c.en : "");
+      if (d.pp && d.pp[0]) add(page.lastChild, el("small", null, t("pages", { a: d.pp[0], b: d.pp[1] })));
+      var heads = [];
+      var art = el("article", "theory rich");
+      d.blocks.forEach(function (b, i) {
+        var node;
+        if (b.k === "heading") { node = el("h3"); node.id = "h" + i; heads.push([node, b]); }
+        else if (b.k === "table") node = el("div", "table");
+        else if (b.k === "pre") node = el("pre");
+        else node = el("p", b.k === "bullet" ? "bullet" : null);
+        art.appendChild(rich(b.h, node));
+      });
+      if (heads.length > 2) {
+        var toc = add(page, el("details", "toc"));
+        add(toc, el("summary", null, t("toc")));
+        heads.forEach(function (h) {
+          add(toc, button(null, h[0].textContent, function () { toc.open = false; h[0].scrollIntoView({ behavior: "smooth", block: "start" }); }));
+        });
+      }
+      page.appendChild(art);
+      var end = add(page, el("div"));
+      var pair = add(end, el("div", "pair"));
+      if (c.ex) add(pair, button("btn2", t("btn_ex_ch"), function () { nav({ name: "exintro", n: c.n }); }));
+      if (c.q) add(pair, button("btn2", t("btn_quiz_ch"), function () { nav({ name: "quizrun", ch: c.n }); }));
+      var next = chapter(c.n + 1);
+      if (next) add(end, button("btn", t("btn_next_theory", { n: next.n }) + "  " + title(next), function () { replace({ name: "reader", n: next.n }); }));
+      if (window.IntersectionObserver) {
+        var obs = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { markRead(c.n); obs.disconnect(); } });
+        obs.observe(end);
+      } else markRead(c.n);
+    }), guard(function (e) { failed(page, e, function () { renderPage(v); }); }));
+  }
+
+  /* --- esercizi: introduzione del capitolo con i progressi */
+  function exercises(n) {
+    var key = n + ":" + lang;
+    if (cache.ex[key]) return Promise.resolve(cache.ex[key]);
+    return api("/api/exercises?n=" + n + "&lang=" + lang).then(function (d) { cache.ex[key] = d; return d; });
+  }
+  function startEx(n, d, order, how) {
+    var entry = { name: "exrun", n: n, s: { n: n, d: d, order: order, pos: 0, score: 0, done: 0, skipped: 0 } };
+    if (how === "replace") replace(entry); else nav(entry);
+  }
+  function renderExIntro(page, v) {
+    var c = chapter(v.n);
+    loading(page);
+    exercises(v.n).then(guard(function (d) {
+      page.textContent = "";
+      header(page, t("chapter_part", { n: c.n, p: c.part }), title(c), lang === "it" ? c.en : "");
+      var card = add(page, el("div", "card"));
+      add(card, el("div", null, t("ex_intro", { n: d.items.length })));
+      var st = exStatus(c.n), done = d.items.length - count(st, ".");
+      if (done) add(card, el("div", "muted", t("ex_progress", { d: done, n: d.items.length, c: count(st, "1") })));
+      var dots = add(card, el("div", "dots"));
+      for (var i = 0; i < st.length; i++) add(dots, el("i", { "1": "ok", "0": "ko", "s": "sk" }[st[i]] || ""));
+      var all = d.items.map(function (_, i) { return i; });
+      var todo = all.filter(function (i) { return st[i] === "."; });
+      var redo = all.filter(function (i) { return st[i] === "0" || st[i] === "s"; });
+      if (!done) add(page, button("btn", t("btn_start"), function () { startEx(c.n, d, all); }));
+      else if (todo.length) add(page, button("btn", t("btn_continue", { i: todo[0] + 1 }), function () { startEx(c.n, d, todo); }));
+      if (redo.length && !todo.length) add(page, button("btn", t("btn_redo_wrong", { n: redo.length }), function () { startEx(c.n, d, redo); }));
+      if (done) add(page, button("btn2", t("btn_restart"), function () { startEx(c.n, d, all); }));
+      if (redo.length && todo.length) add(page, button("btn2", t("btn_redo_wrong", { n: redo.length }), function () { startEx(c.n, d, redo); }));
+      add(page, button("btn2", t("btn_theory_ch", { n: c.n }), function () { nav({ name: "reader", n: c.n }); }));
+    }), guard(function (e) { failed(page, e, function () { renderPage(v); }); }));
+  }
+
+  /* --- esercizio: stessa correzione della chat (server: book_quiz) */
+  function renderExRun(page, v) {
+    var s = v.s, idx = s.order[s.pos], it = s.d.items[idx], c = chapter(s.n), lng = s.d.lang;
+    var head = add(page, el("div", "top"));
+    add(head, el("small", null, t("ex_src", { n: c.n, t: title(c), l: it.label.replace(/-/g, "\u2011") })));   // trattino che non va a capo
+    add(head, el("h2", null, t("ex_head", { i: s.pos + 1, n: s.order.length })));
+    progressBar(head, s.pos, s.order.length);
+    var card = add(page, el("div", "card rich"));
+    if (it.instr.length) rich(it.instr, add(card, el("div", "instr")));
+    rich(it.q, add(card, el("blockquote")));
+    var controls = add(page, el("div"));
+    var feedback = add(page, el("div", "feedback"));
+    var locked = false, inputs = [], optButtons = [];
+
+    function lock(on) {
+      locked = on;
+      Array.prototype.forEach.call(controls.querySelectorAll("button,input,textarea"), function (n) { n.disabled = on; });
+    }
+    function send(action, value) {
+      if (locked) return;
+      lock(true);
+      api("/api/exercise/check", { id: it.id, lang: lng, action: action, value: value }).then(guard(function (res) {
+        inputs.forEach(function (n) { n.blur(); });
+        showResult(res);
+      }), guard(function (e) { lock(false); toast(e && e.auth ? t("error_auth") : t("error_net"), 3000); }));
+    }
+    function record(good, mark) {
+      s.done++; s.score += good ? 1 : 0;
+      setExStatus(s.n, idx, mark || (good ? "1" : "0"));
+    }
+    function nextButton(box) {
+      add(box, el("div", "score", t("ex_score", { c: s.score, t: s.done })));
+      add(box, button("btn", t("btn_next_ex"), next));
+    }
+    function showResult(res) {
+      controls.textContent = "";
+      var box = add(feedback, el("div", "card rich"));
+      optButtons.forEach(function (b, j) {
+        if (j === res.answer) b.classList.add("right");
+        else if (j === res.chosen) b.classList.add("wrong");
+        b.disabled = true;
+      });
+      if (res.self) {
+        if (res.yours) add(box, el("div", null, t("ex_your", { a: res.yours })));
+        rich(res.solution, add(box, el("div")));
+        add(box, el("div", "ask", t("ex_self_ask"))).style.marginTop = "10px";
+        var pair = add(box, el("div", "pair"));
+        [[true, "btn_self_ok"], [false, "btn_self_ko"]].forEach(function (p) {
+          add(pair, button("btn2", t(p[1]), function () {
+            pair.remove(); record(p[0]); nextButton(box);
+          }));
+        });
+        return;
+      }
+      if (res.shown) add(box, el("em", "muted", t("ex_shown")));
+      else {
+        add(box, el("div", "verdict " + (res.good ? "ok" : "ko"), t(res.good ? "ex_right" : "ex_wrong")));
+        notify(res.good ? "success" : "error");
+      }
+      if (res.parts) {
+        res.parts.forEach(function (p) { add(box, el("div", null, (p.ok ? "✓ " : "✗ ") + p.label + ") " + (p.typed || "—"))); });
+        add(box, el("div", "muted", t("ex_parts", { c: res.right, t: res.total })));
+      } else if (typeof res.chosen === "number") {
+        add(box, el("div", null, t("ex_your", { a: "ABCDEF"[res.chosen] + ") " + it.options[res.chosen] })));
+      } else if (res.yours) add(box, el("div", null, t("ex_your", { a: res.yours })));
+      rich(res.solution, add(box, el("div"))).style.marginTop = "8px";
+      record(!!res.good);
+      nextButton(box);
+    }
+    function next() {
+      s.pos++;
+      if (s.pos >= s.order.length) replace({ name: "exsum", n: s.n, c: s.score, t: s.order.length, skipped: s.skipped });
+      else { renderPage(v); window.scrollTo(0, 0); }
+    }
+
+    var mode = it.mode;
+    if (mode === "scelta_multipla") {
+      var opts = add(card, el("div", "opts"));
+      it.options.forEach(function (o, j) {
+        var b = add(opts, button("opt", null, function () { send("choice", j); }));
+        add(b, el("b", null, "ABCDEF"[j] + ")"));
+        add(b, el("span", null, o));
+        optButtons.push(b);
+      });
+      add(controls, el("div", "how", t("how_mcq")));
+    } else if (mode === "parti") {
+      it.parts.forEach(function (label, j) {
+        var row = add(controls, el("div", "partrow"));
+        add(row, el("b", null, label + ")"));
+        var inp = add(row, el("input", "field"));
+        inp.setAttribute("autocomplete", "off"); inp.setAttribute("autocapitalize", "off"); inp.spellcheck = false;
+        inp.enterKeyHint = j === it.parts.length - 1 ? "send" : "next";
+        inp.addEventListener("keydown", function (ev) {
+          if (ev.key !== "Enter") return;
+          ev.preventDefault();
+          if (j < it.parts.length - 1) inputs[j + 1].focus(); else check();
+        });
+        inputs.push(inp);
+      });
+      add(controls, el("div", "how", t("how_parts")));
+    } else if (mode === "autovalutazione") {
+      var ta = add(controls, el("textarea", "field"));
+      ta.placeholder = t("answer_ph_opt"); ta.setAttribute("autocapitalize", "off"); ta.spellcheck = false;
+      inputs.push(ta);
+      add(controls, el("div", "how", t("how_self")));
+    } else {
+      var inp = add(controls, el("input", "field"));
+      inp.placeholder = t("answer_ph"); inp.enterKeyHint = "send";
+      inp.setAttribute("autocomplete", "off"); inp.setAttribute("autocapitalize", "off"); inp.spellcheck = false;
+      inp.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { ev.preventDefault(); check(); } });
+      inputs.push(inp);
+      add(controls, el("div", "how", t("how_auto")));
+    }
+    function check() {
+      if (mode === "parti") {
+        var lines = [];
+        inputs.forEach(function (n, j) { if (n.value.trim()) lines.push(it.parts[j] + ") " + n.value.trim()); });
+        if (lines.length) send("answer", lines.join("\n")); else inputs[0].focus();
+      } else if (inputs[0].value.trim()) send("answer", inputs[0].value.trim());
+      else inputs[0].focus();
+    }
+    if (mode === "autovalutazione") {
+      add(controls, button("btn", t("btn_show"), function () {
+        if (inputs[0].value.trim()) send("answer", inputs[0].value.trim()); else send("reveal");
+      }));
+    } else {
+      if (mode !== "scelta_multipla") add(controls, button("btn", t("btn_check"), check));
+      add(controls, button("btn2", t("btn_show"), function () { send("reveal"); }));
+    }
+    add(controls, button("btn2", t("btn_skip"), function () {
+      if (locked) return;
+      s.skipped++; setExStatus(s.n, idx, "s"); next();
+    }));
+  }
+
+  function renderExSummary(page, v) {
+    var c = chapter(v.n);
+    var card = add(page, el("div", "card"));
+    add(card, el("div", "verdict", t("ex_done", { n: v.n })));
+    add(card, el("div", "big", stars(v.c, v.t)));
+    add(card, el("div", "result", v.c + "/" + v.t));
+    add(card, el("div", null, verdict(v.c, v.t)));
+    if (v.skipped) add(card, el("em", "muted", t("ex_skipped", { s: v.skipped })));
+    add(page, button("btn", t("btn_redo_ex"), function () {
+      exercises(v.n).then(function (d) { startEx(v.n, d, d.items.map(function (_, i) { return i; }), "replace"); });
+    }));
+    var next = chapter(v.n + 1);
+    if (next) add(page, button("btn2", t("btn_next_chapter", { n: next.n }), function () { replace({ name: "exintro", n: next.n }); }));
+    add(page, button("btn2", t("btn_theory_ch", { n: c.n }), function () { nav({ name: "reader", n: c.n }); }));
+    add(page, button("btn2", t("home"), goHome));
+  }
+
+  /* --- quiz: stesso mix e stessa correzione della chat (server: book_quiz) */
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
+  function renderQuizRun(page, v) {
+    if (!v.s) {
+      loading(page);
+      api("/api/quiz?lang=" + lang + (v.ch ? "&ch=" + v.ch : "")).then(guard(function (d) {
+        v.s = { ch: v.ch, qs: d.questions, lang: d.lang, pos: 0, score: 0, wrong: [], redo: false };
+        renderPage(v);
+      }), guard(function (e) { failed(page, e, function () { renderPage(v); }); }));
+      return;
+    }
+    var s = v.s, q = s.qs[s.pos], c = v.ch ? chapter(v.ch) : null;
+    var head = add(page, el("div", "top"));
+    add(head, el("small", null, c ? t("chapter_part", { n: c.n, p: c.part }) + " · " + title(c) : t("mixed")));
+    add(head, el("h2", null, t("quiz_head", { i: s.pos + 1, n: s.qs.length })));
+    progressBar(head, s.pos, s.qs.length);
+    var card = add(page, el("div", "card rich"));
+    rich(q.ask, add(card, el("div", "ask")));
+    if (q.sub.length) rich(q.sub, add(card, el("div", "sub")));
+    if (q.text.length) rich(q.text, add(card, el("blockquote")));
+    var opts = add(card, el("div", "opts")), btns = [], answered = false;
+    function answer(given, j) {
+      if (answered) return;
+      answered = true;
+      btns.forEach(function (b) { b.disabled = true; });
+      api("/api/quiz/check", { type: q.type, ref: q.ref, given: given, options: q.type === "fix" ? q.options : undefined, lang: s.lang })
+        .then(guard(function (res) {
+          if (res.good) s.score++; else s.wrong.push(q);
+          notify(res.good ? "success" : "error");
+          btns.forEach(function (b, k) {
+            if (q.type === "tf") { if (k === j) b.classList.add(res.good ? "right" : "wrong"); }
+            else if (k === res.answer) b.classList.add("right");
+            else if (k === j) b.classList.add("wrong");
+          });
+          var box = add(page, el("div", "feedback"));
+          var inner = add(box, el("div", "card rich"));
+          var vline = add(inner, el("div"));
+          add(vline, el("span", "verdict " + (res.good ? "ok" : "ko"), t(res.good ? "quiz_right" : "quiz_wrong")));
+          add(vline, el("span", "muted", "  ·  " + t("score", { c: s.score, t: s.pos + 1 })));
+          rich(res.body, add(inner, el("div"))).style.marginTop = "8px";
+          var last = s.pos + 1 >= s.qs.length;
+          add(box, button("btn", t(last ? "see_result" : "btn_next"), function () {
+            s.pos++;
+            if (s.pos < s.qs.length) { renderPage(v); window.scrollTo(0, 0); return; }
+            s.finished = true;
+            if (!s.redo) saveQuiz(v.ch ? "qz" + v.ch : "qzall", s.score, s.qs.length);
+            replace({ name: "quizsum", ch: v.ch, s: s });
+          }));
+          box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }), guard(function (e) {
+          answered = false; btns.forEach(function (b) { b.disabled = false; });
+          toast(e && e.auth ? t("error_auth") : t("error_net"), 3000);
+        }));
+    }
+    if (q.type === "tf") {
+      var pair = add(opts, el("div", "pair"));
+      [[true, "btn_correct"], [false, "btn_wrong"]].forEach(function (p, j) {
+        var b = add(pair, button("opt", t(p[1]), function () { answer(p[0], j); }));
+        b.style.justifyContent = "center";
+        btns.push(b);
+      });
+    } else {
+      q.options.forEach(function (o, j) {
+        var b = add(opts, button("opt", null, function () { answer(j, j); }));
+        add(b, el("b", null, "ABCDEF"[j] + ")"));
+        add(b, el("span", null, o));
+        btns.push(b);
+      });
+    }
+  }
+
+  function renderQuizSummary(page, v) {
+    var s = v.s, n = s.qs.length;
+    var card = add(page, el("div", "card"));
+    add(card, el("div", "verdict", t("quiz_done")));
+    add(card, el("div", "big", stars(s.score, n)));
+    add(card, el("div", "result", s.score + "/" + n));
+    add(card, el("div", null, verdict(s.score, n)));
+    var chs = [];
+    if (s.wrong.length) {
+      add(page, el("div", "group-title", t("review_head")));
+      var g = add(page, el("div", "group wrongs"));
+      s.wrong.forEach(function (q) {
+        chapterLikeRow(g, "✗", q.snippet, t("ch_short", { n: q.ch }), "", false, function () { nav({ name: "reader", n: q.ch }); });
+        if (chs.indexOf(q.ch) < 0) chs.push(q.ch);
+      });
+      chs.sort(function (a, b) {
+        var ca = s.wrong.filter(function (q) { return q.ch === a; }).length, cb = s.wrong.filter(function (q) { return q.ch === b; }).length;
+        return cb - ca;
+      });
+      add(page, button("btn", t("btn_redo", { n: s.wrong.length }), function () {
+        var qs = s.wrong.map(function (q) { var c = JSON.parse(JSON.stringify(q)); if (c.type === "fix") shuffle(c.options); return c; });
+        replace({ name: "quizrun", ch: v.ch, s: { ch: v.ch, qs: qs, lang: s.lang, pos: 0, score: 0, wrong: [], redo: true } });
+      }));
+      var pair = add(page, el("div", "pair"));
+      chs.slice(0, 2).forEach(function (ch) {
+        add(pair, button("btn2", t("btn_review_ch", { n: ch }), function () { nav({ name: "reader", n: ch }); }));
+      });
+    }
+    add(page, button(s.wrong.length ? "btn2" : "btn", t("quiz_again"), function () { replace({ name: "quizrun", ch: v.ch }); }));
+    add(page, button("btn2", t("home"), goHome));
+  }
+
   /* ---------------------------------------------------------------- caricamento */
   function setState(text, retry) {
-    show("state");
+    ["home", "verbs", "glossary", "page"].forEach(function (id) { $(id).classList.add("hidden"); });
+    $("state").classList.remove("hidden");
     $("state").querySelector(".spinner").classList.toggle("hidden", !!retry);
     $("state-text").textContent = text;
     $("retry").classList.toggle("hidden", !retry);
     $("retry").textContent = t("retry");
   }
   function load() {
-    if (DEMO) { data = DEMO.data; ready(); return; }
-    var initData = tg && tg.initData;
-    if (!initData) { setState(t("error_auth"), false); $("state").querySelector(".spinner").classList.add("hidden"); return; }
+    if (DEMO) { data = DEMO.data; Store.load(ready); return; }
+    if (!(tg && tg.initData)) { setState(t("error_auth"), false); $("state").querySelector(".spinner").classList.add("hidden"); return; }
     setState(t("loading"));
-    var slow = setTimeout(function () { $("state-text").textContent = t("waking"); }, 3500);
-    var ctrl = window.AbortController ? new AbortController() : null;
-    var stop = setTimeout(function () { ctrl && ctrl.abort(); }, 90000);
-    fetch("/api/reference", { headers: { "Authorization": "tma " + initData }, signal: ctrl && ctrl.signal, cache: "no-store" })
-      .then(function (r) {
-        if (r.status === 401) { var e = new Error("auth"); e.auth = true; throw e; }
-        if (!r.ok) throw new Error("http " + r.status);
-        return r.json();
-      })
-      .then(function (body) { data = body; ready(); })
-      .catch(function (e) { setState(e.auth ? t("error_auth") : t("error_net"), !e.auth); })
-      .then(function () { clearTimeout(slow); clearTimeout(stop); });
+    api("/api/reference")
+      .then(function (body) { data = body; Store.load(ready); })
+      .catch(function (e) { setState(e.auth ? t("error_auth") : t("error_net"), !e.auth); });
   }
-  function ready() { applyTexts(); show("home"); }
+  function ready() { stack = [{ name: "home" }]; render(); }
 
   /* ---------------------------------------------------------------- eventi */
   Array.prototype.forEach.call(document.querySelectorAll("[data-go]"), function (b) {
-    b.addEventListener("click", function () { go(b.getAttribute("data-go")); });
+    b.addEventListener("click", function () {
+      var go = b.getAttribute("data-go");
+      if (go === "verbs" || go === "glossary") nav({ name: go });
+      else nav({ name: "picker", purpose: { theory: "theory", exercises: "ex", quiz: "quiz" }[go] });
+    });
   });
   Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) {
     b.addEventListener("click", function () {
       lang = b.getAttribute("data-lang"); haptic();
       try { localStorage.setItem("tutor_lang", lang); } catch (e) {}
-      applyTexts();
+      if (data) render(); else applyTexts();
     });
   });
   [["verbs-q", renderVerbs], ["glossary-q", renderGlossary]].forEach(function (pair) {
     var input = $(pair[0]), clear = document.querySelector('[data-clear="' + pair[0] + '"]');
-    input.addEventListener("input", function () { clear.classList.toggle("hidden", !input.value); if (data) pair[1](); });
-    clear.addEventListener("click", function () { input.value = ""; clear.classList.add("hidden"); input.focus(); if (data) pair[1](); });
+    input.addEventListener("input", function () { if (data) pair[1](); });
+    clear.addEventListener("click", function () { input.value = ""; input.focus(); if (data) pair[1](); });
+  });
+  $("reset").addEventListener("click", function () {
+    var go = function (ok) { if (ok) { Store.clear(); render(); } };
+    if (tg && tg.showConfirm && tg.isVersionAtLeast && tg.isVersionAtLeast("6.2")) tg.showConfirm(t("reset_ask"), go);
+    else go(window.confirm(t("reset_ask")));
   });
   $("retry").addEventListener("click", load);
 
@@ -377,7 +1160,7 @@ mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1
       tg.ready(); tg.expand();
       if (tg.setHeaderColor) tg.setHeaderColor("secondary_bg_color");
       if (tg.setBackgroundColor) tg.setBackgroundColor("secondary_bg_color");
-      tg.BackButton && tg.BackButton.onClick(function () { history.length > 1 ? history.back() : show("home"); });
+      tg.BackButton && tg.BackButton.onClick(back);
     } catch (e) {}
   }
   applyTexts();

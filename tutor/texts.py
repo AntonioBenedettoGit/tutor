@@ -84,9 +84,10 @@ T = {
         "btn_glos": "📖 Glossario",
         "btn_help": "❔ Aiuto",
         "btn_app": "📱 Mini app",
-        "app_open": "<b>📱 Mini app</b>\nLa versione «app» del tutor, dentro Telegram. Per ora contiene "
-                    "verbi irregolari e glossario con ricerca istantanea; teoria, esercizi e quiz arriveranno "
-                    "per gradi.\n\nLa chat resta disponibile come sempre: usa quella che preferisci.",
+        "app_open": "<b>📱 Mini app</b>\nLa versione «app» del tutor, dentro Telegram: teoria, esercizi, "
+                    "quiz, verbi irregolari e glossario, con i progressi salvati nel tuo account Telegram "
+                    "(separati da quelli della chat).\n\nLa chat resta disponibile come sempre: usa quella "
+                    "che preferisci.",
         "app_unavailable": "La mini app è disponibile solo quando il bot gira online (su Render).",
         "btn_menu": "☰ Menu",
         # tastiera fissa in basso
@@ -219,9 +220,9 @@ T = {
         "btn_glos": "📖 Glossary",
         "btn_help": "❔ Help",
         "btn_app": "📱 Mini app",
-        "app_open": "<b>📱 Mini app</b>\nThe «app» version of the tutor, inside Telegram. For now it has "
-                    "irregular verbs and the glossary with instant search; theory, exercises and quizzes "
-                    "will follow step by step.\n\nThe chat is still available as always: use whichever you prefer.",
+        "app_open": "<b>📱 Mini app</b>\nThe «app» version of the tutor, inside Telegram: theory, exercises, "
+                    "quizzes, irregular verbs and the glossary, with progress saved in your Telegram account "
+                    "(separate from the chat).\n\nThe chat is still available as always: use whichever you prefer.",
         "app_unavailable": "The mini app is only available when the bot runs online (on Render).",
         "btn_menu": "☰ Menu",
         "kb_quiz": "🧠 Quiz",

@@ -214,7 +214,7 @@ class PageStaticTests(unittest.TestCase):
 
     def test_same_texts_in_both_languages(self):
         self.assertEqual(set(self.i18n['it']), set(self.i18n['en']))
-        used = set(re.findall(r'data-i18n="(\w+)"', self.html)) | set(re.findall(r'\bt\("(\w+)"', self.html))
+        used = set(re.findall(r'data-i18n="(\w+)"', self.html)) | set(re.findall(r'\bt\("(\w+)"[,)]', self.html))
         self.assertLessEqual(used, set(self.i18n['it']))
 
     def test_no_html_injection_points(self):
@@ -225,8 +225,23 @@ class PageStaticTests(unittest.TestCase):
     def test_only_telegram_script_is_external(self):
         external = re.findall(r'(?:src|href)="(https?://[^"]+)"', self.html)
         self.assertEqual(external, ['https://telegram.org/js/telegram-web-app.js'])
-        self.assertIn('fetch("/api/reference"', self.html)
+        self.assertIn('return fetch(path, opts)', self.html)            # un solo punto di accesso alla rete
+        self.assertEqual(self.html.count('fetch('), 1)
         self.assertIn('"Authorization": "tma " + initData', self.html)
+
+    def test_every_api_path_used_by_the_page_exists(self):
+        used = set(re.findall(r'api\("(/api/[a-z/]+)', self.html))
+        served = {path for path, *_ in webapp.routes(TOKEN, bot.KB)}
+        self.assertEqual(used, served - {'/app'})
+
+    def test_shared_labels_identical_to_the_chat(self):
+        shared = ('btn_show btn_skip ex_right ex_wrong ex_shown ex_your ex_parts ex_self_ask btn_self_ok btn_self_ko '
+                  'btn_next_ex ex_score ex_done ex_skipped btn_redo_ex btn_next_chapter btn_theory_ch verdict_1 '
+                  'verdict_2 verdict_3 verdict_4 btn_correct btn_wrong quiz_right quiz_wrong score btn_next quiz_done '
+                  'review_head btn_redo btn_review_ch quiz_again ch_short exp_notfound btn_ex_ch btn_quiz_ch').split()
+        for lang in ('it', 'en'):
+            for key in shared:
+                self.assertEqual(self.i18n[lang][key], re.sub(r'<[^>]+>', '', T[lang][key]), (lang, key))
 
 
 if __name__ == '__main__':

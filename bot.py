@@ -82,13 +82,7 @@ def lang_of(update_or_chat):
     return st(chat_id).get("lang") or "it"
 
 
-def clean_for_display(text):
-    """Pulisce i glitch di formattazione ereditati dal PDF/parsing:
-    separatori di tabella '| | | |' e spazi doppi."""
-    text = re.sub(r"\s*\|+\s*", " ", text)
-    text = re.sub(r"[ \t]{2,}", " ", text)
-    text = re.sub(r"\n{3,}", "\n\n", text)
-    return text.strip()
+clean_for_display = render.clean_for_display      # spostata in render: la usa anche la mini app
 
 
 async def send(update, ctx, text, keyboard=None, parse_mode="HTML"):

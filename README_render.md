@@ -30,3 +30,12 @@ Il Web Service free di Render dorme dopo 15 minuti senza traffico e si sveglia i
 - La soluzione pulita è il piano **Starter** (7 $/mese): non dorme mai e non perde i progressi in
   memoria. In alternativa, 24/7 gratis: Oracle Cloud Always Free o un Raspberry Pi (`python app.py`,
   senza `RENDER_EXTERNAL_URL`, parte in polling).
+
+## Mini app (fasi 5.2–5.3)
+
+La mini app (/app in chat) è servita dallo stesso servizio Render del bot, all'indirizzo `/app`. **Non servono nuove variabili d'ambiente** né modifiche su Render o su @BotFather.
+
+- **Dati:** i progressi della mini app stanno nel CloudStorage di Telegram dell'utente, non su Render; non serve un disco né un database.
+- **Risveglio:** con il piano gratuito, la prima apertura dopo 15 minuti di inattività aspetta il risveglio (circa 1 minuto). Il monitor UptimeRobot su `/health` lo evita quasi sempre.
+- **Controllo facoltativo:** `https://<tuo-bot>.onrender.com/api/reference` aperto nel browser deve rispondere `{"error": "unauthorized"}`. Fuori da Telegram i dati non escono.
+

@@ -36,8 +36,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tutor import book_quiz, render
 from tutor.logging_config import configure_logging
 from tutor import kb as kbmod                      # noqa: E402
+from tutor import texts as _texts  # noqa: E402
 from tutor.texts import (COMMANDS, DESCRIPTION, ICON, PARTS, SHORT_DESCRIPTION, T,  # noqa: E402
-                         chapter_title, help_text, lang_keyboard, menu_keyboard, part_of,
+                         app_button, chapter_title, help_text, lang_keyboard, part_of,
                          reply_keyboard, reply_labels, stars, tr, verdict)
 
 log = logging.getLogger("tutor-bot")
@@ -59,6 +60,8 @@ def load_bot_token():
 KB_PATH = Path(__file__).resolve().parent / "data" / "kb.json"
 KB = kbmod.load_kb(KB_PATH)
 STATE = {}  # chat_id -> stato della conversazione (in memoria)
+# URL pubblico della mini app: lo imposta app.py su Render (oppure la variabile WEBAPP_URL, solo https)
+WEBAPP_URL = os.environ.get("WEBAPP_URL") or None
 EXERCISES = {e["source_id"]: e for e in KB["exercises"]}
 LETTERS = render.LETTERS
 
@@ -119,6 +122,19 @@ async def remove_callback_keyboard(update):
         except TelegramError as exc:
             # Un messaggio cancellato/non modificabile non deve fermare la sessione.
             log.warning("Impossibile rimuovere una tastiera: %s", type(exc).__name__)
+
+
+def webapp_url_for(update):
+    """La mini app si apre solo in chat private e solo con un indirizzo https."""
+    chat_type = getattr(update.effective_chat, "type", "private")
+    if WEBAPP_URL and WEBAPP_URL.startswith("https://") and chat_type == "private":
+        return WEBAPP_URL
+    return None
+
+
+def menu_keyboard(lang, update=None):
+    """Menu principale; con la mini app attiva aggiunge il bottone «📱 Mini app»."""
+    return _texts.menu_keyboard(lang, webapp_url_for(update) if update is not None else None)
 
 
 # ------------------------------------------------------------------ navigazione
@@ -739,13 +755,13 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     s = enter_mode(update.effective_chat.id, None)
     lang = s['lang'] or 'it'
-    await send(update, ctx, help_text(lang), menu_keyboard(lang))
+    await send(update, ctx, help_text(lang), menu_keyboard(lang, update))
 
 
 async def cmd_menu(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     s = enter_mode(update.effective_chat.id, None)
     lang = s['lang'] or 'it'
-    await send(update, ctx, tr(lang, 'menu'), menu_keyboard(lang))
+    await send(update, ctx, tr(lang, 'menu'), menu_keyboard(lang, update))
 
 
 async def cmd_quiz(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -799,6 +815,16 @@ async def cmd_glossario(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     await start_glossary(update, ctx, chat_id)
 
 
+async def cmd_app(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """/app: apre la mini app. Non cambia l'attività in corso nella chat."""
+    lang = st(update.effective_chat.id).get("lang") or "it"
+    url = webapp_url_for(update)
+    if not url:
+        await send(update, ctx, tr(lang, "app_unavailable"))
+        return
+    await send(update, ctx, tr(lang, "app_open"), InlineKeyboardMarkup([[app_button(lang, url)]]))
+
+
 async def cmd_lang(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     enter_mode(update.effective_chat.id, None)
     await send(update, ctx, tr("it", "lang_choose"), lang_keyboard())
@@ -845,7 +871,7 @@ async def dispatch_callback(update, ctx):
         s = enter_mode(chat_id, None)
         s['lang'] = language
         await send(update, ctx, tr(language, 'welcome'), reply_keyboard(language))
-        await send(update, ctx, tr(language, 'menu'), menu_keyboard(language))
+        await send(update, ctx, tr(language, 'menu'), menu_keyboard(language, update))
         return
     if s.get('lang') is None:
         await send(update, ctx, tr('it', 'lang_choose'), lang_keyboard())
@@ -985,6 +1011,7 @@ def register_handlers(app):
     app.add_handler(CommandHandler("verbi", cmd_verbi))
     app.add_handler(CommandHandler("glossario", cmd_glossario))
     app.add_handler(CommandHandler("lang", cmd_lang))
+    app.add_handler(CommandHandler("app", cmd_app))
     app.add_handler(CallbackQueryHandler(on_callback))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_text))
     return app

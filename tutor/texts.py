@@ -19,6 +19,7 @@ COMMANDS = [
     ("spiega", "Cerca un argomento (es. /spiega passivo)", "Look up a topic (e.g. /spiega passive)"),
     ("verbi", "Verbi irregolari", "Irregular verbs"),
     ("glossario", "Glossario dei termini grammaticali", "Glossary of grammar terms"),
+    ("app", "Apri la mini app", "Open the mini app"),
     ("lang", "Cambia lingua (IT/EN)", "Change language (IT/EN)"),
     ("help", "Come funziona il bot", "How the bot works"),
 ]
@@ -82,6 +83,11 @@ T = {
         "btn_verbs": "🔤 Verbi irregolari",
         "btn_glos": "📖 Glossario",
         "btn_help": "❔ Aiuto",
+        "btn_app": "📱 Mini app",
+        "app_open": "<b>📱 Mini app</b>\nLa versione «app» del tutor, dentro Telegram. Per ora contiene "
+                    "verbi irregolari e glossario con ricerca istantanea; teoria, esercizi e quiz arriveranno "
+                    "per gradi.\n\nLa chat resta disponibile come sempre: usa quella che preferisci.",
+        "app_unavailable": "La mini app è disponibile solo quando il bot gira online (su Render).",
         "btn_menu": "☰ Menu",
         # tastiera fissa in basso
         "kb_quiz": "🧠 Quiz",
@@ -212,6 +218,11 @@ T = {
         "btn_verbs": "🔤 Irregular verbs",
         "btn_glos": "📖 Glossary",
         "btn_help": "❔ Help",
+        "btn_app": "📱 Mini app",
+        "app_open": "<b>📱 Mini app</b>\nThe «app» version of the tutor, inside Telegram. For now it has "
+                    "irregular verbs and the glossary with instant search; theory, exercises and quizzes "
+                    "will follow step by step.\n\nThe chat is still available as always: use whichever you prefer.",
+        "app_unavailable": "The mini app is only available when the bot runs online (on Render).",
         "btn_menu": "☰ Menu",
         "kb_quiz": "🧠 Quiz",
         "kb_ex": "✍️ Exercises",
@@ -375,7 +386,13 @@ def reply_labels():
     return out
 
 
-def menu_keyboard(lang):
+def app_button(lang, webapp_url):
+    """Bottone che apre la mini app (solo chat private), con la lingua scelta in chat."""
+    from telegram import InlineKeyboardButton, WebAppInfo
+    return InlineKeyboardButton(tr(lang, "btn_app"), web_app=WebAppInfo(url=f"{webapp_url}?lang={lang}"))
+
+
+def menu_keyboard(lang, webapp_url=None):
     from telegram import InlineKeyboardButton, InlineKeyboardMarkup
     b = [
         [InlineKeyboardButton(tr(lang, "btn_quiz"), callback_data="menu:quiz"),
@@ -387,6 +404,8 @@ def menu_keyboard(lang):
         [InlineKeyboardButton(tr(lang, "btn_glos"), callback_data="menu:glos"),
          InlineKeyboardButton(tr(lang, "btn_help"), callback_data="menu:help")],
     ]
+    if webapp_url:
+        b.append([app_button(lang, webapp_url)])
     return InlineKeyboardMarkup(b)
 
 

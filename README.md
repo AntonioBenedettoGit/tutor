@@ -24,6 +24,7 @@ Il runtime legge il JSON già incluso: **non deve elaborare il PDF** e non richi
 - **[Fase 4.3–4.4: il bot torna al libro](STEP4-3.md)** — quiz ed esercizi dal libro con punteggio, spiegazione del libro + pagina + nota in italiano; errori del libro mostrati in originale.
 - **[Fase 5: interfaccia Telegram più ordinata](STEP5-UI.md)** — menu «/» con descrizioni, bottoni fissi in basso, capitoli per Parte con progressi, teoria sfogliabile ◀️ ▶️, quiz con riquadri e riepilogo finale. Contenuti e KB invariati.
 - **[Fase 5.1: risveglio su Render](STEP5-1.md)** — il primo messaggio dopo il sonno non si perde più, `/health` per un monitor esterno (UptimeRobot), webhook con header segreto e senza token nell'URL.
+- **[Fase 5.2: base della mini app](STEP5-2.md)** — seconda interfaccia dentro Telegram (/app): verbi irregolari e glossario con ricerca istantanea; la chat resta invariata.
 
 La KB attuale contiene 25 capitoli, 270 esercizi, 145 verbi e 93 voci di glossario.
 Il punteggio usa **solo le 160 domande del registro editoriale** (150 vero/falso e 10 MCQ), con spiegazioni IT/EN e citazioni. Gli esempi e gli esercizi grezzi restano consultabili senza assegnare punti. I quiz tematici hanno 6–9 domande e non pescano da altri capitoli.

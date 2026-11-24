@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="color-scheme" content="light dark">
+<title>English Grammar Tutor</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{
+  --bg:var(--tg-theme-bg-color,#ffffff);
+  --bg2:var(--tg-theme-secondary-bg-color,#f1f2f6);
+  --section:var(--tg-theme-section-bg-color,var(--bg));
+  --text:var(--tg-theme-text-color,#111111);
+  --hint:var(--tg-theme-hint-color,#8a8f98);
+  --link:var(--tg-theme-link-color,#2a7ae2);
+  --accent:var(--tg-theme-button-color,#2a7ae2);
+  --accent-text:var(--tg-theme-button-text-color,#ffffff);
+  --sep:var(--tg-theme-section-separator-color,rgba(127,127,127,.18));
+  --header:var(--tg-theme-section-header-text-color,var(--hint));
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg2);color:var(--text);
+  font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+body{min-height:100vh;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+button{font:inherit;color:inherit}
+.hidden{display:none!important}
+main{max-width:640px;margin:0 auto;padding:12px 12px 0}
+
+/* intestazione home */
+.hero{padding:18px 6px 14px}
+.hero h1{margin:0;font-size:24px;letter-spacing:-.01em}
+.hero p{margin:4px 0 0;color:var(--hint);font-size:14px}
+
+/* sezioni e righe stile Telegram */
+.group-title{margin:18px 14px 6px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--header)}
+.group{background:var(--section);border-radius:14px;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border:0;background:none;text-align:left;cursor:pointer;position:relative}
+.row+.row::before{content:"";position:absolute;top:0;left:56px;right:0;height:1px;background:var(--sep)}
+.row:active{background:var(--sep)}
+.row .ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:17px;background:var(--bg2);flex:none}
+.row .lbl{flex:1;min-width:0}
+.row .lbl b{display:block;font-weight:600}
+.row .lbl small{display:block;color:var(--hint);font-size:13px}
+.row .chev{color:var(--hint);font-size:18px}
+.row.soon{cursor:default;opacity:.55}
+.row.soon:active{background:none}
+.badge{font-size:12px;color:var(--hint);border:1px solid var(--sep);border-radius:10px;padding:1px 8px}
+
+/* barra di ricerca */
+.searchbar{position:sticky;top:0;z-index:2;background:var(--bg2);padding:10px 0 8px}
+.search{display:flex;align-items:center;gap:8px;background:var(--section);border-radius:12px;padding:0 12px}
+.search input{flex:1;border:0;outline:0;background:none;color:var(--text);font:inherit;padding:11px 0;min-width:0}
+.search input::placeholder{color:var(--hint)}
+.search input::-webkit-search-cancel-button,.search input::-webkit-search-decoration{-webkit-appearance:none;appearance:none}
+.search .clear{border:0;background:none;color:var(--hint);font-size:18px;padding:4px;cursor:pointer}
+.count{margin:6px 4px 0;color:var(--hint);font-size:13px}
+.view-title{margin:6px 4px 0;font-size:20px}
+
+/* verbi */
+.verb{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:11px 14px;position:relative}
+.verb+.verb::before{content:"";position:absolute;top:0;left:14px;right:0;height:1px;background:var(--sep)}
+.verb span{min-width:0;overflow-wrap:anywhere}
+.verb span:first-child{font-weight:600}
+.verb.head{font-size:12px;color:var(--hint);text-transform:uppercase;letter-spacing:.03em;padding-top:9px;padding-bottom:7px}
+.verb.head span:first-child{font-weight:400}
+mark{background:rgba(42,122,226,.22);color:inherit;border-radius:3px;padding:0 1px}
+@supports (background:color-mix(in srgb,red 10%,transparent)){mark{background:color-mix(in srgb,var(--accent) 22%,transparent)}}
+
+/* glossario */
+.term{border:0;width:100%;text-align:left;background:none;padding:12px 14px;cursor:pointer;position:relative;display:block}
+.term+.term::before{content:"";position:absolute;top:0;left:14px;right:0;height:1px;background:var(--sep)}
+.term .t{font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.term .t::after{content:"›";color:var(--hint);transition:transform .15s}
+.term.open .t::after{transform:rotate(90deg)}
+.term .d{display:none;margin-top:6px;color:var(--text);opacity:.92}
+.term .src{display:none;margin-top:6px;color:var(--hint);font-size:13px}
+.term.open .d,.term.open .src{display:block}
+
+.empty{padding:22px 16px;text-align:center;color:var(--hint)}
+.source{margin:10px 6px 0;color:var(--hint);font-size:13px}
+.note{margin:14px 6px 0;color:var(--hint);font-size:13px;text-align:center}
+
+/* lingua */
+.seg{display:inline-flex;background:var(--section);border-radius:10px;padding:3px;gap:3px}
+.seg button{border:0;background:none;padding:6px 14px;border-radius:8px;cursor:pointer;color:var(--hint)}
+.seg button.on{background:var(--accent);color:var(--accent-text)}
+.langrow{display:flex;justify-content:center;margin-top:18px}
+
+/* stati */
+.state{padding:60px 20px;text-align:center;color:var(--hint)}
+.spinner{width:28px;height:28px;border-radius:50%;border:3px solid var(--sep);border-top-color:var(--accent);margin:0 auto 14px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn{display:inline-block;margin-top:14px;border:0;border-radius:10px;padding:10px 18px;background:var(--accent);color:var(--accent-text);cursor:pointer}
+</style>
+</head>
+<body>
+<main>
+  <!-- caricamento / errore -->
+  <section id="state" class="state">
+    <div class="spinner"></div>
+    <div id="state-text"></div>
+    <button id="retry" class="btn hidden"></button>
+  </section>
+
+  <!-- home -->
+  <section id="home" class="hidden">
+    <div class="hero">
+      <h1 id="hello"></h1>
+      <p id="book"></p>
+    </div>
+    <div class="group-title" data-i18n="available"></div>
+    <div class="group">
+      <button class="row" data-go="verbs">
+        <span class="ico">🔤</span>
+        <span class="lbl"><b data-i18n="verbs"></b><small id="verbs-sub"></small></span>
+        <span class="chev">›</span>
+      </button>
+      <button class="row" data-go="glossary">
+        <span class="ico">📖</span>
+        <span class="lbl"><b data-i18n="glossary"></b><small id="glossary-sub"></small></span>
+        <span class="chev">›</span>
+      </button>
+    </div>
+    <div class="group-title" data-i18n="coming"></div>
+    <div class="group">
+      <div class="row soon"><span class="ico">📘</span><span class="lbl"><b data-i18n="theory"></b><small data-i18n="theory_sub"></small></span><span class="badge" data-i18n="soon"></span></div>
+      <div class="row soon"><span class="ico">✍️</span><span class="lbl"><b data-i18n="exercises"></b><small data-i18n="exercises_sub"></small></span><span class="badge" data-i18n="soon"></span></div>
+      <div class="row soon"><span class="ico">🧠</span><span class="lbl"><b data-i18n="quiz"></b><small data-i18n="quiz_sub"></small></span><span class="badge" data-i18n="soon"></span></div>
+    </div>
+    <div class="langrow">
+      <div class="seg" role="group" aria-label="Lingua / Language">
+        <button data-lang="it">Italiano</button><button data-lang="en">English</button>
+      </div>
+    </div>
+    <p class="note" data-i18n="no_ai"></p>
+  </section>
+
+  <!-- verbi -->
+  <section id="verbs" class="hidden">
+    <div class="searchbar">
+      <h2 class="view-title" data-i18n="verbs"></h2>
+      <div class="search" style="margin-top:8px">
+        <span aria-hidden="true">🔎</span>
+        <input id="verbs-q" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+        <button class="clear hidden" data-clear="verbs-q" aria-label="×">×</button>
+      </div>
+      <div class="count" id="verbs-count"></div>
+    </div>
+    <div class="group">
+      <div class="verb head"><span data-i18n="col_base"></span><span data-i18n="col_past"></span><span data-i18n="col_pp"></span></div>
+      <div id="verbs-list"></div>
+    </div>
+    <p class="source" id="verbs-source"></p>
+  </section>
+
+  <!-- glossario -->
+  <section id="glossary" class="hidden">
+    <div class="searchbar">
+      <h2 class="view-title" data-i18n="glossary"></h2>
+      <div class="search" style="margin-top:8px">
+        <span aria-hidden="true">🔎</span>
+        <input id="glossary-q" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+        <button class="clear hidden" data-clear="glossary-q" aria-label="×">×</button>
+      </div>
+      <div class="count" id="glossary-count"></div>
+    </div>
+    <div class="group" id="glossary-list"></div>
+  </section>
+</main>
+
+<script type="application/json" id="i18n">
+{
+  "it": {
+    "hello": "Ciao {name}!", "hello_anon": "Ciao!",
+    "available": "Disponibile", "coming": "In arrivo", "soon": "presto",
+    "verbs": "Verbi irregolari", "verbs_sub": "{n} verbi · base, past, participio",
+    "glossary": "Glossario", "glossary_sub": "{n} termini grammaticali",
+    "theory": "Teoria", "theory_sub": "I 25 capitoli del libro",
+    "exercises": "Esercizi", "exercises_sub": "Con correzione e spiegazione",
+    "quiz": "Quiz", "quiz_sub": "Domande dal libro",
+    "no_ai": "Niente AI: tutto il contenuto viene dal libro. La chat del bot resta disponibile come sempre.",
+    "verbs_ph": "Cerca un verbo (es. went, taken)", "glossary_ph": "Cerca un termine o una parola",
+    "col_base": "Base", "col_past": "Past simple", "col_pp": "Participle",
+    "count": "{n} su {t}", "verbs_none": "«{q}» non è tra i verbi irregolari del libro: probabilmente è regolare (aggiungi -ed).",
+    "glossary_none": "Nessun termine trovato per «{q}».",
+    "verbs_source": "📖 Dal libro, Appendice A · p. {a}–{b}", "page_appendix": "📖 Dal libro, Appendice A · p. {p}", "page": "📖 Dal libro, p. {p}",
+    "loading": "Caricamento…", "waking": "Il server si sta svegliando, ci vuole al massimo un minuto…",
+    "error_auth": "Apri la mini app dal bot su Telegram (comando /app).",
+    "error_net": "Connessione non riuscita.", "retry": "Riprova"
+  },
+  "en": {
+    "hello": "Hi {name}!", "hello_anon": "Hi!",
+    "available": "Available", "coming": "Coming soon", "soon": "soon",
+    "verbs": "Irregular verbs", "verbs_sub": "{n} verbs · base, past, participle",
+    "glossary": "Glossary", "glossary_sub": "{n} grammar terms",
+    "theory": "Theory", "theory_sub": "The book's 25 chapters",
+    "exercises": "Exercises", "exercises_sub": "With scoring and explanations",
+    "quiz": "Quiz", "quiz_sub": "Questions from the book",
+    "no_ai": "No AI: all content comes from the book. The bot chat is still available as always.",
+    "verbs_ph": "Search a verb (e.g. went, taken)", "glossary_ph": "Search a term or a word",
+    "col_base": "Base", "col_past": "Past simple", "col_pp": "Participle",
+    "count": "{n} of {t}", "verbs_none": "«{q}» is not in the book's irregular verb list: it is probably regular (add -ed).",
+    "glossary_none": "No term found for «{q}».",
+    "verbs_source": "📖 From the book, Appendix A · p. {a}–{b}", "page_appendix": "📖 From the book, Appendix A · p. {p}", "page": "📖 From the book, p. {p}",
+    "loading": "Loading…", "waking": "The server is waking up, it takes up to a minute…",
+    "error_auth": "Open the mini app from the bot in Telegram (/app command).",
+    "error_net": "Connection failed.", "retry": "Retry"
+  }
+}
+</script>
+<script>
+(function () {
+  "use strict";
+  var I18N = JSON.parse(document.getElementById("i18n").textContent);
+  var DEMO = window.__DEMO__ || null;          // solo per l'anteprima statica, mai dal server
+  var tg = (window.Telegram && window.Telegram.WebApp) || null;
+  var data = null, view = "home";
+  var params = new URLSearchParams(location.search);
+  var lang = pickLang(params.get("lang"));
+
+  function pickLang(wanted) {
+    if (wanted === "it" || wanted === "en") return wanted;
+    try { var saved = localStorage.getItem("tutor_lang"); if (saved === "it" || saved === "en") return saved; } catch (e) {}
+    var code = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.language_code) || navigator.language || "it";
+    return /^it/i.test(code) ? "it" : "en";
+  }
+  function t(key, vars) {
+    var s = (I18N[lang] && I18N[lang][key]) || I18N.it[key] || key;
+    return s.replace(/\{(\w+)\}/g, function (_, k) { return vars && k in vars ? String(vars[k]) : ""; });
+  }
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function norm(s) {
+    return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[’']/g, "'").replace(/\s+/g, " ").trim();
+  }
+  function haptic(kind) { try { tg && tg.HapticFeedback && tg.HapticFeedback.selectionChanged(); } catch (e) {} }
+
+  /* evidenzia la parte cercata costruendo nodi di testo (mai HTML dai dati) */
+  function highlighted(text, q) {
+    var frag = document.createDocumentFragment();
+    var i = q ? norm(text).indexOf(q) : -1;
+    if (i < 0 || norm(text).length !== text.length) { frag.appendChild(document.createTextNode(text)); return frag; }
+    frag.appendChild(document.createTextNode(text.slice(0, i)));
+    frag.appendChild(el("mark", null, text.slice(i, i + q.length)));
+    frag.appendChild(document.createTextNode(text.slice(i + q.length)));
+    return frag;
+  }
+
+  /* ---------------------------------------------------------------- testi */
+  function applyTexts() {
+    document.documentElement.lang = lang;
+    Array.prototype.forEach.call(document.querySelectorAll("[data-i18n]"), function (n) { n.textContent = t(n.getAttribute("data-i18n")); });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) { b.classList.toggle("on", b.getAttribute("data-lang") === lang); });
+    $("verbs-q").placeholder = t("verbs_ph");
+    $("glossary-q").placeholder = t("glossary_ph");
+    if (!data) return;
+    var name = data.user && data.user.first_name;
+    $("hello").textContent = name ? t("hello", { name: name }) : t("hello_anon");
+    $("book").textContent = "«" + data.book + "»";
+    $("verbs-sub").textContent = t("verbs_sub", { n: data.counts.verbs });
+    $("glossary-sub").textContent = t("glossary_sub", { n: data.counts.glossary });
+    var vp = data.verb_pages || [];
+    $("verbs-source").textContent = !vp.length ? "" : vp[0] === vp[1] ? t("page_appendix", { p: vp[0] }) : t("verbs_source", { a: vp[0], b: vp[1] });
+    renderVerbs(); renderGlossary();
+  }
+
+  /* ---------------------------------------------------------------- navigazione */
+  function show(name) {
+    view = name;
+    ["state", "home", "verbs", "glossary"].forEach(function (id) { $(id).classList.toggle("hidden", id !== name); });
+    if (tg && tg.BackButton) { if (name === "verbs" || name === "glossary") tg.BackButton.show(); else tg.BackButton.hide(); }
+    window.scrollTo(0, 0);
+  }
+  function go(name) { haptic(); show(name); if (name === "verbs" || name === "glossary") { history.pushState({ v: name }, ""); } }
+  window.addEventListener("popstate", function () { if (view !== "home" && data) show("home"); });
+
+  /* ---------------------------------------------------------------- verbi */
+  function verbForms(v) { return [v.b].concat(v.p.split("/"), v.pp.split("/")).map(norm).filter(Boolean); }
+  function renderVerbs() {
+    var q = norm($("verbs-q").value), list = $("verbs-list"), all = data.verbs;
+    list.textContent = "";
+    var hits = all.filter(function (v) { return !q || verbForms(v).some(function (f) { return f.indexOf(q) === 0; }); });
+    hits.sort(function (a, b) {                  // prima chi ha una forma identica a quella cercata
+      var ea = verbForms(a).indexOf(q) >= 0 ? 0 : 1, eb = verbForms(b).indexOf(q) >= 0 ? 0 : 1;
+      return ea - eb || a.b.localeCompare(b.b);
+    });
+    hits.forEach(function (v) {
+      var row = el("div", "verb");
+      [v.b, v.p, v.pp].forEach(function (form) { var s = el("span"); s.appendChild(highlighted(form, q)); row.appendChild(s); });
+      list.appendChild(row);
+    });
+    if (!hits.length) list.appendChild(el("div", "empty", t("verbs_none", { q: $("verbs-q").value.trim() })));
+    $("verbs-count").textContent = q ? t("count", { n: hits.length, t: all.length }) : "";
+  }
+
+  /* ---------------------------------------------------------------- glossario */
+  function renderGlossary() {
+    var q = norm($("glossary-q").value), list = $("glossary-list"), all = data.glossary;
+    list.textContent = "";
+    var scored = [];
+    all.forEach(function (g) {
+      var term = norm(g.t), def = norm(g.d), score = -1;
+      if (!q) score = 3; else if (term === q) score = 0; else if (term.indexOf(q) === 0) score = 1;
+      else if (term.indexOf(q) >= 0) score = 2; else if (def.indexOf(q) >= 0) score = 4;
+      if (score >= 0) scored.push([score, g]);
+    });
+    scored.sort(function (a, b) { return a[0] - b[0] || a[1].t.localeCompare(b[1].t); });
+    scored.forEach(function (pair, i) {
+      var g = pair[1], item = el("button", "term");
+      var head = el("div", "t"); head.appendChild(highlighted(g.t, q));
+      var def = el("div", "d"); def.appendChild(highlighted(g.d, q));
+      item.appendChild(head); item.appendChild(def);
+      if (g.p) item.appendChild(el("div", "src", t("page", { p: g.p })));
+      if (q && (i === 0 && pair[0] <= 1 || pair[0] === 4 && scored.length <= 3)) item.classList.add("open");
+      item.addEventListener("click", function () { haptic(); item.classList.toggle("open"); });
+      list.appendChild(item);
+    });
+    if (!scored.length) list.appendChild(el("div", "empty", t("glossary_none", { q: $("glossary-q").value.trim() })));
+    $("glossary-count").textContent = q ? t("count", { n: scored.length, t: all.length }) : "";
+  }
+
+  /* ---------------------------------------------------------------- caricamento */
+  function setState(text, retry) {
+    show("state");
+    $("state").querySelector(".spinner").classList.toggle("hidden", !!retry);
+    $("state-text").textContent = text;
+    $("retry").classList.toggle("hidden", !retry);
+    $("retry").textContent = t("retry");
+  }
+  function load() {
+    if (DEMO) { data = DEMO.data; ready(); return; }
+    var initData = tg && tg.initData;
+    if (!initData) { setState(t("error_auth"), false); $("state").querySelector(".spinner").classList.add("hidden"); return; }
+    setState(t("loading"));
+    var slow = setTimeout(function () { $("state-text").textContent = t("waking"); }, 3500);
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var stop = setTimeout(function () { ctrl && ctrl.abort(); }, 90000);
+    fetch("/api/reference", { headers: { "Authorization": "tma " + initData }, signal: ctrl && ctrl.signal, cache: "no-store" })
+      .then(function (r) {
+        if (r.status === 401) { var e = new Error("auth"); e.auth = true; throw e; }
+        if (!r.ok) throw new Error("http " + r.status);
+        return r.json();
+      })
+      .then(function (body) { data = body; ready(); })
+      .catch(function (e) { setState(e.auth ? t("error_auth") : t("error_net"), !e.auth); })
+      .then(function () { clearTimeout(slow); clearTimeout(stop); });
+  }
+  function ready() { applyTexts(); show("home"); }
+
+  /* ---------------------------------------------------------------- eventi */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-go]"), function (b) {
+    b.addEventListener("click", function () { go(b.getAttribute("data-go")); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) {
+    b.addEventListener("click", function () {
+      lang = b.getAttribute("data-lang"); haptic();
+      try { localStorage.setItem("tutor_lang", lang); } catch (e) {}
+      applyTexts();
+    });
+  });
+  [["verbs-q", renderVerbs], ["glossary-q", renderGlossary]].forEach(function (pair) {
+    var input = $(pair[0]), clear = document.querySelector('[data-clear="' + pair[0] + '"]');
+    input.addEventListener("input", function () { clear.classList.toggle("hidden", !input.value); if (data) pair[1](); });
+    clear.addEventListener("click", function () { input.value = ""; clear.classList.add("hidden"); input.focus(); if (data) pair[1](); });
+  });
+  $("retry").addEventListener("click", load);
+
+  if (tg) {
+    try {
+      tg.ready(); tg.expand();
+      if (tg.setHeaderColor) tg.setHeaderColor("secondary_bg_color");
+      if (tg.setBackgroundColor) tg.setBackgroundColor("secondary_bg_color");
+      tg.BackButton && tg.BackButton.onClick(function () { history.length > 1 ? history.back() : show("home"); });
+    } catch (e) {}
+  }
+  applyTexts();
+  load();
+})();
+</script>
+</body>
+</html>

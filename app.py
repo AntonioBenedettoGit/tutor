@@ -16,7 +16,8 @@ Server web (fase 5.1), un piccolo server tornado al posto di run_webhook:
 - POST /tg/<hash> → update di Telegram, accettato solo con l'header segreto
   X-Telegram-Bot-Api-Secret-Token; il token del bot non compare più nell'URL;
 - i messaggi arrivati mentre il servizio dormiva NON vengono scartati
-  (drop_pending_updates=False): il primo messaggio riceve risposta, in ritardo.
+  (drop_pending_updates=False): il primo messaggio riceve risposta, in ritardo;
+- GET /app e /api/* → mini app di Telegram (fase 5.2, vedi tutor/webapp.py).
 """
 import asyncio
 import hashlib
@@ -31,6 +32,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bot  # noqa: E402
 from tutor.logging_config import configure_logging  # noqa: E402
+from tutor import webapp  # noqa: E402
 from telegram import Update  # noqa: E402
 from telegram.ext import Application  # noqa: E402
 from tornado.httpserver import HTTPServer  # noqa: E402
@@ -99,6 +101,7 @@ def make_web_app(application, token):
     secret, path = webhook_secret(token), webhook_path(token)
     routes = [(p, HealthHandler) for p in HEALTH_PATHS]
     routes.append((path, TelegramHandler, {"ptb": application, "secret": secret}))
+    routes += webapp.routes(token, bot.KB)          # mini app: /app e /api/* (fase 5.2)
     return WebApp(routes, log_function=_quiet_access_log)
 
 
@@ -147,6 +150,7 @@ async def serve_webhook(token, public_url, port, stop_event=None, application=No
                 loop.add_signal_handler(sig, stop.set)
             except (NotImplementedError, RuntimeError, ValueError):
                 pass
+        bot.WEBAPP_URL = public_url.rstrip("/") + "/app"   # usato da /app e dal menu del bot
         async with application:                      # initialize() … shutdown()
             if application.post_init:
                 await application.post_init(application)

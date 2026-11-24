@@ -218,7 +218,7 @@ class ContentTests(unittest.TestCase):
     def test_launcher_has_sequential_updates_and_handlers(self):
         application = app.build_app('123456:OFFLINE_TEST')
         self.assertEqual(application.concurrent_updates, 1)  # max un update alla volta
-        self.assertEqual(len(application.handlers[0]), 12)
+        self.assertEqual(len(application.handlers[0]), 13)
 
 
 class SessionTests(unittest.IsolatedAsyncioTestCase):

@@ -165,9 +165,12 @@ def _theory_blocks(kb, num):
 
 def _block_html(b):
     from tutor.render import tidy_html
+    import re as _re
     html = tidy_html(b.get("html") or "")
-    if b["type"] == "bullet":
-        return "• " + html
+    # il PDF usa un font monospazio per i segni ✓/✗: in Telegram diventerebbero <code>, si tolgono
+    html = _re.sub(r"<code>\s*([✓✗])\s*</code>", r"\1", html)
+    if b["type"] == "bullet" and not html.lstrip().startswith("•"):
+        return "• " + html                # il libro ha già il suo pallino: non raddoppiarlo
     return html
 
 

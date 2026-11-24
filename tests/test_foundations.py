@@ -27,8 +27,12 @@ class StrictHTML(HTMLParser):
         self.stack = []
 
     def handle_starttag(self, tag, attrs):
-        assert tag in ('b', 'i', 's', 'u', 'code', 'pre'), tag
-        assert not attrs
+        assert tag in ('b', 'i', 's', 'u', 'code', 'pre', 'blockquote'), tag
+        if tag == 'blockquote':
+            assert attrs in ([], [('expandable', None)]), attrs
+            assert 'blockquote' not in self.stack          # Telegram: niente citazioni annidate
+        else:
+            assert not attrs
         self.stack.append(tag)
 
     def handle_endtag(self, tag):
@@ -49,23 +53,33 @@ class FakeChat:
             parser.close()
             assert not parser.stack
         if reply_markup:
-            for row in reply_markup.inline_keyboard:
+            for row in getattr(reply_markup, 'inline_keyboard', ()):
                 for button in row:
+                    assert len(button.text) <= 64
                     if button.callback_data:
                         assert len(button.callback_data.encode()) <= 64
         self.messages.append({'text': text, 'keyboard': reply_markup, 'parse_mode': parse_mode})
         return SimpleNamespace(message_id=len(self.messages))
 
 
+def inline_rows(markup):
+    return getattr(markup, 'inline_keyboard', ()) if markup else ()
+
+
 def query_update(chat, data):
-    q = SimpleNamespace(data=data, answer=AsyncMock(), edit_message_reply_markup=AsyncMock())
+    async def edit_text(text, parse_mode=None, reply_markup=None):
+        # una modifica (pagine di teoria, navigazione) viene registrata come ultimo messaggio
+        await chat.send_message(text, reply_markup=reply_markup, parse_mode=parse_mode)
+        chat.messages[-1]['edited'] = True
+    q = SimpleNamespace(data=data, answer=AsyncMock(), edit_message_reply_markup=AsyncMock(),
+                        edit_message_text=AsyncMock(side_effect=edit_text))
     return SimpleNamespace(effective_chat=chat, callback_query=q, message=None)
 
 
 def find_callback(chat, predicate):
     for message in reversed(chat.messages):
         if message['keyboard']:
-            for row in message['keyboard'].inline_keyboard:
+            for row in inline_rows(message['keyboard']):
                 for button in row:
                     if button.callback_data and predicate(button.callback_data):
                         return button.callback_data

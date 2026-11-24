@@ -23,20 +23,10 @@ from telegram.ext import Application  # noqa: E402
 
 
 def build_app(token):
-    app = Application.builder().token(token).concurrent_updates(False).build()
-    app.add_handler(bot.CommandHandler("start", bot.cmd_start))
-    app.add_handler(bot.CommandHandler("help", bot.cmd_help))
-    app.add_handler(bot.CommandHandler("menu", bot.cmd_menu))
-    app.add_handler(bot.CommandHandler("quiz", bot.cmd_quiz))
-    app.add_handler(bot.CommandHandler("esercizi", bot.cmd_ex))
-    app.add_handler(bot.CommandHandler("spiega", bot.cmd_spiega))
-    app.add_handler(bot.CommandHandler("capitoli", bot.cmd_capitoli))
-    app.add_handler(bot.CommandHandler("verbi", bot.cmd_verbi))
-    app.add_handler(bot.CommandHandler("glossario", bot.cmd_glossario))
-    app.add_handler(bot.CommandHandler("lang", bot.cmd_lang))
-    app.add_handler(bot.CallbackQueryHandler(bot.on_callback))
-    app.add_handler(bot.MessageHandler(bot.filters.TEXT & ~bot.filters.COMMAND, bot.on_text))
-    return app
+    # post_init: menu «/» con descrizioni e testo prima di «Avvia» (IT/EN), vedi bot._sync_profile
+    app = (Application.builder().token(token).concurrent_updates(False)
+           .post_init(bot.post_init).build())
+    return bot.register_handlers(app)
 
 
 def main():

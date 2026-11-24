@@ -10,7 +10,7 @@ from html import escape as _escape
 import re
 
 from tutor.book_quiz import note_for
-from tutor.texts import tr
+from tutor.texts import progress_bar, tr
 
 LETTERS = 'ABCDEF'
 TAG = re.compile(r'<(/?)(b|i|s|u|code|pre)>')
@@ -74,14 +74,20 @@ def source_line(kb, lang, item, kind):
             parts.append(esc(item['section']))
         pages = [item['page']] + list(item.get('also_pages') or [])
         parts.append(tr(lang, 'src_pages', p=', '.join(map(str, pages))))
-    return '📖 ' + ' · '.join(parts)
+    return '<i>📖 ' + ' · '.join(parts) + '</i>'
 
 
 def it_note(kb, lang, item, kind):
     if lang != 'it':
         return ''
     note = note_for(kb, item, kind)
-    return f"\n\n🇮🇹 <i>{esc(note)}</i>" if note else ''
+    return f"\n<blockquote expandable>🇮🇹 <i>{esc(note)}</i></blockquote>" if note else ''
+
+
+def quote(html):
+    """Contenuto del libro in un riquadro citazione (Telegram <blockquote>)."""
+    html = (html or '').strip()
+    return f"<blockquote>{html}</blockquote>" if html else ''
 
 
 def example_html(e):
@@ -92,46 +98,72 @@ def example_html(e):
 
 
 # --------------------------------------------------------------------------- quiz
+def quiz_head(lang, i, n):
+    return tr(lang, 'quiz_head', i=i, n=n, bar=progress_bar(i, n))
+
+
 def quiz_question(kb, lang, ref_item, item, i, n, fix_opts=None):
     kind = ref_item['type']
+    head = quiz_head(lang, i, n)
     if kind == 'tf':
         where = esc(item.get('section') or chapter_title(kb, item['ch']))
-        return (f"{tr(lang, 'quiz_tf', i=i, n=n)}\n<i>{tr(lang, 'src_chapter', n=item['ch'], t=where)}</i>"
-                f"\n\n«{example_html(item)}»")
+        return (f"{head}\n{tr(lang, 'quiz_tf')}\n<i>{tr(lang, 'src_chapter', n=item['ch'], t=where)}</i>"
+                f"\n\n{quote(example_html(item))}")
     if kind == 'fix':
         a, b = fix_opts
-        return f"{tr(lang, 'quiz_which', i=i, n=n)}\n\nA) {esc(a)}\nB) {esc(b)}"
-    opts = '\n'.join(f"{LETTERS[j]}) {esc(o)}" for j, o in enumerate(item['options']))
+        return f"{head}\n{tr(lang, 'quiz_which')}\n\n<b>A)</b> {esc(a)}\n<b>B)</b> {esc(b)}"
+    opts = '\n'.join(f"<b>{LETTERS[j]})</b> {esc(o)}" for j, o in enumerate(item['options']))
     if 'source' in item:                      # domanda ricostruita dal libro (fase 3)
-        ctx = item.get('context', {}).get(lang, '')
-        return (f"{tr(lang, 'quiz_fill', i=i, n=n)}\n\n{esc(ctx)}\n\n«{esc(item['q'])}»\n\n{opts}").replace('\n\n\n\n', '\n\n')
+        ctx = esc(item.get('context', {}).get(lang, ''))
+        ctx = f"\n<i>{ctx}</i>" if ctx else ''
+        return f"{head}\n{tr(lang, 'quiz_fill')}{ctx}\n\n{quote(esc(item['q']))}\n{opts}"
     instr = tidy_html(item.get('instr_html') or esc(item.get('instr')))
     q = tidy_html(item.get('q_html') or esc(item['q']))
-    head = tr(lang, 'quiz_fill', i=i, n=n)
-    return f"{head}\n<i>{instr}</i>\n\n{q}\n\n{opts}" if instr else f"{head}\n\n{q}\n\n{opts}"
+    instr = f"\n<i>{instr}</i>" if instr else ''
+    return f"{head}\n{tr(lang, 'quiz_fill')}{instr}\n\n{quote(q)}\n{opts}"
+
+
+def feedback_head(lang, good, score, total, right_key='quiz_right', wrong_key='quiz_wrong'):
+    verdict = tr(lang, right_key if good else wrong_key)
+    return f"<b>{verdict}</b>  ·  {tr(lang, 'score', c=score, t=total)}"
 
 
 def quiz_feedback(kb, lang, ref_item, item, good, score, total, given=None):
-    head = f"{tr(lang, 'quiz_right' if good else 'quiz_wrong')} {tr(lang, 'score', c=score, t=total)}"
+    """Esito, poi riquadro con la risposta/spiegazione del libro, fonte e nota italiana."""
+    head = feedback_head(lang, good, score, total)
     kind = ref_item['type']
     if kind == 'tf':
         verdict = tr(lang, 'tf_is_ok' if item['ok'] else 'tf_is_bad')
         body = f"{verdict}\n{'✓' if item['ok'] else '✗'} {example_html(item)}"
         if item.get('note'):
-            body += '\n' + tr(lang, 'book_note', a=esc(item['note']))
-        return f"{head}\n\n{body}\n\n{source_line(kb, lang, item, 'item')}{it_note(kb, lang, item, 'item')}"
+            body += '\n\n' + tr(lang, 'book_note', a=esc(item['note']))
+        return f"{head}\n\n{quote(body)}\n{source_line(kb, lang, item, 'item')}{it_note(kb, lang, item, 'item')}"
     if kind == 'fix':
         body = tr(lang, 'quiz_fix', good=esc(item['good']), bad=esc(item['bad']))
         if item.get('good_book'):
             body += '\n' + tr(lang, 'fix_book_form', a=esc(item['good_book']))
         if item.get('note'):
-            body += '\n' + tr(lang, 'book_note', a=esc(item['note']))
-        return f"{head}\n\n{body}\n\n{source_line(kb, lang, item, 'item')}{it_note(kb, lang, item, 'item')}"
+            body += '\n\n' + tr(lang, 'book_note', a=esc(item['note']))
+        return f"{head}\n\n{quote(body)}\n{source_line(kb, lang, item, 'item')}{it_note(kb, lang, item, 'item')}"
     if 'source' in item:
-        body = tr(lang, 'book_answer', a=esc(item['options'][item['answer_idx']]))
+        body = tr(lang, 'book_answer', a=f"<b>{esc(item['options'][item['answer_idx']])}</b>")
         body += '\n\n' + esc(item['explanation'][lang])
-        return f"{head}\n\n{body}\n\n{source_line(kb, lang, item, 'reviewed')}"
+        return f"{head}\n\n{quote(body)}\n{source_line(kb, lang, item, 'reviewed')}"
     return f"{head}\n\n{solution_html(kb, lang, item)}"
+
+
+def quiz_snippet(kb, ref_item, item, width=70):
+    """Riga breve per il riepilogo finale: la frase/domanda sbagliata, troncata."""
+    if ref_item['type'] == 'tf':
+        text = item.get('t') or ''
+    elif ref_item['type'] == 'fix':
+        text = item.get('bad') or ''
+    else:
+        text = item.get('q') or ''
+    text = ' '.join(text.split())
+    if len(text) > width:
+        text = text[:width - 1].rstrip() + '…'
+    return esc(text)
 
 
 # --------------------------------------------------------------------------- esercizi
@@ -146,17 +178,22 @@ def exercise_prompt(kb, lang, item, i, n):
         q = esc(item['q'][:a]) + '<b><u>' + esc(item['q'][a:b]) + '</u></b>' + esc(item['q'][b:])
         key = 'ex_target_pronoun' if 'underlined' in item['instr'] else 'ex_target_pos'
         instr = tr(lang, key, target=f"<b>{esc(item['target'])}</b>")
-    head = tr(lang, 'ex_head', i=i, n=n, ch=item['ch'], title=esc(chapter_title(kb, item['ch'])))
+    from tutor.texts import chapter_title as local_title
+    head = tr(lang, 'ex_head', i=i, n=n, bar=progress_bar(i, n), ch=item['ch'],
+              title=esc(local_title(kb, item['ch'], lang)))
     how = tr(lang, 'ex_how_' + item['check_mode'].replace('automatico_con_varianti', 'automatico'))
+    body = quote(q)
     if item['check_mode'] == 'scelta_multipla':
-        q += '\n\n' + '\n'.join(f"{LETTERS[j]}) {esc(o)}" for j, o in enumerate(item['options']))
-    return f"{head}\n\n{instr}\n\n{q}\n\n<i>{how}</i>" if instr else f"{head}\n\n{q}\n\n<i>{how}</i>"
+        body += '\n' + '\n'.join(f"<b>{LETTERS[j]})</b> {esc(o)}" for j, o in enumerate(item['options']))
+    instr = f"{instr}\n\n" if instr else ''
+    return f"{head}\n\n{instr}{body}\n<i>{how}</i>"
 
 
 def solution_html(kb, lang, item):
     """Soluzione del libro (con la sua spiegazione), fonte e nota italiana."""
-    body = tr(lang, 'book_solution', a=tidy_html(item.get('answer_html') or esc(item['answer'])))
-    return f"{body}\n\n{source_line(kb, lang, item, 'exercise')}{it_note(kb, lang, item, 'exercise')}"
+    answer = tidy_html(item.get('answer_html') or esc(item['answer']))
+    return (f"{tr(lang, 'book_solution')}\n{quote(answer)}\n"
+            f"{source_line(kb, lang, item, 'exercise')}{it_note(kb, lang, item, 'exercise')}")
 
 
 def parts_report(lang, results):
